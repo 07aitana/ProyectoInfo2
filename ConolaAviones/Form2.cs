@@ -41,13 +41,21 @@ namespace ConolaAviones
             double finalY = Convert.ToDouble(txtFinalY.Text);
             double velocidad = Convert.ToDouble(txtVelocidad.Text);
 
-            if (contador == 0);
+            if (contador == 0)
             {
                 flightPlan1 = new FlightPlan(id, currentX, currentY, finalX, finalY, velocidad);
 
-                contador 
+                contador ++;
+                MessageBox.Show("First flight plan loaded");
             }
-            
+
+            if (contador == 1)
+            {
+                flightPlan2 = new FlightPlan(id, currentX, currentY, finalX, finalY, velocidad);
+
+                contador++;
+                MessageBox.Show("Second flight plan loaded");
+            }
 
 
 
