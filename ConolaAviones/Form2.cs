@@ -47,9 +47,16 @@ namespace ConolaAviones
 
                 contador ++;
                 MessageBox.Show("First flight plan loaded");
+
+                txtId.Clear();
+                txtCurrentX.Clear();
+                txtCurrentY.Clear();
+                txtFinalX.Clear();
+                txtFinalY.Clear();
+                txtVelocidad.Clear();
             }
 
-            if (contador == 1)
+            else if (contador == 1)
             {
                 flightPlan2 = new FlightPlan(id, currentX, currentY, finalX, finalY, velocidad);
 
