@@ -13,6 +13,8 @@ namespace FlightLib
         string id; // identificador
         Position currentPosition; // posicion actual
         Position finalPosition; // posicion final
+
+        Position initialPosition;
         double velocidad;
 
         // Constructures
@@ -21,14 +23,43 @@ namespace FlightLib
             this.id = id;
             this.currentPosition = new Position(cpx, cpy);
             this.finalPosition = new Position(fpx, fpy);
+            this.initialPosition = new Position(cpx, cpy);
             this.velocidad = velocidad;
         }
-
-        // Metodos
-
+        public string GetId()
+        {
+            return this.id;
+        }
+        public void SetId(string id)
+        {
+            this.id = id;
+        }
+        public Position GetCurrentPosition()
+        {
+            return this.currentPosition;
+        }
+        public void SetCurrentPosition(Position currentPosition)
+        {
+            this.currentPosition= currentPosition;
+        }
+        public Position GetFinalPositionn()
+        {
+            return this.finalPosition;
+        }
+        public void SetFinalPositionnn(Position finalPosition)
+        {
+            this.finalPosition = finalPosition;
+        }
+        public double GetVelocidad()
+        {
+            return this.velocidad;
+        }
+        
         public void SetVelocidad(double velocidad)
         // setter del atributo velocidad
         { this.velocidad = velocidad; }
+        
+        // Metodos
 
         public void Mover(double tiempo)
         // Mueve el vuelo a la posición correspondiente a viajar durante el tiempo que se recibe como parámetro
@@ -87,7 +118,22 @@ namespace FlightLib
                 Console.WriteLine("El vuelo ha llegado a su destino");
             Console.WriteLine("******************************");
         }
-        
-    }
+        public void Restart()
+        {
+            this.currentPosition = new Position(
+                    this.initialPosition.GetX(),
+                    this.initialPosition.GetY()
+                    );
 
+
+
+            
+        }
+        public double Distance(FlightPlan plan)
+        {
+            double resultado = Math.Sqrt((this.currentPosition.GetX() - plan.currentPosition.GetX()) * (this.currentPosition.GetX() - plan.currentPosition.GetX()) + (this.currentPosition.GetY() - plan.currentPosition.GetY()) * (this.currentPosition.GetY() - plan.currentPosition.GetY()));
+            return resultado;
+        }
+    }
+    
 }
