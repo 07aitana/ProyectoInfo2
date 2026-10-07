@@ -42,11 +42,11 @@ namespace FlightLib
         {
             this.currentPosition= currentPosition;
         }
-        public Position GetFinalPositionn()
+        public Position GetFinalPosition()
         {
             return this.finalPosition;
         }
-        public void SetFinalPositionnn(Position finalPosition)
+        public void SetFinalPosition(Position finalPosition)
         {
             this.finalPosition = finalPosition;
         }
