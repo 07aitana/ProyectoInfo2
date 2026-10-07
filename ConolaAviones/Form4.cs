@@ -31,11 +31,11 @@ namespace ConolaAviones
             double y2Inicial = vuelo2.GetCurrentPosition().GetY();
 
             // Posiciones finales
-            double x1Final = vuelo1.GetFinalPositionn().GetX();
-            double y1Final = vuelo1.GetFinalPositionn().GetY();
+            double x1Final = vuelo1.GetFinalPosition().GetX();
+            double y1Final = vuelo1.GetFinalPosition().GetY();
 
-            double x2Final = vuelo2.GetFinalPositionn().GetX();
-            double y2Final = vuelo2.GetFinalPositionn().GetY();
+            double x2Final = vuelo2.GetFinalPosition().GetX();
+            double y2Final = vuelo2.GetFinalPosition().GetY();
 
             // Límites del espacio aéreo
             minX = Math.Min(
