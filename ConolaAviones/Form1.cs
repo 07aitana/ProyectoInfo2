@@ -13,8 +13,7 @@ namespace ConolaAviones
 {
     public partial class Form1 : Form
     {
-        FlightPlanList lista = new FlightPlanList();
-
+        Form2 F2;
         public Form1()
         {
             InitializeComponent();
@@ -27,7 +26,7 @@ namespace ConolaAviones
 
         private void planesDeVueloToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form2 F2=new Form2();
+            F2 = new Form2();
             F2.Show();
         }
 
@@ -39,7 +38,21 @@ namespace ConolaAviones
 
         private void airspaceAndInitialLocationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form4 F4 = new Form4(lista);
+            if (F2 == null)
+            {
+                MessageBox.Show("First enter the two flight plans.");
+                return;
+            }
+            FlightPlan vuelo1 = F2.GetFlightPlan1();
+            FlightPlan vuelo2 = F2.GetFlightPlan2();
+           
+            if (vuelo1 == null || vuelo2 == null)
+            {
+                MessageBox.Show("You must enter both flight plans first.");
+                return;
+            }
+
+            Form4 F4 = new Form4(vuelo1, vuelo2);
             F4.Show();
         }
     }

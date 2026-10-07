@@ -33,6 +33,7 @@
             // 
             // panelAirspace
             // 
+            this.panelAirspace.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelAirspace.Location = new System.Drawing.Point(186, 84);
             this.panelAirspace.Name = "panelAirspace";
             this.panelAirspace.Size = new System.Drawing.Size(398, 260);
