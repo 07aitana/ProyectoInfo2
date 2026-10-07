@@ -34,12 +34,25 @@ namespace ConolaAviones
 
         private void button1_Click(object sender, EventArgs e)
         {
+  
             string id = txtId.Text;
             double currentX = Convert.ToDouble(txtCurrentX.Text);
             double currentY = Convert.ToDouble(txtCurrentY.Text);
             double finalX = Convert.ToDouble(txtFinalX.Text);
             double finalY = Convert.ToDouble(txtFinalY.Text);
             double velocidad = Convert.ToDouble(txtVelocidad.Text);
+
+            // Primero comprobamos que no haya campos vacíos
+            if (txtId.Text == "" ||
+                txtCurrentX.Text == "" ||
+                txtCurrentY.Text == "" ||
+                txtFinalX.Text == "" ||
+                txtFinalY.Text == "" ||
+                txtVelocidad.Text == "")
+            {
+                MessageBox.Show("All fields must be completed.");
+                return;
+            }
 
             if (contador == 0)
             {
