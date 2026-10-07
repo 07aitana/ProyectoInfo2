@@ -14,6 +14,7 @@ namespace ConolaAviones
     public partial class Form1 : Form
     {
         Form2 F2;
+        Form3 F3;
         public Form1()
         {
             InitializeComponent();
@@ -32,27 +33,42 @@ namespace ConolaAviones
 
         private void distanciaYTiempoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form3 F3=new Form3();
+            F3= new Form3();
             F3.Show();
         }
 
         private void airspaceAndInitialLocationToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Comprobar que se han introducido los Flight Plans
             if (F2 == null)
             {
                 MessageBox.Show("First enter the two flight plans.");
                 return;
             }
+
+            // Comprobar que se han introducido Safety Distance y Cycle Time
+            if (F3 == null)
+            {
+                MessageBox.Show("First enter the safety distance and cycle time.");
+                return;
+            }
+
+            // Obtener los dos Flight Plans del Form2
             FlightPlan vuelo1 = F2.GetFlightPlan1();
             FlightPlan vuelo2 = F2.GetFlightPlan2();
-           
+
+            // Comprobar que los dos Flight Plans existen
             if (vuelo1 == null || vuelo2 == null)
             {
                 MessageBox.Show("You must enter both flight plans first.");
                 return;
             }
 
-            Form4 F4 = new Form4(vuelo1, vuelo2);
+            // Obtener el Cycle Time del Form3
+            double cycleTime = F3.GetCycleTime();
+
+            // Abrir el formulario de simulación
+            Form4 F4 = new Form4(vuelo1, vuelo2, cycleTime);
             F4.Show();
         }
     }
