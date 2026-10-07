@@ -77,7 +77,6 @@ namespace ConolaAviones
                 MessageBox.Show("Second flight plan loaded");
             }
 
-            Console.WriteLine("hola");
 
         }
     }

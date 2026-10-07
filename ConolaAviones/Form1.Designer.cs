@@ -32,6 +32,7 @@
             this.menúToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.planesDeVueloToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.distanciaYTiempoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.airspaceAndInitialLocationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,7 +51,8 @@
             // 
             this.menúToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.planesDeVueloToolStripMenuItem,
-            this.distanciaYTiempoToolStripMenuItem});
+            this.distanciaYTiempoToolStripMenuItem,
+            this.airspaceAndInitialLocationToolStripMenuItem});
             this.menúToolStripMenuItem.Name = "menúToolStripMenuItem";
             this.menúToolStripMenuItem.Size = new System.Drawing.Size(68, 24);
             this.menúToolStripMenuItem.Text = "Menue";
@@ -58,16 +60,23 @@
             // planesDeVueloToolStripMenuItem
             // 
             this.planesDeVueloToolStripMenuItem.Name = "planesDeVueloToolStripMenuItem";
-            this.planesDeVueloToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.planesDeVueloToolStripMenuItem.Size = new System.Drawing.Size(277, 26);
             this.planesDeVueloToolStripMenuItem.Text = "Flight plans";
             this.planesDeVueloToolStripMenuItem.Click += new System.EventHandler(this.planesDeVueloToolStripMenuItem_Click);
             // 
             // distanciaYTiempoToolStripMenuItem
             // 
             this.distanciaYTiempoToolStripMenuItem.Name = "distanciaYTiempoToolStripMenuItem";
-            this.distanciaYTiempoToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.distanciaYTiempoToolStripMenuItem.Size = new System.Drawing.Size(277, 26);
             this.distanciaYTiempoToolStripMenuItem.Text = "Distance and time";
             this.distanciaYTiempoToolStripMenuItem.Click += new System.EventHandler(this.distanciaYTiempoToolStripMenuItem_Click);
+            // 
+            // airspaceAndInitialLocationToolStripMenuItem
+            // 
+            this.airspaceAndInitialLocationToolStripMenuItem.Name = "airspaceAndInitialLocationToolStripMenuItem";
+            this.airspaceAndInitialLocationToolStripMenuItem.Size = new System.Drawing.Size(277, 26);
+            this.airspaceAndInitialLocationToolStripMenuItem.Text = "Airspace and initial location";
+            this.airspaceAndInitialLocationToolStripMenuItem.Click += new System.EventHandler(this.airspaceAndInitialLocationToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -92,6 +101,7 @@
         private System.Windows.Forms.ToolStripMenuItem menúToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem planesDeVueloToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem distanciaYTiempoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem airspaceAndInitialLocationToolStripMenuItem;
     }
 }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlightLib;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,8 @@ namespace ConolaAviones
 {
     public partial class Form1 : Form
     {
+        FlightPlanList lista = new FlightPlanList();
+
         public Form1()
         {
             InitializeComponent();
@@ -33,6 +36,12 @@ namespace ConolaAviones
             Form3 F3=new Form3();
             F3.Show();
         }
-        
+
+        private void airspaceAndInitialLocationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form4 F4 = new Form4(lista);
+            F4.Show();
+        }
     }
 }
+                                
