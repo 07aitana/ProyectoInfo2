@@ -16,5 +16,10 @@ namespace ConolaAviones
         {
             InitializeComponent();
         }
+
+        private void Form3_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
