@@ -124,9 +124,6 @@ namespace FlightLib
                     this.initialPosition.GetX(),
                     this.initialPosition.GetY()
                     );
-
-
-
             
         }
         public double Distance(FlightPlan plan)

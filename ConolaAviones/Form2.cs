@@ -34,15 +34,7 @@ namespace ConolaAviones
 
         private void button1_Click(object sender, EventArgs e)
         {
-  
-            string id = txtId.Text;
-            double currentX = Convert.ToDouble(txtCurrentX.Text);
-            double currentY = Convert.ToDouble(txtCurrentY.Text);
-            double finalX = Convert.ToDouble(txtFinalX.Text);
-            double finalY = Convert.ToDouble(txtFinalY.Text);
-            double velocidad = Convert.ToDouble(txtVelocidad.Text);
-
-            // Primero comprobamos que no haya campos vacíos
+            // Comprobar que todos los campos estén rellenados
             if (txtId.Text == "" ||
                 txtCurrentX.Text == "" ||
                 txtCurrentY.Text == "" ||
@@ -54,30 +46,71 @@ namespace ConolaAviones
                 return;
             }
 
-            if (contador == 0)
+            try
             {
-                flightPlan1 = new FlightPlan(id, currentX, currentY, finalX, finalY, velocidad);
+                // Leer los datos introducidos
+                string id = txtId.Text;
 
-                contador ++;
-                MessageBox.Show("First flight plan loaded");
+                double currentX = Convert.ToDouble(txtCurrentX.Text);
+                double currentY = Convert.ToDouble(txtCurrentY.Text);
+                double finalX = Convert.ToDouble(txtFinalX.Text);
+                double finalY = Convert.ToDouble(txtFinalY.Text);
+                double velocidad = Convert.ToDouble(txtVelocidad.Text);
 
-                txtId.Clear();
-                txtCurrentX.Clear();
-                txtCurrentY.Clear();
-                txtFinalX.Clear();
-                txtFinalY.Clear();
-                txtVelocidad.Clear();
+                // Cargar el primer FlightPlan
+                if (contador == 0)
+                {
+                    flightPlan1 = new FlightPlan(id, currentX, currentY, finalX, finalY, velocidad);
+
+                    contador++;
+
+                    MessageBox.Show("First flight plan loaded");
+
+                    // Limpiar los TextBox
+                    txtId.Clear();
+                    txtCurrentX.Clear();
+                    txtCurrentY.Clear();
+                    txtFinalX.Clear();
+                    txtFinalY.Clear();
+                    txtVelocidad.Clear();
+                }
+
+                // Cargar el segundo FlightPlan
+                else if (contador == 1)
+                {
+                    flightPlan2 = new FlightPlan(id, currentX, currentY, finalX, finalY, velocidad);
+
+                    contador++;
+
+                    MessageBox.Show("Second flight plan loaded");
+
+                    // Limpiar los TextBox
+                    txtId.Clear();
+                    txtCurrentX.Clear();
+                    txtCurrentY.Clear();
+                    txtFinalX.Clear();
+                    txtFinalY.Clear();
+                    txtVelocidad.Clear();
+                }
             }
-
-            else if (contador == 1)
+            catch
             {
-                flightPlan2 = new FlightPlan(id, currentX, currentY, finalX, finalY, velocidad);
-
-                contador++;
-                MessageBox.Show("Second flight plan loaded");
+                MessageBox.Show("The numerical data are not correct.");
             }
+        }
 
+        public FlightPlan GetFlightPlan1()
+        {
+            return flightPlan1;
+        }
+
+        public FlightPlan GetFlightPlan2()
+        {
+            return flightPlan2;
 
         }
+        
+    
     }
-}
+
+}º2
