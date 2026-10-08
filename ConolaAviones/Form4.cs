@@ -19,13 +19,16 @@ namespace ConolaAviones
         double minY;
         double maxY;
 
-        public Form4(FlightPlan vuelo1, FlightPlan vuelo2, double CycleTime)
+        double SafetyDistance;
+
+        public Form4(FlightPlan vuelo1, FlightPlan vuelo2, double CycleTime, double SafetyDistance)
         {
             InitializeComponent();
 
             this.vuelo1 = vuelo1;
             this.vuelo2 = vuelo2;
             this.CycleTime = CycleTime;
+            this.SafetyDistance = SafetyDistance;
 
             // Posiciones iniciales
             double x1Inicial = vuelo1.GetCurrentPosition().GetX();
@@ -104,6 +107,16 @@ namespace ConolaAviones
             float ancho = panelAirspace.Width - 2 * margen;
             float alto = panelAirspace.Height - 2 * margen;
 
+            //de real a pixel
+            double escalaX = ancho / (maxX - minX);
+            double escalaY = alto / (maxY - minY);
+
+            //calculo radio de las "elipses" al voltat del avio
+            float radioX = (float)(SafetyDistance * escalaX);
+            float radioY = (float)(SafetyDistance * escalaY);
+           
+
+
             // Convertir coordenadas reales a píxeles
 
             px1 = margen +
@@ -156,6 +169,27 @@ namespace ConolaAviones
             {
                 g.DrawLine(pen2, px2Inicial, py2Inicial, px2Final, py2Final);
             }
+
+            //dibuixar elipse
+            using (Pen penSafety = new Pen(Color.Green, 2))
+            {
+                g.DrawEllipse(
+                    penSafety,
+                    px1 - radioX,
+                    py1 - radioY,
+                    radioX * 2,
+                    radioY * 2
+                );
+
+                g.DrawEllipse(
+                    penSafety,
+                    px2 - radioX,
+                    py2 - radioY,
+                    radioX * 2,
+                    radioY * 2
+                );
+            }
+
             // Dibujar avión 1
             g.FillEllipse(
                 Brushes.Blue,
@@ -222,7 +256,9 @@ namespace ConolaAviones
                 return;
             }
             //el mateix pel segon avió
+            
             double distancia2 = Math.Sqrt(Math.Pow(e.X - px2, 2) + Math.Pow(e.Y - py2, 2));
+            
             if (distancia2 < 15)
             {
                 Form5 F5 = new Form5(vuelo2);

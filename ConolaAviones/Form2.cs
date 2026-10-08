@@ -83,6 +83,8 @@ namespace ConolaAviones
                     contador++;
 
                     MessageBox.Show("Second flight plan loaded");
+                    
+                    this.Close();
 
                     // Limpiar los TextBox
                     txtId.Clear();

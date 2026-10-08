@@ -37,7 +37,7 @@
             this.panelAirspace.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelAirspace.Location = new System.Drawing.Point(186, 84);
             this.panelAirspace.Name = "panelAirspace";
-            this.panelAirspace.Size = new System.Drawing.Size(398, 260);
+            this.panelAirspace.Size = new System.Drawing.Size(400, 300);
             this.panelAirspace.TabIndex = 0;
             this.panelAirspace.Paint += new System.Windows.Forms.PaintEventHandler(this.panelAirspace_Paint);
             this.panelAirspace.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panelAirspace_MouseClick);
