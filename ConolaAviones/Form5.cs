@@ -47,6 +47,8 @@ namespace ConolaAviones
             dataGridView1.ReadOnly = true;
 
             dataGridView1.AllowUserToAddRows = false;
+
+            dataGridView1.RowHeadersVisible = false;
         }
     }
 }
