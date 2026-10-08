@@ -115,10 +115,12 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
             //calculo radio de las "elipses" al voltat del avio
             float radioX = (float)(SafetyDistance * escalaX);
             float radioY = (float)(SafetyDistance * escalaY);
-           
 
 
-            // Convertir coordenadas reales a píxeles
+
+     // Convertir posiciones actuales a pixeles
+     float px1 = margen + (float)((x2 - minX) / (maxX - minX) * ancho);
+     float py1 = margen + (float)((maxY - y2) / (maxY - minY) * alto);
 
     float px2 = margen + (float)((x2 - minX) / (maxX - minX) * ancho);
     float py2 = margen + (float)((maxY - y2) / (maxY - minY) * alto);
@@ -143,10 +145,11 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
         g.DrawLine(pen1, px1, py1, px1Final, py1Final);
     }
 
-            using (Pen pen2 = new Pen(Color.Red, 2))
-            {
-                g.DrawLine(pen2, px2Inicial, py2Inicial, px2Final, py2Final);
-            }
+
+    using (Pen pen2 = new Pen(Color.Red, 2))
+    {
+       g.DrawLine(pen2, px2, py2, px2Final, py2Final);
+    }
 
             //dibuixar elipse
             using (Pen penSafety = new Pen(Color.Green, 2))
