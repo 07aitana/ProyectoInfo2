@@ -105,6 +105,7 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
     float ancho = panelAirspace.Width - 2 * margen;
     float alto = panelAirspace.Height - 2 * margen;
 
+
     // Convertir posiciones actuales a píxeles
     float px1 = margen + (float)((x1 - minX) / (maxX - minX) * ancho);
     float py1 = margen + (float)((maxY - y1) / (maxY - minY) * alto);
