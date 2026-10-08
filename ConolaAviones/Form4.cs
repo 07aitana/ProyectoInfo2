@@ -9,6 +9,10 @@ namespace ConolaAviones
     {
         FlightPlan vuelo1;
         FlightPlan vuelo2;
+
+        float px1, py1; //guardem a on estan els avions a fora per utiñlitzarlo a la funció click
+        float px2, py2;
+
         double CycleTime;
         double minX;
         double maxX;
@@ -102,16 +106,16 @@ namespace ConolaAviones
 
             // Convertir coordenadas reales a píxeles
 
-            float px1 = margen +
+            px1 = margen +
                 (float)((x1 - minX) / (maxX - minX) * ancho);
 
-            float py1 = margen +
+            py1 = margen +
                 (float)((maxY - y1) / (maxY - minY) * alto);
 
-            float px2 = margen +
+            px2 = margen +
                 (float)((x2 - minX) / (maxX - minX) * ancho);
 
-            float py2 = margen +
+            py2 = margen +
                 (float)((maxY - y2) / (maxY - minY) * alto);
 
 
@@ -166,6 +170,27 @@ namespace ConolaAviones
         private void Form4_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void panelAirspace_MouseClick(object sender, MouseEventArgs e)
+        {
+            //calcula la distancia entre on clikes i on esta l'avió
+            double distancia1 = Math.Sqrt(Math.Pow(e.X - px1, 2) + Math.Pow(e.Y - py1, 2));
+           
+            //si esta aprop obre el form
+            if (distancia1 < 15)
+            {
+                Form5 F5 = new Form5(vuelo1);
+                F5.Show();
+                return;
+            }
+            //el mateix pel segon avió
+            double distancia2 = Math.Sqrt(Math.Pow(e.X - px2, 2) + Math.Pow(e.Y - py2, 2));
+            if (distancia2 < 15)
+            {
+                Form5 F5 = new Form5(vuelo2);
+                F5.Show();
+            }
         }
     }
 }
