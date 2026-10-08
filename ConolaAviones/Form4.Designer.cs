@@ -40,6 +40,7 @@
             this.panelAirspace.Size = new System.Drawing.Size(398, 260);
             this.panelAirspace.TabIndex = 0;
             this.panelAirspace.Paint += new System.Windows.Forms.PaintEventHandler(this.panelAirspace_Paint);
+            this.panelAirspace.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panelAirspace_MouseClick);
             // 
             // btnmove
             // 
@@ -62,7 +63,6 @@
             this.Text = "Form4";
             this.Load += new System.EventHandler(this.Form4_Load);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
