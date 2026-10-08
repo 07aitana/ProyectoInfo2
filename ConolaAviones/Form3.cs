@@ -49,6 +49,7 @@ namespace ConolaAviones
 
                 txtSafetyDistance.Clear();
                 txtCycleTime.Clear();
+                this.Close();
             }
             catch
             {

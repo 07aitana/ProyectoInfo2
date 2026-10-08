@@ -56,6 +56,7 @@ namespace ConolaAviones
             // Obtener los dos Flight Plans del Form2
             FlightPlan vuelo1 = F2.GetFlightPlan1();
             FlightPlan vuelo2 = F2.GetFlightPlan2();
+            
 
             // Comprobar que los dos Flight Plans existen
             if (vuelo1 == null || vuelo2 == null)
@@ -66,9 +67,10 @@ namespace ConolaAviones
 
             // Obtener el Cycle Time del Form3
             double cycleTime = F3.GetCycleTime();
+            double safetyDistance = F3.GetSafetyDistance();
 
             // Abrir el formulario de simulación
-            Form4 F4 = new Form4(vuelo1, vuelo2, cycleTime);
+            Form4 F4 = new Form4(vuelo1, vuelo2, cycleTime, safetyDistance);
             F4.Show();
         }
     }

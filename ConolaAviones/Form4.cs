@@ -19,13 +19,16 @@ namespace ConolaAviones
         double minY;
         double maxY;
 
-        public Form4(FlightPlan vuelo1, FlightPlan vuelo2, double CycleTime)
+        double SafetyDistance;
+
+        public Form4(FlightPlan vuelo1, FlightPlan vuelo2, double CycleTime, double SafetyDistance)
         {
             InitializeComponent();
 
             this.vuelo1 = vuelo1;
             this.vuelo2 = vuelo2;
             this.CycleTime = CycleTime;
+            this.SafetyDistance = SafetyDistance;
 
             // Posiciones iniciales
             double x1Inicial = vuelo1.GetCurrentPosition().GetX();
@@ -105,10 +108,19 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
     float ancho = panelAirspace.Width - 2 * margen;
     float alto = panelAirspace.Height - 2 * margen;
 
+            //de real a pixel
+            double escalaX = ancho / (maxX - minX);
+            double escalaY = alto / (maxY - minY);
 
-    // Convertir posiciones actuales a píxeles
-    float px1 = margen + (float)((x1 - minX) / (maxX - minX) * ancho);
-    float py1 = margen + (float)((maxY - y1) / (maxY - minY) * alto);
+            //calculo radio de las "elipses" al voltat del avio
+            float radioX = (float)(SafetyDistance * escalaX);
+            float radioY = (float)(SafetyDistance * escalaY);
+
+
+
+     // Convertir posiciones actuales a pixeles
+     float px1 = margen + (float)((x2 - minX) / (maxX - minX) * ancho);
+     float py1 = margen + (float)((maxY - y2) / (maxY - minY) * alto);
 
     float px2 = margen + (float)((x2 - minX) / (maxX - minX) * ancho);
     float py2 = margen + (float)((maxY - y2) / (maxY - minY) * alto);
@@ -133,13 +145,40 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
         g.DrawLine(pen1, px1, py1, px1Final, py1Final);
     }
 
+
     using (Pen pen2 = new Pen(Color.Red, 2))
     {
-        g.DrawLine(pen2, px2, py2, px2Final, py2Final);
+       g.DrawLine(pen2, px2, py2, px2Final, py2Final);
     }
 
-    // Dibujar avión 1
-    g.FillEllipse(Brushes.Blue, px1 - 7, py1 - 7, 14, 14);
+            //dibuixar elipse
+            using (Pen penSafety = new Pen(Color.Green, 2))
+            {
+                g.DrawEllipse(
+                    penSafety,
+                    px1 - radioX,
+                    py1 - radioY,
+                    radioX * 2,
+                    radioY * 2
+                );
+
+                g.DrawEllipse(
+                    penSafety,
+                    px2 - radioX,
+                    py2 - radioY,
+                    radioX * 2,
+                    radioY * 2
+                );
+            }
+
+            // Dibujar avión 1
+            g.FillEllipse(
+                Brushes.Blue,
+                px1 - 7,
+                py1 - 7,
+                14,
+                14
+            );
 
     g.DrawString(
         vuelo1.GetId(),
@@ -190,7 +229,9 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
                 return;
             }
             //el mateix pel segon avió
+            
             double distancia2 = Math.Sqrt(Math.Pow(e.X - px2, 2) + Math.Pow(e.Y - py2, 2));
+            
             if (distancia2 < 15)
             {
                 Form5 F5 = new Form5(vuelo2);
