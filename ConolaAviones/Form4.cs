@@ -114,7 +114,44 @@ namespace ConolaAviones
             float py2 = margen +
                 (float)((maxY - y2) / (maxY - minY) * alto);
 
+            // Posiciones iniciales de los aviones
+            double x1Inicial = vuelo1.GetCurrentPosition().GetX();
+            double y1Inicial = vuelo1.GetCurrentPosition().GetY();
 
+            double x2Inicial = vuelo2.GetCurrentPosition().GetX();
+            double y2Inicial = vuelo2.GetCurrentPosition().GetY();
+
+            // Posiciones finales de los aviones
+            double x1Final = vuelo1.GetFinalPosition().GetX();
+            double y1Final = vuelo1.GetFinalPosition().GetY();
+
+            double x2Final = vuelo2.GetFinalPosition().GetX();
+            double y2Final = vuelo2.GetFinalPosition().GetY();
+
+            // Convertir las posiciones iniciales a píxeles
+            float px1Inicial = margen + (float)((x1Inicial - minX) / (maxX - minX) * ancho);
+            float py1Inicial = margen + (float)((maxY - y1Inicial) / (maxY - minY) * alto);
+
+            float px2Inicial = margen + (float)((x2Inicial - minX) / (maxX - minX) * ancho);
+            float py2Inicial = margen + (float)((maxY - y2Inicial) / (maxY - minY) * alto);
+
+            // Convertir las posiciones finales a píxeles
+            float px1Final = margen + (float)((x1Final - minX) / (maxX - minX) * ancho);
+            float py1Final = margen + (float)((maxY - y1Final) / (maxY - minY) * alto);
+
+            float px2Final = margen + (float)((x2Final - minX) / (maxX - minX) * ancho);
+            float py2Final = margen + (float)((maxY - y2Final) / (maxY - minY) * alto);
+
+            // Dibujar las trayectorias
+            using (Pen pen1 = new Pen(Color.Blue, 2))
+            {
+                g.DrawLine(pen1, px1Inicial, py1Inicial, px1Final, py1Final);
+            }
+
+            using (Pen pen2 = new Pen(Color.Red, 2))
+            {
+                g.DrawLine(pen2, px2Inicial, py2Inicial, px2Final, py2Final);
+            }
             // Dibujar avión 1
             g.FillEllipse(
                 Brushes.Blue,
