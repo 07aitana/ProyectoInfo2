@@ -76,6 +76,7 @@
             this.txtCycleTime.Name = "txtCycleTime";
             this.txtCycleTime.Size = new System.Drawing.Size(108, 22);
             this.txtCycleTime.TabIndex = 4;
+            this.txtCycleTime.TextChanged += new System.EventHandler(this.txtCycleTime_TextChanged);
             // 
             // Form3
             // 

@@ -67,5 +67,9 @@ namespace ConolaAviones
             return CycleTime;
         }
 
+        private void txtCycleTime_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

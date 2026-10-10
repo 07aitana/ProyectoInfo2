@@ -98,11 +98,12 @@ namespace FlightLib
         // retorna true si el vuelo actual y el vuelo b están en conflicto, es decir, si la distancia entre ellos es menor que la distancia de seguridad
         public bool Conflicto(FlightPlan b, double distanciaSeguridad)
         {
-            bool conflicto = true;
+            bool conflicto = false;
             
             if(this.currentPosition.Distancia(b.currentPosition) < distanciaSeguridad)
-            
-                conflicto = true;
+            {
+                conflicto = true;           
+            }
             return conflicto;
         }
         public void EscribeConsola()
@@ -120,10 +121,7 @@ namespace FlightLib
         }
         public void Restart()
         {
-            this.currentPosition = new Position(
-                    this.initialPosition.GetX(),
-                    this.initialPosition.GetY()
-                    );
+            this.currentPosition = new Position(this.initialPosition.GetX(),this.initialPosition.GetY());
             
         }
         public double Distance(FlightPlan plan)

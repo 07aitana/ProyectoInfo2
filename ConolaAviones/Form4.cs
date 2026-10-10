@@ -118,12 +118,12 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
 
 
 
-     // Convertir posiciones actuales a pixeles
-     float px1 = margen + (float)((x2 - minX) / (maxX - minX) * ancho);
-     float py1 = margen + (float)((maxY - y2) / (maxY - minY) * alto);
+    // Convertir posiciones actuales a pixeles
+    px1 = margen + (float)((x1 - minX) / (maxX - minX) * ancho);
+    py1 = margen + (float)((maxY - y1) / (maxY - minY) * alto);
 
-    float px2 = margen + (float)((x2 - minX) / (maxX - minX) * ancho);
-    float py2 = margen + (float)((maxY - y2) / (maxY - minY) * alto);
+    px2 = margen + (float)((x2 - minX) / (maxX - minX) * ancho);
+    py2 = margen + (float)((maxY - y2) / (maxY - minY) * alto);
 
     // Obtener posiciones finales
     double x1Final = vuelo1.GetFinalPosition().GetX();
@@ -209,7 +209,32 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
             // Volver a dibujar el panel
             panelAirspace.Invalidate();
         }
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            timer1.Interval = 1000;
+            timer1.Start();
+        }
 
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            timer1.Stop();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            // Mover los dos aviones un ciclo
+            vuelo1.Mover(CycleTime);
+            vuelo2.Mover(CycleTime);
+
+            // Volver a dibujar el panel
+            panelAirspace.Invalidate();
+
+            if (vuelo1.HaLlegado() && vuelo2.HaLlegado())
+            {
+                timer1.Stop();
+                MessageBox.Show("The simulation has finished");
+            }
+        }
 
         private void Form4_Load(object sender, EventArgs e)
         {
