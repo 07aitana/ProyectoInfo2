@@ -34,6 +34,7 @@
             this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btnData = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // panelAirspace
@@ -48,7 +49,7 @@
             // 
             // btnmove
             // 
-            this.btnmove.Location = new System.Drawing.Point(650, 193);
+            this.btnmove.Location = new System.Drawing.Point(647, 151);
             this.btnmove.Name = "btnmove";
             this.btnmove.Size = new System.Drawing.Size(75, 23);
             this.btnmove.TabIndex = 1;
@@ -58,7 +59,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(58, 250);
+            this.btnStart.Location = new System.Drawing.Point(58, 151);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 2;
@@ -68,7 +69,7 @@
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(58, 322);
+            this.btnStop.Location = new System.Drawing.Point(58, 260);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 23);
             this.btnStop.TabIndex = 0;
@@ -80,11 +81,22 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // btnData
+            // 
+            this.btnData.Location = new System.Drawing.Point(647, 260);
+            this.btnData.Name = "btnData";
+            this.btnData.Size = new System.Drawing.Size(75, 23);
+            this.btnData.TabIndex = 3;
+            this.btnData.Text = "View Data";
+            this.btnData.UseVisualStyleBackColor = true;
+            this.btnData.Click += new System.EventHandler(this.btnData_Click);
+            // 
             // Form4
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnData);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.btnmove);
@@ -103,5 +115,6 @@
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btnData;
     }
 }

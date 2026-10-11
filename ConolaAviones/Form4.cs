@@ -236,6 +236,12 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
             }
         }
 
+        private void btnData_Click(object sender, EventArgs e)
+        {
+            Form6 f6 = new Form6(vuelo1, vuelo2);
+            f6.Show();
+        }
+
         private void Form4_Load(object sender, EventArgs e)
         {
 
