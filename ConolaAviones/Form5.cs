@@ -50,5 +50,10 @@ namespace ConolaAviones
 
             dataGridView1.RowHeadersVisible = false;
         }
+
+        private void Form5_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
