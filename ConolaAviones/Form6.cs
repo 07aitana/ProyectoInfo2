@@ -24,20 +24,21 @@ namespace ConolaAviones
 
         private void Form6_Load(object sender, EventArgs e)
         {
-            vuelosGrid.ColumnCount = 4;
+                        vuelosGrid.ColumnCount = 4;
             vuelosGrid.RowCount = 2;
             vuelosGrid.Columns[0].HeaderText = "Id";
-            vuelosGrid.Columns[1].HeaderText = "Velocity";
+            vuelosGrid.Columns[1].HeaderText = "Speed (km/h)";
             vuelosGrid.Columns[2].HeaderText = "X";
             vuelosGrid.Columns[3].HeaderText = "Y";
             vuelosGrid.Rows[0].Cells[0].Value = vuelo1.GetId();
             vuelosGrid.Rows[0].Cells[1].Value = vuelo1.GetVelocidad();
-            vuelosGrid.Rows[0].Cells[2].Value = vuelo1.GetCurrentPosition().GetX();
-            vuelosGrid.Rows[0].Cells[3].Value = vuelo1.GetCurrentPosition().GetY();
+            vuelosGrid.Rows[0].Cells[2].Value = vuelo1.GetCurrentPosition().GetX().ToString("F2");
+            vuelosGrid.Rows[0].Cells[3].Value = vuelo1.GetCurrentPosition().GetY().ToString("F2");
             vuelosGrid.Rows[1].Cells[0].Value = vuelo2.GetId();
             vuelosGrid.Rows[1].Cells[1].Value = vuelo2.GetVelocidad();
-            vuelosGrid.Rows[1].Cells[2].Value = vuelo2.GetCurrentPosition().GetX();
-            vuelosGrid.Rows[1].Cells[3].Value = vuelo2.GetCurrentPosition().GetY();
+            vuelosGrid.Rows[1].Cells[2].Value = vuelo2.GetCurrentPosition().GetX().ToString("F2");
+            vuelosGrid.Rows[1].Cells[3].Value = vuelo2.GetCurrentPosition().GetY().ToString("F2");
+            vuelosGrid.ClearSelection();
         }
 
         private void vuelosGrid_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -54,6 +55,11 @@ namespace ConolaAviones
             }
             Form7 f7 = new Form7(distancia);
             f7.Show();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

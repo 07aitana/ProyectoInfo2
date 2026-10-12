@@ -28,33 +28,53 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.distancialbl = new System.Windows.Forms.Label();
+            this.distanciaLbl = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // distancialbl
+            // distanciaLbl
             // 
-            this.distancialbl.AutoSize = true;
-            this.distancialbl.Location = new System.Drawing.Point(344, 62);
-            this.distancialbl.Name = "distancialbl";
-            this.distancialbl.Size = new System.Drawing.Size(44, 16);
-            this.distancialbl.TabIndex = 0;
-            this.distancialbl.Text = "label1";
+            this.distanciaLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.distanciaLbl.Location = new System.Drawing.Point(20, 20);
+            this.distanciaLbl.Name = "distanciaLbl";
+            this.distanciaLbl.Size = new System.Drawing.Size(260, 40);
+            this.distanciaLbl.TabIndex = 0;
+            this.distanciaLbl.Text = "label1";
+            this.distanciaLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // button1
+            // 
+            this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button1.Location = new System.Drawing.Point(100, 75);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(100, 30);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Close";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form7
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.distancialbl);
+            this.BackColor = System.Drawing.Color.SkyBlue;
+            this.CancelButton = this.button1;
+            this.ClientSize = new System.Drawing.Size(298, 117);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.distanciaLbl);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form7";
-            this.Text = "Form7";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Distance";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label distancialbl;
+        private System.Windows.Forms.Label distanciaLbl;
+        private System.Windows.Forms.Button button1;
     }
 }

@@ -15,7 +15,12 @@ namespace ConolaAviones
         public Form7(double distancia)
         {
             InitializeComponent();
-            distancialbl.Text = "Distancia: " + distancia.ToString("F2");
+            distanciaLbl.Text = "Distance: " + distancia.ToString("F2") + " km";
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
