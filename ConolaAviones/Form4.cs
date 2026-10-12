@@ -21,6 +21,9 @@ namespace ConolaAviones
 
         double SafetyDistance;
 
+        bool conflictoComprobado = false; // para preguntar solo la primera vez que se pulsa Start
+        bool alarmaMostrada = false; // para que el aviso salga solo una vez
+
         public Form4(FlightPlan vuelo1, FlightPlan vuelo2, double CycleTime, double SafetyDistance)
         {
             InitializeComponent();
@@ -152,7 +155,14 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
     }
 
             //dibuixar elipse
-            using (Pen penSafety = new Pen(Color.Green, 2))
+            // Si los aviones están en conflicto, los círculos se pintan en rojo
+            Color colorSeguridad = Color.Green;
+            if (vuelo1.Conflicto(vuelo2, SafetyDistance))
+            {
+                colorSeguridad = Color.Red;
+            }
+
+            using (Pen penSafety = new Pen(colorSeguridad, 2))
             {
                 g.DrawEllipse(
                     penSafety,
@@ -211,6 +221,25 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
+            // Antes de empezar, comprobamos si habrá conflicto (solo la primera vez)
+            if (!conflictoComprobado)
+            {
+                conflictoComprobado = true;
+
+                if (HabraConflicto())
+                {
+                    DialogResult respuesta = MessageBox.Show(
+                        "The flights will be in conflict. Do you want to solve it?",
+                        "Conflict detected",
+                        MessageBoxButtons.YesNo);
+
+                    if (respuesta == DialogResult.Yes)
+                    {
+                        ResolverConflicto();
+                    }
+                }
+            }
+
             timer1.Interval = 1000;
             timer1.Start();
         }
@@ -228,6 +257,7 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
 
             // Volver a dibujar el panel
             panelAirspace.Invalidate();
+            ComprobarAlarma();
 
             if (vuelo1.HaLlegado() && vuelo2.HaLlegado())
             {
@@ -267,6 +297,89 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
             {
                 Form5 F5 = new Form5(vuelo2);
                 F5.Show();
+            }
+        }
+
+        private void btnCheck_Click(object sender, EventArgs e)
+        {
+            if (HabraConflicto())
+            {
+                MessageBox.Show("The flights WILL be in conflict.");
+            }
+            else
+            {
+                MessageBox.Show("The flights will NOT be in conflict.");
+            }
+        }
+
+        // Devuelve true si los vuelos van a entrar en conflicto en algún momento.
+        // Usa copias de los vuelos para no mover los aviones de verdad.
+        private bool HabraConflicto()
+        {
+            FlightPlan copia1 = new FlightPlan(vuelo1.GetId(),
+                vuelo1.GetCurrentPosition().GetX(), vuelo1.GetCurrentPosition().GetY(),
+                vuelo1.GetFinalPosition().GetX(), vuelo1.GetFinalPosition().GetY(),
+                vuelo1.GetVelocidad());
+
+            FlightPlan copia2 = new FlightPlan(vuelo2.GetId(),
+                vuelo2.GetCurrentPosition().GetX(), vuelo2.GetCurrentPosition().GetY(),
+                vuelo2.GetFinalPosition().GetX(), vuelo2.GetFinalPosition().GetY(),
+                vuelo2.GetVelocidad());
+
+            bool conflicto = false;
+
+            // Movemos las copias ciclo a ciclo hasta que haya conflicto o lleguen las dos
+            while (!conflicto && !(copia1.HaLlegado() && copia2.HaLlegado()))
+            {
+                if (copia1.Conflicto(copia2, SafetyDistance))
+                {
+                    conflicto = true;
+                }
+                else
+                {
+                    copia1.Mover(CycleTime);
+                    copia2.Mover(CycleTime);
+                }
+            }
+
+            // Comprobamos también la posición final
+            if (copia1.Conflicto(copia2, SafetyDistance))
+            {
+                conflicto = true;
+            }
+
+            return conflicto;
+        }
+
+        // Baja la velocidad del vuelo 2 un 10% cada vez hasta que no haya conflicto.
+        // Lo intentamos como mucho 20 veces, por si no se puede resolver.
+        private void ResolverConflicto()
+        {
+            int intentos = 0;
+
+            while (HabraConflicto() && intentos < 20)
+            {
+                vuelo2.SetVelocidad(vuelo2.GetVelocidad() * 0.9);
+                intentos++;
+            }
+
+            if (HabraConflicto())
+            {
+                MessageBox.Show("The conflict could not be solved.");
+            }
+            else
+            {
+                MessageBox.Show("Conflict solved. New speed of " + vuelo2.GetId() + ": "
+                    + vuelo2.GetVelocidad().ToString("F2") + " km/h");
+            }
+        }
+        // Avisa al usuario (una sola vez) cuando los vuelos están demasiado cerca
+        private void ComprobarAlarma()
+        {
+            if (vuelo1.Conflicto(vuelo2, SafetyDistance) && !alarmaMostrada)
+            {
+                alarmaMostrada = true;
+                MessageBox.Show("WARNING: the flights are closer than the safety distance!");
             }
         }
     }

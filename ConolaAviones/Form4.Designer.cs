@@ -37,6 +37,7 @@
             this.btnData = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnCheck = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -110,6 +111,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnCheck);
             this.groupBox2.Controls.Add(this.btnData);
             this.groupBox2.Location = new System.Drawing.Point(560, 190);
             this.groupBox2.Name = "groupBox2";
@@ -117,6 +119,16 @@
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Information";
+            // 
+            // btnCheck
+            // 
+            this.btnCheck.Location = new System.Drawing.Point(15, 66);
+            this.btnCheck.Name = "btnCheck";
+            this.btnCheck.Size = new System.Drawing.Size(150, 30);
+            this.btnCheck.TabIndex = 4;
+            this.btnCheck.Text = "Check conflict";
+            this.btnCheck.UseVisualStyleBackColor = true;
+            this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
             // 
             // Form4
             // 
@@ -147,5 +159,6 @@
         private System.Windows.Forms.Button btnData;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button btnCheck;
     }
 }
