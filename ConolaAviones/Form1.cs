@@ -73,6 +73,11 @@ namespace ConolaAviones
             Form4 F4 = new Form4(vuelo1, vuelo2, cycleTime, safetyDistance);
             F4.Show();
         }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
                                 

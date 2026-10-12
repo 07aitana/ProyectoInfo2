@@ -37,59 +37,65 @@
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(274, 207);
+            this.btnLoad.Location = new System.Drawing.Point(100, 100);
             this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(75, 23);
+            this.btnLoad.Size = new System.Drawing.Size(100, 30);
             this.btnLoad.TabIndex = 0;
-            this.btnLoad.Text = "Load";
+            this.btnLoad.Text = "Save";
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(169, 118);
+            this.label1.Location = new System.Drawing.Point(30, 33);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(109, 16);
+            this.label1.Size = new System.Drawing.Size(128, 16);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Security distance";
+            this.label1.Text = "Safety distance (km)";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(374, 118);
+            this.label2.Location = new System.Drawing.Point(30, 68);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 16);
+            this.label2.Size = new System.Drawing.Size(101, 16);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Cicle time";
+            this.label2.Text = "Cycle time (min)";
             // 
             // txtSafetyDistance
             // 
-            this.txtSafetyDistance.Location = new System.Drawing.Point(168, 150);
+            this.txtSafetyDistance.Location = new System.Drawing.Point(170, 30);
             this.txtSafetyDistance.Name = "txtSafetyDistance";
-            this.txtSafetyDistance.Size = new System.Drawing.Size(110, 22);
+            this.txtSafetyDistance.Size = new System.Drawing.Size(100, 22);
             this.txtSafetyDistance.TabIndex = 3;
             // 
             // txtCycleTime
             // 
-            this.txtCycleTime.Location = new System.Drawing.Point(351, 150);
+            this.txtCycleTime.Location = new System.Drawing.Point(170, 65);
             this.txtCycleTime.Name = "txtCycleTime";
-            this.txtCycleTime.Size = new System.Drawing.Size(108, 22);
+            this.txtCycleTime.Size = new System.Drawing.Size(100, 22);
             this.txtCycleTime.TabIndex = 4;
             this.txtCycleTime.TextChanged += new System.EventHandler(this.txtCycleTime_TextChanged);
             // 
             // Form3
             // 
+            this.AcceptButton = this.btnLoad;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.BackColor = System.Drawing.Color.SkyBlue;
+            this.ClientSize = new System.Drawing.Size(302, 153);
             this.Controls.Add(this.txtCycleTime);
             this.Controls.Add(this.txtSafetyDistance);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnLoad);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form3";
-            this.Text = "Form3";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Settings";
             this.Load += new System.EventHandler(this.Form3_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
