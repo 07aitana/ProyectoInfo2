@@ -82,7 +82,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SkyBlue;
-            this.ClientSize = new System.Drawing.Size(447, 300);
+            this.ClientSize = new System.Drawing.Size(479, 285);
             this.Controls.Add(this.UpDateBtn);
             this.Controls.Add(this.FlightPlanBox);
             this.Controls.Add(this.FlightPlan);

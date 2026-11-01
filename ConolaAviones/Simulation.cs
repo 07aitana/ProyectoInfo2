@@ -6,6 +6,7 @@ using FlightLib;
 namespace AirTrafficSimForms
 {
     public partial class SimulationForm : Form
+
     {
         FlightPlan vuelo1;
         FlightPlan vuelo2;
