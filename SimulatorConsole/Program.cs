@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FlightLib; 
 
-namespace SimulatorConsole 
+namespace AirTrafficSimConsole 
 {
     public class Program
     {

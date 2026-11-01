@@ -1,6 +1,6 @@
-﻿namespace ConolaAviones
+﻿namespace AirTrafficSimForms
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -114,7 +114,7 @@
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Image = global::ConolaAviones.Properties.Resources.Gemini_Generated_Image_j6teu1j6teu1j6te_removebg_preview;
+            this.pictureBox1.Image = global::AirTrafficSimForms.Properties.Resources.Gemini_Generated_Image_j6teu1j6teu1j6te_removebg_preview;
             this.pictureBox1.Location = new System.Drawing.Point(0, 350);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(902, 125);

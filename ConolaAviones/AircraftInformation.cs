@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FlightLib;
 
-namespace ConolaAviones
+namespace AirTrafficSimForms
 {
-    public partial class Form5 : Form
+    public partial class AircraftInformationForm : Form
     {
         FlightPlan vuelo;
-        public Form5(FlightPlan vuelo)
+        public AircraftInformationForm(FlightPlan vuelo)
         {
             InitializeComponent();
             this.vuelo = vuelo;
@@ -59,6 +59,11 @@ namespace ConolaAviones
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void Form5_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

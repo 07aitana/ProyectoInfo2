@@ -3,9 +3,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using FlightLib;
 
-namespace ConolaAviones
+namespace AirTrafficSimForms
 {
-    public partial class Form4 : Form
+    public partial class SimulationForm : Form
     {
         FlightPlan vuelo1;
         FlightPlan vuelo2;
@@ -24,7 +24,10 @@ namespace ConolaAviones
         bool conflictoComprobado = false; // para preguntar solo la primera vez que se pulsa Start
         bool alarmaMostrada = false; // para que el aviso salga solo una vez
 
-        public Form4(FlightPlan vuelo1, FlightPlan vuelo2, double CycleTime, double SafetyDistance)
+        double velocidad; // Variable para almacenar la velocidad obtenida del formulario Velocity
+        
+        string id; // Variable para almacenar el ID del avión cuya velocidad se va a cambiar
+        public SimulationForm(FlightPlan vuelo1, FlightPlan vuelo2, double CycleTime, double SafetyDistance)
         {
             InitializeComponent();
 
@@ -268,7 +271,7 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
 
         private void btnData_Click(object sender, EventArgs e)
         {
-            Form6 f6 = new Form6(vuelo1, vuelo2);
+            FlightDataGridForm f6 = new FlightDataGridForm(vuelo1, vuelo2);
             f6.Show();
         }
 
@@ -285,7 +288,7 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
             //si esta aprop obre el form
             if (distancia1 < 15)
             {
-                Form5 F5 = new Form5(vuelo1);
+                AircraftInformationForm F5 = new AircraftInformationForm(vuelo1);
                 F5.Show();
                 return;
             }
@@ -295,7 +298,7 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
             
             if (distancia2 < 15)
             {
-                Form5 F5 = new Form5(vuelo2);
+                AircraftInformationForm F5 = new AircraftInformationForm(vuelo2);
                 F5.Show();
             }
         }
@@ -349,6 +352,43 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
             }
 
             return conflicto;
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ChangeVelocityBtn_Click(object sender, EventArgs e)
+        {
+            Velocity velocityForm = new Velocity();
+            velocityForm.ShowDialog();
+            velocidad = velocityForm.GetVelocidad();
+            id = velocityForm.GetId();
+            if (id == vuelo1.GetId())
+            {
+                vuelo1.SetVelocidad(velocidad);
+                MessageBox.Show("Velocity of " + id + " updated to " + Convert.ToString(velocidad) + " km/h");
+            }
+            else if (id == vuelo2.GetId())
+            {
+                vuelo2.SetVelocidad(velocidad);
+                MessageBox.Show("Velocity of " + id + " updated to " + Convert.ToString(velocidad) + " km/h");
+            }
+            else
+            {
+                MessageBox.Show("No flight with ID " + id + " found.");
+            }
+        }
+
+        private void ReestartBtn_Click(object sender, EventArgs e)
+        {
+            timer1.Stop();
+
+            vuelo1.Restart();
+            vuelo2.Restart();
+
+            panelAirspace.Invalidate();
         }
 
         // Baja la velocidad del vuelo 2 un 10% cada vez hasta que no haya conflicto.

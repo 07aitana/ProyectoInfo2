@@ -1,6 +1,6 @@
-﻿namespace ConolaAviones
+﻿namespace AirTrafficSimForms
 {
-    partial class Form3
+    partial class SettingsForm
     {
         /// <summary>
         /// Required designer variable.

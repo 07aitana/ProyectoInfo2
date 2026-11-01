@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ConolaAviones
+namespace AirTrafficSimForms
 {
-    public partial class Form7 : Form
+    public partial class DistanceForm : Form
     {
-        public Form7(double distancia)
+        public DistanceForm(double distancia)
         {
             InitializeComponent();
             distanciaLbl.Text = "Distance: " + distancia.ToString("F2") + " km";
@@ -21,6 +21,11 @@ namespace ConolaAviones
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void Form7_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

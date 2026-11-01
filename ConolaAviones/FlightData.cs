@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FlightLib;
 
-namespace ConolaAviones
+namespace AirTrafficSimForms
 {
-    public partial class Form2 : Form
+    public partial class FlightDataForm: Form
     {
         FlightPlan flightPlan1;
         FlightPlan flightPlan2;
         int contador = 0;
 
-        public Form2()
+        public FlightDataForm()
         {
             InitializeComponent();
         }

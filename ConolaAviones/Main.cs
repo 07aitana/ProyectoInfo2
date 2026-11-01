@@ -9,13 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ConolaAviones
+namespace AirTrafficSimForms
 {
-    public partial class Form1 : Form
+    public partial class MainForm: Form
     {
-        Form2 F2;
-        Form3 F3;
-        public Form1()
+        FlightDataForm F2;
+        SettingsForm F3;
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -27,13 +27,13 @@ namespace ConolaAviones
 
         private void planesDeVueloToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            F2 = new Form2();
+            F2 = new FlightDataForm();
             F2.Show();
         }
 
         private void distanciaYTiempoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            F3= new Form3();
+            F3= new SettingsForm();
             F3.Show();
         }
 
@@ -70,7 +70,7 @@ namespace ConolaAviones
             double safetyDistance = F3.GetSafetyDistance();
 
             // Abrir el formulario de simulación
-            Form4 F4 = new Form4(vuelo1, vuelo2, cycleTime, safetyDistance);
+            SimulationForm F4 = new SimulationForm(vuelo1, vuelo2, cycleTime, safetyDistance);
             F4.Show();
         }
 

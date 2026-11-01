@@ -1,6 +1,6 @@
-﻿namespace ConolaAviones
+﻿namespace AirTrafficSimForms
 {
-    partial class Form7
+    partial class DistanceForm
     {
         /// <summary>
         /// Required designer variable.
@@ -68,6 +68,7 @@
             this.Name = "Form7";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Distance";
+            this.Load += new System.EventHandler(this.Form7_Load);
             this.ResumeLayout(false);
 
         }

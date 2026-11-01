@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FlightLib;
 
-namespace ConolaAviones
+namespace AirTrafficSimForms
 {
-    public partial class Form6 : Form
+    public partial class FlightDataGridForm : Form
     {
         FlightPlan vuelo1;
         FlightPlan vuelo2;
-        public Form6(FlightPlan vuelo1, FlightPlan vuelo2)
+        public FlightDataGridForm(FlightPlan vuelo1, FlightPlan vuelo2)
         {
             InitializeComponent();
             this.vuelo1 = vuelo1;
@@ -53,7 +53,7 @@ namespace ConolaAviones
             {
                 distancia = vuelo2.Distance(vuelo1);
             }
-            Form7 f7 = new Form7(distancia);
+            DistanceForm f7 = new DistanceForm(distancia);
             f7.Show();
         }
 

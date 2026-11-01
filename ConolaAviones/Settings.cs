@@ -8,14 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ConolaAviones
+namespace AirTrafficSimForms
+
 {
-    public partial class Form3 : Form
+    public partial class SettingsForm : Form
     {
 
         double SafetyDistance;
         double CycleTime;
-        public Form3()
+        public SettingsForm()
         {
             InitializeComponent();
         }
