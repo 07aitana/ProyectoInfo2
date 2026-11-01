@@ -362,34 +362,14 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
         private void ChangeVelocityBtn_Click(object sender, EventArgs e)
         {
             Velocity velocityForm = new Velocity();
+            velocityForm.SetFlightPlans(vuelo1, vuelo2);
             velocityForm.ShowDialog();
-            velocidad = velocityForm.GetVelocidad();
-            id = velocityForm.GetId();
-            if (id == vuelo1.GetId())
-            {
-                vuelo1.SetVelocidad(velocidad);
-                MessageBox.Show("Velocity of " + id + " updated to " + Convert.ToString(velocidad) + " km/h");
-            }
-            else if (id == vuelo2.GetId())
-            {
-                vuelo2.SetVelocidad(velocidad);
-                MessageBox.Show("Velocity of " + id + " updated to " + Convert.ToString(velocidad) + " km/h");
-            }
-            else
-            {
-                MessageBox.Show("No flight with ID " + id + " found.");
-            }
-        }
-
-        private void ReestartBtn_Click(object sender, EventArgs e)
-        {
-            timer1.Stop();
-
             vuelo1.Restart();
             vuelo2.Restart();
 
             panelAirspace.Invalidate();
         }
+
 
         // Baja la velocidad del vuelo 2 un 10% cada vez hasta que no haya conflicto.
         // Lo intentamos como mucho 20 veces, por si no se puede resolver.

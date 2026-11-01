@@ -24,7 +24,7 @@ namespace AirTrafficSimForms
 
         private void Form6_Load(object sender, EventArgs e)
         {
-                        vuelosGrid.ColumnCount = 4;
+            vuelosGrid.ColumnCount = 4;
             vuelosGrid.RowCount = 2;
             vuelosGrid.Columns[0].HeaderText = "Id";
             vuelosGrid.Columns[1].HeaderText = "Speed (km/h)";
