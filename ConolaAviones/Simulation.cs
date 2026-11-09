@@ -10,8 +10,8 @@ namespace AirTrafficSimForms
         FlightPlan vuelo1;
         FlightPlan vuelo2;
 
-        float px1, py1; //guardem a on estan els avions a fora per utiñlitzarlo a la funció click
-        float px2, py2;
+        int px1, py1;
+        int px2, py2;
 
         double CycleTime;
         double minX;
@@ -71,6 +71,14 @@ namespace AirTrafficSimForms
                 Math.Max(y1Final, y2Final)
             );
 
+            double radioSeguridad = SafetyDistance / 2;
+
+            minX = minX - radioSeguridad;
+            maxX = maxX + radioSeguridad;
+
+            minY = minY - radioSeguridad;
+            maxY = maxY + radioSeguridad;
+
             // Evitar división entre 0
             if (maxX == minX)
             {
@@ -109,27 +117,27 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
     }
 
     // Márgenes
-    float margen = 40;
+    double margen = 40;
 
-    float ancho = panelAirspace.Width - 2 * margen;
-    float alto = panelAirspace.Height - 2 * margen;
+    double ancho = panelAirspace.Width - 2 * margen;
+    double alto = panelAirspace.Height - 2 * margen;
 
-            //de real a pixel
-            double escalaX = ancho / (maxX - minX);
-            double escalaY = alto / (maxY - minY);
+    //de real a pixel
+    double escalaX = ancho / (maxX - minX);
+    double escalaY = alto / (maxY - minY);
+    double escala = Math.Min(escalaX, escalaY);
 
-            //calculo radio de las "elipses" al voltat del avio
-            float radioX = (float)(SafetyDistance * escalaX);
-            float radioY = (float)(SafetyDistance * escalaY);
+    //calculo radio de las "elipses" al voltat del avio
+    int radio = Convert.ToInt32(SafetyDistance / 2 * escala);
 
 
 
     // Convertir posiciones actuales a pixeles
-    px1 = margen + (float)((x1 - minX) / (maxX - minX) * ancho);
-    py1 = margen + (float)((maxY - y1) / (maxY - minY) * alto);
+    px1 = Convert.ToInt32(margen + (x1 - minX) * escala);
+    py1 = Convert.ToInt32(margen + (maxY - y1) * escala);
 
-    px2 = margen + (float)((x2 - minX) / (maxX - minX) * ancho);
-    py2 = margen + (float)((maxY - y2) / (maxY - minY) * alto);
+    px2 = Convert.ToInt32(margen + (x2 - minX) * escala);
+    py2 = Convert.ToInt32(margen + (maxY - y2) * escala);
 
     // Obtener posiciones finales
     double x1Final = vuelo1.GetFinalPosition().GetX();
@@ -139,11 +147,10 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
     double y2Final = vuelo2.GetFinalPosition().GetY();
 
     // Convertir posiciones finales a píxeles
-    float px1Final = margen + (float)((x1Final - minX) / (maxX - minX) * ancho);
-    float py1Final = margen + (float)((maxY - y1Final) / (maxY - minY) * alto);
-
-    float px2Final = margen + (float)((x2Final - minX) / (maxX - minX) * ancho);
-    float py2Final = margen + (float)((maxY - y2Final) / (maxY - minY) * alto);
+    int px1Final = Convert.ToInt32(margen + (x1Final - minX) * escala);
+    int py1Final = Convert.ToInt32(margen + (maxY - y1Final) * escala);
+    int px2Final = Convert.ToInt32(margen + (x2Final - minX) * escala);
+    int py2Final = Convert.ToInt32(margen + (maxY - y2Final) * escala);
 
     // Dibujar trayectorias desde la posición actual hasta el destino
     using (Pen pen1 = new Pen(Color.Blue, 2))
@@ -167,21 +174,17 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
 
             using (Pen penSafety = new Pen(colorSeguridad, 2))
             {
-                g.DrawEllipse(
-                    penSafety,
-                    px1 - radioX,
-                    py1 - radioY,
-                    radioX * 2,
-                    radioY * 2
-                );
+                g.DrawEllipse(penSafety,
+                    px1 - radio,
+                    py1 - radio,
+                    radio * 2,
+                    radio * 2);
 
-                g.DrawEllipse(
-                    penSafety,
-                    px2 - radioX,
-                    py2 - radioY,
-                    radioX * 2,
-                    radioY * 2
-                );
+                g.DrawEllipse(penSafety,
+                    px2 - radio,
+                    py2 - radio,
+                    radio * 2,
+                    radio * 2);
             }
 
             // Dibujar avión 1
@@ -229,7 +232,7 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
             {
                 conflictoComprobado = true;
 
-                if (HabraConflicto())
+                if (vuelo1.HabraConflicto(vuelo2, SafetyDistance))
                 {
                     DialogResult respuesta = MessageBox.Show(
                         "The flights will be in conflict. Do you want to solve it?",
@@ -305,7 +308,7 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
-            if (HabraConflicto())
+            if (vuelo1.HabraConflicto(vuelo2, SafetyDistance))
             {
                 MessageBox.Show("The flights WILL be in conflict.");
             }
@@ -315,44 +318,8 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
             }
         }
 
-        // Devuelve true si los vuelos van a entrar en conflicto en algún momento.
-        // Usa copias de los vuelos para no mover los aviones de verdad.
-        private bool HabraConflicto()
-        {
-            FlightPlan copia1 = new FlightPlan(vuelo1.GetId(),
-                vuelo1.GetCurrentPosition().GetX(), vuelo1.GetCurrentPosition().GetY(),
-                vuelo1.GetFinalPosition().GetX(), vuelo1.GetFinalPosition().GetY(),
-                vuelo1.GetVelocidad());
-
-            FlightPlan copia2 = new FlightPlan(vuelo2.GetId(),
-                vuelo2.GetCurrentPosition().GetX(), vuelo2.GetCurrentPosition().GetY(),
-                vuelo2.GetFinalPosition().GetX(), vuelo2.GetFinalPosition().GetY(),
-                vuelo2.GetVelocidad());
-
-            bool conflicto = false;
-
-            // Movemos las copias ciclo a ciclo hasta que haya conflicto o lleguen las dos
-            while (!conflicto && !(copia1.HaLlegado() && copia2.HaLlegado()))
-            {
-                if (copia1.Conflicto(copia2, SafetyDistance))
-                {
-                    conflicto = true;
-                }
-                else
-                {
-                    copia1.Mover(CycleTime);
-                    copia2.Mover(CycleTime);
-                }
-            }
-
-            // Comprobamos también la posición final
-            if (copia1.Conflicto(copia2, SafetyDistance))
-            {
-                conflicto = true;
-            }
-
-            return conflicto;
-        }
+        
+        
 
         private void groupBox2_Enter(object sender, EventArgs e)
         {
@@ -377,13 +344,13 @@ private void panelAirspace_Paint(object sender, PaintEventArgs e)
         {
             int intentos = 0;
 
-            while (HabraConflicto() && intentos < 20)
+            while (vuelo1.HabraConflicto(vuelo2, SafetyDistance) && intentos < 20)
             {
                 vuelo2.SetVelocidad(vuelo2.GetVelocidad() * 0.9);
                 intentos++;
             }
 
-            if (HabraConflicto())
+            if (vuelo1.HabraConflicto(vuelo2, SafetyDistance))
             {
                 MessageBox.Show("The conflict could not be solved.");
             }

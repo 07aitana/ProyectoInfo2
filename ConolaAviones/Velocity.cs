@@ -94,6 +94,10 @@ namespace AirTrafficSimForms
             {
                 id = vuelo2.GetId();
             }
+            else if (filaseleccionada == -1)
+            {
+                MessageBox.Show("Please select a flight.");
+            }
 
         }
     }
