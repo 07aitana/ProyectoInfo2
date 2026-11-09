@@ -39,7 +39,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnCheck = new System.Windows.Forms.Button();
             this.ChangeVelocityBtn = new System.Windows.Forms.Button();
-            this.ReestartBtn = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -101,14 +100,13 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.ReestartBtn);
             this.groupBox1.Controls.Add(this.ChangeVelocityBtn);
             this.groupBox1.Controls.Add(this.btnStart);
             this.groupBox1.Controls.Add(this.btnStop);
             this.groupBox1.Controls.Add(this.btnmove);
             this.groupBox1.Location = new System.Drawing.Point(560, 20);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(180, 245);
+            this.groupBox1.Size = new System.Drawing.Size(180, 196);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Simulation";
@@ -117,7 +115,7 @@
             // 
             this.groupBox2.Controls.Add(this.btnCheck);
             this.groupBox2.Controls.Add(this.btnData);
-            this.groupBox2.Location = new System.Drawing.Point(560, 291);
+            this.groupBox2.Location = new System.Drawing.Point(560, 236);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(180, 115);
             this.groupBox2.TabIndex = 5;
@@ -144,16 +142,6 @@
             this.ChangeVelocityBtn.Text = "Change Velocity";
             this.ChangeVelocityBtn.UseVisualStyleBackColor = true;
             this.ChangeVelocityBtn.Click += new System.EventHandler(this.ChangeVelocityBtn_Click);
-            // 
-            // ReestartBtn
-            // 
-            this.ReestartBtn.Location = new System.Drawing.Point(15, 203);
-            this.ReestartBtn.Name = "ReestartBtn";
-            this.ReestartBtn.Size = new System.Drawing.Size(150, 23);
-            this.ReestartBtn.TabIndex = 4;
-            this.ReestartBtn.Text = "Reestart";
-            this.ReestartBtn.UseVisualStyleBackColor = true;
-            this.ReestartBtn.Click += new System.EventHandler(this.ReestartBtn_Click);
             // 
             // SimulationForm
             // 
@@ -185,7 +173,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnCheck;
-        private System.Windows.Forms.Button ReestartBtn;
         private System.Windows.Forms.Button ChangeVelocityBtn;
     }
 }

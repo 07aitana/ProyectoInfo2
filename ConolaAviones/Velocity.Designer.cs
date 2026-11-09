@@ -30,9 +30,9 @@
         {
             this.VelocityChangeBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.FlightPlan = new System.Windows.Forms.Label();
-            this.FlightPlanBox = new System.Windows.Forms.TextBox();
             this.UpDateBtn = new System.Windows.Forms.Button();
+            this.vuelosGrid = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.vuelosGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // VelocityChangeBox
@@ -51,25 +51,9 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Velocity";
             // 
-            // FlightPlan
-            // 
-            this.FlightPlan.AutoSize = true;
-            this.FlightPlan.Location = new System.Drawing.Point(27, 158);
-            this.FlightPlan.Name = "FlightPlan";
-            this.FlightPlan.Size = new System.Drawing.Size(66, 16);
-            this.FlightPlan.TabIndex = 2;
-            this.FlightPlan.Text = "FlightPlan";
-            // 
-            // FlightPlanBox
-            // 
-            this.FlightPlanBox.Location = new System.Drawing.Point(136, 158);
-            this.FlightPlanBox.Name = "FlightPlanBox";
-            this.FlightPlanBox.Size = new System.Drawing.Size(100, 22);
-            this.FlightPlanBox.TabIndex = 3;
-            // 
             // UpDateBtn
             // 
-            this.UpDateBtn.Location = new System.Drawing.Point(296, 108);
+            this.UpDateBtn.Location = new System.Drawing.Point(289, 57);
             this.UpDateBtn.Name = "UpDateBtn";
             this.UpDateBtn.Size = new System.Drawing.Size(75, 23);
             this.UpDateBtn.TabIndex = 4;
@@ -77,19 +61,31 @@
             this.UpDateBtn.UseVisualStyleBackColor = true;
             this.UpDateBtn.Click += new System.EventHandler(this.UpDateBtn_Click);
             // 
+            // vuelosGrid
+            // 
+            this.vuelosGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.vuelosGrid.Location = new System.Drawing.Point(49, 115);
+            this.vuelosGrid.Name = "vuelosGrid";
+            this.vuelosGrid.RowHeadersWidth = 51;
+            this.vuelosGrid.RowTemplate.Height = 24;
+            this.vuelosGrid.Size = new System.Drawing.Size(349, 150);
+            this.vuelosGrid.TabIndex = 5;
+            this.vuelosGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.vuelosGrid_CellClick);
+            // 
             // Velocity
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SkyBlue;
-            this.ClientSize = new System.Drawing.Size(479, 285);
+            this.ClientSize = new System.Drawing.Size(447, 300);
+            this.Controls.Add(this.vuelosGrid);
             this.Controls.Add(this.UpDateBtn);
-            this.Controls.Add(this.FlightPlanBox);
-            this.Controls.Add(this.FlightPlan);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.VelocityChangeBox);
             this.Name = "Velocity";
             this.Text = "Velocity";
+            this.Load += new System.EventHandler(this.Velocity_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.vuelosGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -99,8 +95,7 @@
 
         private System.Windows.Forms.TextBox VelocityChangeBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label FlightPlan;
-        private System.Windows.Forms.TextBox FlightPlanBox;
         private System.Windows.Forms.Button UpDateBtn;
+        private System.Windows.Forms.DataGridView vuelosGrid;
     }
 }
