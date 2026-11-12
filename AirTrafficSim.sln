@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirTrafficSimConsole", "Sim
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirTrafficSimForms", "ConolaAviones\AirTrafficSimForms.csproj", "{A9D191FF-B8E5-46B1-BBEE-DB3E0C418DBC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserDatabase", "UserDatabase\UserDatabase.csproj", "{630E9195-4A73-4F62-A8C9-9352EE01193F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{A9D191FF-B8E5-46B1-BBEE-DB3E0C418DBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9D191FF-B8E5-46B1-BBEE-DB3E0C418DBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9D191FF-B8E5-46B1-BBEE-DB3E0C418DBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{630E9195-4A73-4F62-A8C9-9352EE01193F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{630E9195-4A73-4F62-A8C9-9352EE01193F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{630E9195-4A73-4F62-A8C9-9352EE01193F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{630E9195-4A73-4F62-A8C9-9352EE01193F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
