@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
@@ -14,11 +15,11 @@ namespace UserDatabase
         SQLiteConnection cnx;
         public bool Initialize()
         {
-            string ruta = @"C:\UPC\2A\info2\PROYECTOINFO2\basedatos\users.db";
+            string ruta = "users.db";
 
             if (File.Exists(ruta))
             {
-                string dataSource = "Data Source=" + ruta;
+                string dataSource = "Data Source=" + ruta + ";Version=3;";
                 cnx = new SQLiteConnection(dataSource);
                 cnx.Open();
                 return true;
