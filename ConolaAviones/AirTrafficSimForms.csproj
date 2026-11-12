@@ -49,6 +49,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLogin.Designer.cs">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormRegister.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRegister.Designer.cs">
+      <DependentUpon>FormRegister.cs</DependentUpon>
+    </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,6 +111,12 @@
     <Compile Include="Velocity.Designer.cs">
       <DependentUpon>Velocity.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="FormLogin.resx">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormRegister.resx">
+      <DependentUpon>FormRegister.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -151,6 +169,10 @@
     <ProjectReference Include="..\FlightLib\FlightLib.csproj">
       <Project>{3b53fcd9-7a68-42ef-a9da-b0628f94a07e}</Project>
       <Name>FlightLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserDatabase\UserDatabase.csproj">
+      <Project>{630e9195-4a73-4f62-a8c9-9352ee01193f}</Project>
+      <Name>UserDatabase</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
