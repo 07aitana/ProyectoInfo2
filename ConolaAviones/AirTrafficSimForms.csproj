@@ -152,6 +152,10 @@
     <EmbeddedResource Include="Velocity.resx">
       <DependentUpon>Velocity.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="..\basedatos\users.db">
+      <Link>users.db</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
