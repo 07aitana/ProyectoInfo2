@@ -42,7 +42,7 @@ namespace AirTrafficSimForms
             // Comprobar que se han introducido los Flight Plans
             if (F2 == null)
             {
-                MessageBox.Show("First enter the two flight plans.");
+                MessageBox.Show("First load the flight plans");
                 return;
             }
 
@@ -54,14 +54,14 @@ namespace AirTrafficSimForms
             }
 
             // Obtener los dos Flight Plans del Form2
-            FlightPlan vuelo1 = F2.GetFlightPlan1();
-            FlightPlan vuelo2 = F2.GetFlightPlan2();
+            FlightPlanList flightplans = F2.GetFlightPlanList();
+            
             
 
             // Comprobar que los dos Flight Plans existen
-            if (vuelo1 == null || vuelo2 == null)
+            if (flightplans.GetNumber () == 0)
             {
-                MessageBox.Show("You must enter both flight plans first.");
+                MessageBox.Show("You must load the flight plans first.");
                 return;
             }
 
@@ -70,7 +70,8 @@ namespace AirTrafficSimForms
             double safetyDistance = F3.GetSafetyDistance();
 
             // Abrir el formulario de simulación
-            SimulationForm F4 = new SimulationForm(vuelo1, vuelo2, cycleTime, safetyDistance);
+            SimulationForm F4 = new SimulationForm();
+            F4. SetInformation (flightplans, cycleTime, safetyDistance);
             F4.Show();
         }
 

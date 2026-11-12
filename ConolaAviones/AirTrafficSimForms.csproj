@@ -162,5 +162,10 @@
   <ItemGroup>
     <None Include="Resources\Gemini_Generated_Image_j6teu1j6teu1j6te-removebg-preview.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="FlightData.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

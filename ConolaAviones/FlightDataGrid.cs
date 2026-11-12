@@ -13,48 +13,76 @@ namespace AirTrafficSimForms
 {
     public partial class FlightDataGridForm : Form
     {
-        FlightPlan vuelo1;
-        FlightPlan vuelo2;
-        public FlightDataGridForm(FlightPlan vuelo1, FlightPlan vuelo2)
+        FlightPlanList flightplans;
+        int primeraFila = -1;
+        public FlightDataGridForm()
         {
             InitializeComponent();
-            this.vuelo1 = vuelo1;
-            this.vuelo2 = vuelo2;
+            
+        }
+
+        public void SetFlightPlans(FlightPlanList flightplans)
+        {
+            this.flightplans = flightplans;
         }
 
         private void Form6_Load(object sender, EventArgs e)
         {
+            vuelosGrid.AllowUserToAddRows = false;
+
             vuelosGrid.ColumnCount = 4;
-            vuelosGrid.RowCount = 2;
+            vuelosGrid.RowCount = flightplans.GetNumber();
+
             vuelosGrid.Columns[0].HeaderText = "Id";
             vuelosGrid.Columns[1].HeaderText = "Speed (km/h)";
             vuelosGrid.Columns[2].HeaderText = "X";
             vuelosGrid.Columns[3].HeaderText = "Y";
-            vuelosGrid.Rows[0].Cells[0].Value = vuelo1.GetId();
-            vuelosGrid.Rows[0].Cells[1].Value = vuelo1.GetVelocidad();
-            vuelosGrid.Rows[0].Cells[2].Value = vuelo1.GetCurrentPosition().GetX().ToString("F2");
-            vuelosGrid.Rows[0].Cells[3].Value = vuelo1.GetCurrentPosition().GetY().ToString("F2");
-            vuelosGrid.Rows[1].Cells[0].Value = vuelo2.GetId();
-            vuelosGrid.Rows[1].Cells[1].Value = vuelo2.GetVelocidad();
-            vuelosGrid.Rows[1].Cells[2].Value = vuelo2.GetCurrentPosition().GetX().ToString("F2");
-            vuelosGrid.Rows[1].Cells[3].Value = vuelo2.GetCurrentPosition().GetY().ToString("F2");
+
+            for (int i = 0; i < flightplans.GetNumber(); i++)
+            {
+                FlightPlan vuelo = flightplans.GetFlightPlan(i);
+
+                vuelosGrid.Rows[i].Cells[0].Value = vuelo.GetId();
+                vuelosGrid.Rows[i].Cells[1].Value = vuelo.GetVelocidad();
+                vuelosGrid.Rows[i].Cells[2].Value = vuelo.GetCurrentPosition().GetX().ToString("F2");
+                vuelosGrid.Rows[i].Cells[3].Value = vuelo.GetCurrentPosition().GetY().ToString("F2");
+            }
+
             vuelosGrid.ClearSelection();
         }
 
         private void vuelosGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            double distancia;
-
-            if (e.RowIndex == 0)
+            if (e.RowIndex < 0)
             {
-                distancia = vuelo1.Distance(vuelo2);
+                return;
+            }
+
+            if (primeraFila == -1)
+            {
+                primeraFila = e.RowIndex;
             }
             else
             {
-                distancia = vuelo2.Distance(vuelo1);
+                int segundaFila = e.RowIndex;
+
+                if (primeraFila == segundaFila)
+                {
+                    MessageBox.Show("Please select two different flights.");
+                    return;
+                }
+
+                FlightPlan vuelo1 = flightplans.GetFlightPlan(primeraFila);
+                FlightPlan vuelo2 = flightplans.GetFlightPlan(segundaFila);
+
+                double distancia = vuelo1.Distance(vuelo2);
+
+                DistanceForm f7 = new DistanceForm(distancia);
+                f7.Show();
+
+                primeraFila = -1;
+                vuelosGrid.ClearSelection();
             }
-            DistanceForm f7 = new DistanceForm(distancia);
-            f7.Show();
         }
 
         private void button1_Click(object sender, EventArgs e)

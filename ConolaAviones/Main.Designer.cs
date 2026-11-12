@@ -66,21 +66,21 @@
             // planesDeVueloToolStripMenuItem
             // 
             this.planesDeVueloToolStripMenuItem.Name = "planesDeVueloToolStripMenuItem";
-            this.planesDeVueloToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
-            this.planesDeVueloToolStripMenuItem.Text = "Enter flight data";
+            this.planesDeVueloToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.planesDeVueloToolStripMenuItem.Text = "File Name";
             this.planesDeVueloToolStripMenuItem.Click += new System.EventHandler(this.planesDeVueloToolStripMenuItem_Click);
             // 
             // distanciaYTiempoToolStripMenuItem
             // 
             this.distanciaYTiempoToolStripMenuItem.Name = "distanciaYTiempoToolStripMenuItem";
-            this.distanciaYTiempoToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
+            this.distanciaYTiempoToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.distanciaYTiempoToolStripMenuItem.Text = "Settings";
             this.distanciaYTiempoToolStripMenuItem.Click += new System.EventHandler(this.distanciaYTiempoToolStripMenuItem_Click);
             // 
             // airspaceAndInitialLocationToolStripMenuItem
             // 
             this.airspaceAndInitialLocationToolStripMenuItem.Name = "airspaceAndInitialLocationToolStripMenuItem";
-            this.airspaceAndInitialLocationToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
+            this.airspaceAndInitialLocationToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.airspaceAndInitialLocationToolStripMenuItem.Text = "Start simulation";
             this.airspaceAndInitialLocationToolStripMenuItem.Click += new System.EventHandler(this.airspaceAndInitialLocationToolStripMenuItem_Click);
             // 
@@ -88,7 +88,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.Font = new System.Drawing.Font("HP Simplified", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.DarkBlue;
             this.label1.Location = new System.Drawing.Point(0, 253);
             this.label1.Name = "label1";
@@ -114,7 +114,6 @@
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Image = null;
             this.pictureBox1.Location = new System.Drawing.Point(0, 350);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(902, 125);
@@ -122,7 +121,7 @@
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -137,7 +136,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Flight Simulator";
             this.Load += new System.EventHandler(this.Form1_Load);

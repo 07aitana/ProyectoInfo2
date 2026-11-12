@@ -13,18 +13,12 @@ namespace AirTrafficSimForms
 {
     public partial class FlightDataForm: Form
     {
-        FlightPlan flightPlan1;
-        FlightPlan flightPlan2;
-        int contador = 0;
+        FlightPlanList flightplans = new FlightPlanList();
+        
 
         public FlightDataForm()
         {
             InitializeComponent();
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void Form2_Load(object sender, EventArgs e)
@@ -34,83 +28,25 @@ namespace AirTrafficSimForms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Comprobar que todos los campos estén rellenados
-            if (txtId.Text == "" ||
-                txtCurrentX.Text == "" ||
-                txtCurrentY.Text == "" ||
-                txtFinalX.Text == "" ||
-                txtFinalY.Text == "" ||
-                txtVelocidad.Text == "")
-            {
-                MessageBox.Show("All fields must be completed.");
-                return;
-            }
-
             try
             {
-                // Leer los datos introducidos
-                string id = txtId.Text;
+                string nombreFichero = FileNameBox.Text;
 
-                double currentX = Convert.ToDouble(txtCurrentX.Text);
-                double currentY = Convert.ToDouble(txtCurrentY.Text);
-                double finalX = Convert.ToDouble(txtFinalX.Text);
-                double finalY = Convert.ToDouble(txtFinalY.Text);
-                double velocidad = Convert.ToDouble(txtVelocidad.Text);
+                flightplans.LoadFlightPlans(nombreFichero);
 
-                // Cargar el primer FlightPlan
-                if (contador == 0)
-                {
-                    flightPlan1 = new FlightPlan(id, currentX, currentY, finalX, finalY, velocidad);
-
-                    contador++;
-
-                    MessageBox.Show("First flight plan loaded");
-
-                    // Limpiar los TextBox
-                    txtId.Clear();
-                    txtCurrentX.Clear();
-                    txtCurrentY.Clear();
-                    txtFinalX.Clear();
-                    txtFinalY.Clear();
-                    txtVelocidad.Clear();
-                }
-
-                // Cargar el segundo FlightPlan
-                else if (contador == 1)
-                {
-                    flightPlan2 = new FlightPlan(id, currentX, currentY, finalX, finalY, velocidad);
-
-                    contador++;
-
-                    MessageBox.Show("Second flight plan loaded");
-                    
-                    this.Close();
-
-                    // Limpiar los TextBox
-                    txtId.Clear();
-                    txtCurrentX.Clear();
-                    txtCurrentY.Clear();
-                    txtFinalX.Clear();
-                    txtFinalY.Clear();
-                    txtVelocidad.Clear();
-                }
+                MessageBox.Show("Flights loaded successfully");
             }
-            catch
+            catch (Exception)
             {
-                MessageBox.Show("The numerical data are not correct.");
+                MessageBox.Show("Error loading the file. Please check the file name.");
             }
-        }
 
-        public FlightPlan GetFlightPlan1()
+        }
+        public FlightPlanList GetFlightPlanList()
         {
-            return flightPlan1;
+            return flightplans;
         }
-
-        public FlightPlan GetFlightPlan2()
-        {
-            return flightPlan2;
-
-        }
+        
     }
 
 }

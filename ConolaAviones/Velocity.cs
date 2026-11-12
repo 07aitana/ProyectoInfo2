@@ -16,14 +16,11 @@ namespace AirTrafficSimForms
     public partial class Velocity : Form
     {
         double velocidad;
-
-        FlightPlan vuelo1;
-
-        FlightPlan vuelo2;
+        FlightPlanList flightplans;
 
         int filaseleccionada = -1;
 
-        string id;
+        
         public Velocity()
         {
             InitializeComponent();
@@ -33,49 +30,71 @@ namespace AirTrafficSimForms
             return this.velocidad;
         }
 
-        public void SetFlightPlans(FlightPlan vuelo1, FlightPlan vuelo2)
+        public void SetFlightPlans(FlightPlanList flightplans)
         {
-            this.vuelo1 = vuelo1;
-            this.vuelo2 = vuelo2;
+            this.flightplans = flightplans;
         }
 
         private void UpDateBtn_Click(object sender, EventArgs e)
         {
-            velocidad = Convert.ToDouble(VelocityChangeBox.Text);
-
-            if (id == vuelo1.GetId())
+            if (filaseleccionada == -1)
             {
-                vuelo1.SetVelocidad(velocidad);
-            }
-            else if (id == vuelo2.GetId())
-            {
-                vuelo2.SetVelocidad(velocidad);
+                MessageBox.Show("Please select a flight.");
+                return;
             }
 
-            vuelosGrid.Rows[filaseleccionada].Cells[1].Value = velocidad;
+            try
+            {
+                velocidad = Convert.ToDouble(VelocityChangeBox.Text);
 
-            MessageBox.Show("Velocity updated successfully");
+                if (velocidad <= 0)
+                {
+                    MessageBox.Show("Please enter a positive velocity.");
+                    return;
+                }
 
+                FlightPlan vuelo = flightplans.GetFlightPlan(filaseleccionada);
+
+                vuelo.SetVelocidad(velocidad);
+
+                vuelosGrid.Rows[filaseleccionada].Cells[1].Value = velocidad;
+
+                MessageBox.Show("Velocity updated successfully");
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Please enter a valid velocity.");
+            }
 
         }
 
 
         private void Velocity_Load(object sender, EventArgs e)
         {
+            vuelosGrid.AllowUserToAddRows = false;
+            vuelosGrid.ReadOnly = true;
+
             vuelosGrid.ColumnCount = 4;
-            vuelosGrid.RowCount = 2;
+            vuelosGrid.RowCount = flightplans.GetNumber();
+
             vuelosGrid.Columns[0].HeaderText = "Id";
             vuelosGrid.Columns[1].HeaderText = "Speed (km/h)";
             vuelosGrid.Columns[2].HeaderText = "X";
             vuelosGrid.Columns[3].HeaderText = "Y";
-            vuelosGrid.Rows[0].Cells[0].Value = vuelo1.GetId();
-            vuelosGrid.Rows[0].Cells[1].Value = vuelo1.GetVelocidad();
-            vuelosGrid.Rows[0].Cells[2].Value = vuelo1.GetCurrentPosition().GetX().ToString("F2");
-            vuelosGrid.Rows[0].Cells[3].Value = vuelo1.GetCurrentPosition().GetY().ToString("F2");
-            vuelosGrid.Rows[1].Cells[0].Value = vuelo2.GetId();
-            vuelosGrid.Rows[1].Cells[1].Value = vuelo2.GetVelocidad();
-            vuelosGrid.Rows[1].Cells[2].Value = vuelo2.GetCurrentPosition().GetX().ToString("F2");
-            vuelosGrid.Rows[1].Cells[3].Value = vuelo2.GetCurrentPosition().GetY().ToString("F2");
+
+            for (int i = 0; i < flightplans.GetNumber(); i++)
+            {
+                FlightPlan vuelo = flightplans.GetFlightPlan(i);
+
+                vuelosGrid.Rows[i].Cells[0].Value = vuelo.GetId();
+                vuelosGrid.Rows[i].Cells[1].Value = vuelo.GetVelocidad();
+                vuelosGrid.Rows[i].Cells[2].Value =
+                    vuelo.GetCurrentPosition().GetX().ToString("F2");
+                vuelosGrid.Rows[i].Cells[3].Value =
+                    vuelo.GetCurrentPosition().GetY().ToString("F2");
+            }
+
+            vuelosGrid.ClearSelection();
         }
 
         private void vuelosGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -85,18 +104,9 @@ namespace AirTrafficSimForms
 
         private void vuelosGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            filaseleccionada = e.RowIndex;
-            if (filaseleccionada == 0)
+            if (e.RowIndex >= 0)
             {
-                id = vuelo1.GetId();
-            }
-            else if (filaseleccionada == 1)
-            {
-                id = vuelo2.GetId();
-            }
-            else if (filaseleccionada == -1)
-            {
-                MessageBox.Show("Please select a flight.");
+                filaseleccionada = e.RowIndex;
             }
 
         }
