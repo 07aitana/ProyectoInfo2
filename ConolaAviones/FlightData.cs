@@ -13,7 +13,7 @@ namespace AirTrafficSimForms
 {
     public partial class FlightDataForm: Form
     {
-        FlightPlanList flightplans = new FlightPlanList();
+        FlightPlanList flightplans;
         
 
         public FlightDataForm()
@@ -40,10 +40,12 @@ namespace AirTrafficSimForms
             {
                 MessageBox.Show("Error loading the file. Please check the file name.");
             }
+            Close();
 
         }
-        public FlightPlanList GetFlightPlanList()
+        public FlightPlanList SetFlightPlans(FlightPlanList flightplans)
         {
+            this.flightplans = flightplans;
             return flightplans;
         }
         

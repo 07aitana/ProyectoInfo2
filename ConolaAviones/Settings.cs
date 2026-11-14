@@ -37,19 +37,25 @@ namespace AirTrafficSimForms
 
             try
             {
-                SafetyDistance = Convert.ToDouble(txtSafetyDistance.Text);
-                CycleTime = Convert.ToDouble(txtCycleTime.Text);
+                double safetyDistance = Convert.ToDouble(txtSafetyDistance.Text);
+                double cycleTime = Convert.ToDouble(txtCycleTime.Text);
 
-                if (SafetyDistance <= 0 || CycleTime <= 0)
+                if (double.IsNaN(safetyDistance) || double.IsInfinity(safetyDistance) ||
+                    double.IsNaN(cycleTime) || double.IsInfinity(cycleTime) ||
+                    safetyDistance <= 0 || cycleTime <= 0)
                 {
                     MessageBox.Show("Values must be greater than zero.");
                     return;
                 }
 
+                SafetyDistance = safetyDistance;
+                CycleTime = cycleTime;
+
                 MessageBox.Show("Parameters loaded correctly.");
 
                 txtSafetyDistance.Clear();
                 txtCycleTime.Clear();
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch

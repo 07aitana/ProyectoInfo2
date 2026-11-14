@@ -14,47 +14,18 @@ namespace AirTrafficSimForms
     public partial class AircraftInformationForm : Form
     {
         FlightPlan vuelo;
-        public AircraftInformationForm(FlightPlan vuelo)
+        public AircraftInformationForm()
         {
             InitializeComponent();
+            
+        }
+
+        public void SetFlightPlan(FlightPlan vuelo)
+        {
             this.vuelo = vuelo;
-            CargarDatos();
+            
         }
-        private void CargarDatos()
-        {
-            dataGridView1.Columns.Add("Dato", "Dato");
-            dataGridView1.Columns.Add("Valor", "Valor");
-
-            double xActual = vuelo.GetCurrentPosition().GetX();
-            double yActual = vuelo.GetCurrentPosition().GetY();
-
-            double xFinal = vuelo.GetFinalPosition().GetX();
-            double yFinal = vuelo.GetFinalPosition().GetY();
-
-            dataGridView1.Rows.Add("ID", vuelo.GetId());
-
-            dataGridView1.Rows.Add("Current X", xActual);
-            dataGridView1.Rows.Add("Current Y", yActual);
-
-            dataGridView1.Rows.Add("Final X", xFinal);
-            dataGridView1.Rows.Add("Final Y", yFinal);
-
-            dataGridView1.Rows.Add("Speed", vuelo.GetVelocidad());
-
-            //entender cosas de la tabla 
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-            dataGridView1.ReadOnly = true;
-
-            dataGridView1.AllowUserToAddRows = false;
-
-            dataGridView1.RowHeadersVisible = false;
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
+        
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -63,7 +34,47 @@ namespace AirTrafficSimForms
 
         private void Form5_Load(object sender, EventArgs e)
         {
+            dataGridView1.ColumnCount = 2;
+            dataGridView1.RowCount = 7;
 
+           
+
+            // Nombres de las columnas
+            dataGridView1.Columns[0].HeaderText = "Dato";
+            dataGridView1.Columns[1].HeaderText = "Valor";
+
+            // Identificador
+            dataGridView1.Rows[0].Cells[0].Value = "ID";
+            dataGridView1.Rows[0].Cells[1].Value = vuelo.GetId();
+
+            // Compañía aérea
+            dataGridView1.Rows[1].Cells[0].Value = "Airline";
+            dataGridView1.Rows[1].Cells[1].Value = vuelo.GetCompany();
+
+            // Posición actual
+            dataGridView1.Rows[2].Cells[0].Value = "Current X";
+            dataGridView1.Rows[2].Cells[1].Value = Convert.ToString(vuelo.GetCurrentPosition().GetX());
+
+            dataGridView1.Rows[3].Cells[0].Value = "Current Y";
+            dataGridView1.Rows[3].Cells[1].Value = Convert.ToString(vuelo.GetCurrentPosition().GetY());
+
+            // Posición final
+            dataGridView1.Rows[4].Cells[0].Value = "Final X";
+            dataGridView1.Rows[4].Cells[1].Value = Convert.ToString(vuelo.GetFinalPosition().GetX());
+
+            dataGridView1.Rows[5].Cells[0].Value = "Final Y";
+            dataGridView1.Rows[5].Cells[1].Value = Convert.ToString(vuelo.GetFinalPosition().GetY());
+
+            // Velocidad
+            dataGridView1.Rows[6].Cells[0].Value = "Speed";
+            dataGridView1.Rows[6].Cells[1].Value = vuelo.GetVelocidad();
+
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.ReadOnly = true;
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.RowHeadersVisible = false;
+
+            
         }
     }
 }

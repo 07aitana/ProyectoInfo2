@@ -30,22 +30,24 @@ namespace AirTrafficSimForms
         {
             vuelosGrid.AllowUserToAddRows = false;
 
-            vuelosGrid.ColumnCount = 4;
+            vuelosGrid.ColumnCount = 5;
             vuelosGrid.RowCount = flightplans.GetNumber();
 
             vuelosGrid.Columns[0].HeaderText = "Id";
-            vuelosGrid.Columns[1].HeaderText = "Speed (km/h)";
-            vuelosGrid.Columns[2].HeaderText = "X";
-            vuelosGrid.Columns[3].HeaderText = "Y";
+            vuelosGrid.Columns[1].HeaderText = "Airline";
+            vuelosGrid.Columns[2].HeaderText = "Speed (km/h)";
+            vuelosGrid.Columns[3].HeaderText = "X";
+            vuelosGrid.Columns[4].HeaderText = "Y";
 
             for (int i = 0; i < flightplans.GetNumber(); i++)
             {
                 FlightPlan vuelo = flightplans.GetFlightPlan(i);
 
                 vuelosGrid.Rows[i].Cells[0].Value = vuelo.GetId();
-                vuelosGrid.Rows[i].Cells[1].Value = vuelo.GetVelocidad();
-                vuelosGrid.Rows[i].Cells[2].Value = vuelo.GetCurrentPosition().GetX().ToString("F2");
-                vuelosGrid.Rows[i].Cells[3].Value = vuelo.GetCurrentPosition().GetY().ToString("F2");
+                vuelosGrid.Rows[i].Cells[1].Value = vuelo.GetCompany();
+                vuelosGrid.Rows[i].Cells[2].Value = vuelo.GetVelocidad();
+                vuelosGrid.Rows[i].Cells[3].Value = vuelo.GetCurrentPosition().GetX().ToString("F2");
+                vuelosGrid.Rows[i].Cells[4].Value = vuelo.GetCurrentPosition().GetY().ToString("F2");
             }
 
             vuelosGrid.ClearSelection();

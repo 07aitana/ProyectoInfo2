@@ -283,7 +283,8 @@ namespace AirTrafficSimForms
 
                 if (distancia < 15)
                 {
-                    AircraftInformationForm F5 = new AircraftInformationForm(vuelo);
+                    AircraftInformationForm F5 = new AircraftInformationForm();
+                    F5.SetFlightPlan(vuelo);
                     F5.Show();
                     return;
                 }

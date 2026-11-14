@@ -75,10 +75,20 @@ namespace FlightLib
 
             while(linea != null)
             {
-                string[] partes = linea.Split();
-                FlightPlan p = new FlightPlan(partes[0], Convert.ToDouble(partes[1]), Convert.ToDouble(partes[2]), 
-                    Convert.ToDouble(partes[3]), Convert.ToDouble(partes[4]), Convert.ToDouble(partes[5]));
-                flightplans.Add(p);
+                if (!string.IsNullOrWhiteSpace(linea)) //Establece que la linea no es nula y no contiene solo espacios en blanco
+                {
+                    string[] partes = linea.Split();
+
+                    FlightPlan p = new FlightPlan(
+                        partes[0], partes[1],
+                        Convert.ToDouble(partes[2]),
+                        Convert.ToDouble(partes[3]),
+                        Convert.ToDouble(partes[4]),
+                        Convert.ToDouble(partes[5]),
+                        Convert.ToDouble(partes[6]));
+
+                    flightplans.Add(p);
+                }
                 linea = f.ReadLine();
             }
             f.Close();

@@ -13,11 +13,35 @@ namespace AirTrafficSimForms
 {
     public partial class MainForm: Form
     {
+        FlightPlanList flightplans = new FlightPlanList();
         FlightDataForm F2;
-        SettingsForm F3;
+        double cycleTime;
+        double safetyDistance;
+        bool settingsLoaded;
         public MainForm()
         {
             InitializeComponent();
+            ConfigureSubtitle(LoadFlightsBtn, label3);
+            ConfigureSubtitle(SimulationBtn, label4);
+            ConfigureSubtitle(AddFlightBtn, label5);
+            ConfigureSubtitle(SettingsBtn, label6);
+        }
+
+        // Draw the subtitle on the button so its whole surface shares hover/click effects.
+        private void ConfigureSubtitle(Button button, Label subtitle)
+        {
+            subtitle.Visible = false;
+            button.AccessibleDescription = subtitle.Text;
+            button.Paint += (sender, e) =>
+            {
+                Rectangle bounds = button.ClientRectangle;
+                bounds.Y = bounds.Height / 2;
+                bounds.Height = button.ClientSize.Height - bounds.Y - 4;
+                TextRenderer.DrawText(e.Graphics, subtitle.Text, subtitle.Font, bounds,
+                    button.Enabled ? button.ForeColor : SystemColors.GrayText,
+                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter |
+                    TextFormatFlags.SingleLine | TextFormatFlags.NoPrefix);
+            };
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -25,59 +49,70 @@ namespace AirTrafficSimForms
 
         }
 
-        private void planesDeVueloToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LoadFlightsBtn_Click(object sender, EventArgs e)
         {
-            F2 = new FlightDataForm();
-            F2.Show();
-        }
+            openFileDialog1.Filter = "Text files (*.txt)|*.txt";
+            openFileDialog1.Title = "Select a flight data file";
 
-        private void distanciaYTiempoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            F3= new SettingsForm();
-            F3.Show();
-        }
-
-        private void airspaceAndInitialLocationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // Comprobar que se han introducido los Flight Plans
-            if (F2 == null)
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("First load the flight plans");
-                return;
+                try
+                {
+                    string nombreFichero = openFileDialog1.FileName;
+
+                    flightplans.LoadFlightPlans(nombreFichero);
+
+                    MessageBox.Show("Flights loaded successfully");
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Error loading the file. Please check its contents.");
+                }
             }
+        }
+
+        private void SettingsBtn_Click(object sender, EventArgs e)
+        {
+            using (SettingsForm settings = new SettingsForm())
+            {
+                if (settings.ShowDialog(this) == DialogResult.OK)
+                {
+                    cycleTime = settings.GetCycleTime();
+                    safetyDistance = settings.GetSafetyDistance();
+                    settingsLoaded = true;
+                }
+            }
+        }
+
+        private void SimulationBtn_Click(object sender, EventArgs e)
+        {
 
             // Comprobar que se han introducido Safety Distance y Cycle Time
-            if (F3 == null)
+            if (!settingsLoaded)
             {
                 MessageBox.Show("First enter the safety distance and cycle time.");
                 return;
             }
 
-            // Obtener los dos Flight Plans del Form2
-            FlightPlanList flightplans = F2.GetFlightPlanList();
-            
-            
 
             // Comprobar que los dos Flight Plans existen
-            if (flightplans.GetNumber () == 0)
+            if (flightplans.GetNumber() == 0)
             {
                 MessageBox.Show("You must load the flight plans first.");
                 return;
             }
 
-            // Obtener el Cycle Time del Form3
-            double cycleTime = F3.GetCycleTime();
-            double safetyDistance = F3.GetSafetyDistance();
-
             // Abrir el formulario de simulación
             SimulationForm F4 = new SimulationForm();
-            F4. SetInformation (flightplans, cycleTime, safetyDistance);
+            F4.SetInformation(flightplans, cycleTime, safetyDistance);
             F4.Show();
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private void AddFlightBtn_Click(object sender, EventArgs e)
         {
-
+            AddFlightForm F5 = new AddFlightForm();
+            F5.SetFlightPlans(flightplans);
+            F5.Show();
         }
     }
 }

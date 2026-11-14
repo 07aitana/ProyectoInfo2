@@ -11,20 +11,22 @@ namespace FlightLib
         // Atributos
 
         string id; // identificador
+        string company; // compañia
         Position currentPosition; // posicion actual
         Position finalPosition; // posicion final
-
         Position initialPosition;
-        double velocidad;
-
+        double velocity;
+        
         // Constructures
-        public FlightPlan(string id, double cpx, double cpy, double fpx, double fpy, double velocidad)
+        public FlightPlan(string id, string company,double cpx, double cpy, double fpx, double fpy, double velocidad)
         {
             this.id = id;
+            this.company = company;
             this.currentPosition = new Position(cpx, cpy);
             this.finalPosition = new Position(fpx, fpy);
             this.initialPosition = new Position(cpx, cpy);
-            this.velocidad = velocidad;
+            this.velocity = velocidad;
+            
         }
         public string GetId()
         {
@@ -52,20 +54,24 @@ namespace FlightLib
         }
         public double GetVelocidad()
         {
-            return this.velocidad;
+            return this.velocity;
         }
         
         public void SetVelocidad(double velocidad)
         // setter del atributo velocidad
-        { this.velocidad = velocidad; }
-        
+        { this.velocity = velocidad; }
+        public string GetCompany()
+        {
+            return this.company;
+        }
+
         // Metodos
 
         public void Mover(double tiempo)
         // Mueve el vuelo a la posición correspondiente a viajar durante el tiempo que se recibe como parámetro
         {
             //Calculamos la distancia recorrida en el tiempo dado
-            double distancia = tiempo * this.velocidad / 60;
+            double distancia = tiempo * this.velocity / 60;
             if (HaLlegado())
             {
                 return;
@@ -129,27 +135,27 @@ namespace FlightLib
             double vx2 = 0;
             double vy2 = 0;
 
-            if (d1 > 0 && velocidad > 0)
+            if (d1 > 0 && velocity > 0)
             {
-                vx1 = velocidad / 60 * (finalPosition.GetX() - x1) / d1;
-                vy1 = velocidad / 60 * (finalPosition.GetY() - y1) / d1;
+                vx1 = velocity / 60 * (finalPosition.GetX() - x1) / d1;
+                vy1 = velocity / 60 * (finalPosition.GetY() - y1) / d1;
             }
 
-            if (d2 > 0 && b.velocidad > 0)
+            if (d2 > 0 && b.velocity > 0)
             {
-                vx2 = b.velocidad / 60 * (b.finalPosition.GetX() - x2) / d2;
-                vy2 = b.velocidad / 60 * (b.finalPosition.GetY() - y2) / d2;
+                vx2 = b.velocity / 60 * (b.finalPosition.GetX() - x2) / d2;
+                vy2 = b.velocity / 60 * (b.finalPosition.GetY() - y2) / d2;
             }
 
             // Tiempo que tarda cada avión en llegar (minutos)
             double t1 = 0;
             double t2 = 0;
 
-            if (d1 > 0 && velocidad > 0)
-                t1 = d1 / (velocidad / 60);
+            if (d1 > 0 && velocity > 0)
+                t1 = d1 / (velocity / 60);
 
-            if (d2 > 0 && b.velocidad > 0)
-                t2 = d2 / (b.velocidad / 60);
+            if (d2 > 0 && b.velocity > 0)
+                t2 = d2 / (b.velocity / 60);
 
             // Diferencias de posición y velocidad
             double dx = x1 - x2;
@@ -256,8 +262,10 @@ namespace FlightLib
             Console.WriteLine("******************************");
             Console.WriteLine("Datos del vuelo: ");
             Console.WriteLine("Identificador: {0}", id);
+            Console.WriteLine("Compañía aérea: {0}", company);
+
             // Escribe lso datos reales tanto de la posición como de la velocidad con dos decimales
-            Console.WriteLine("Velocidad: {0:F2}", velocidad);
+            Console.WriteLine("Velocidad: {0:F2}", velocity);
             Console.WriteLine("Posición actual: ({0:F2},{1:F2})", currentPosition.GetX(), currentPosition.GetY());
             if (this.HaLlegado())
                 Console.WriteLine("El vuelo ha llegado a su destino");
