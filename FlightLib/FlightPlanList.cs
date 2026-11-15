@@ -11,6 +11,7 @@ namespace FlightLib
 
     {
         List<FlightPlan> flightplans = new List<FlightPlan>();
+        Stack<Position> historial = new Stack<Position>();
 
         public int AddFlightPlan(FlightPlan p)
         {
@@ -44,6 +45,19 @@ namespace FlightLib
 
         public void Mover (double tiempo)
         { 
+            if (TodosHanLlegado())
+            {
+                return;
+            }
+
+            // Guardamos una copia de la posición de cada avion para utlitzarlo en Stacks
+            for (int k = 0; k < flightplans.Count; k++)
+            {
+                double x = flightplans[k].GetCurrentPosition().GetX();
+                double y = flightplans[k].GetCurrentPosition ().GetY();
+                historial.Push(new Position(x, y));
+            }
+            
             int i = 0;
             while (i< flightplans.Count)
             {
@@ -68,7 +82,8 @@ namespace FlightLib
 
         public void LoadFlightPlans(string nombreFichero)
         {
-
+            flightplans.Clear();
+            historial.Clear();
 
             StreamReader f = new StreamReader(nombreFichero);
             string linea = f.ReadLine();
@@ -124,7 +139,54 @@ namespace FlightLib
 
             return true;
         }
-    
+
+        // Reinicia todos los aviones
+        public void Restart()
+        {
+            for(int i = 0; i < flightplans.Count; i++)
+            {
+                flightplans[i].Restart();
+            }
+            historial.Clear();
+        }
+
+        // Devuelve los avions a las posiciones que estaban
+        public bool Deshacer()
+        {
+            if (historial.Count  == 0)
+            {  
+                return false; 
+            }
+
+            // Como stack saca al reves, lo recorremos del final al principio
+            for (int i = flightplans.Count -1; i >= 0; i--)
+            {
+                flightplans[i].SetCurrentPosition(historial.Pop());
+            }
+            return true;
+        }
+
+        // Guarda la lista de vuelos en un fichero de texto
+        public void SaveFlightPlans(string nombreFichero)
+        {
+            StreamWriter w = new StreamWriter(nombreFichero);
+
+            for (int i = 0; i < flightplans.Count; ++i)
+            {
+                FlightPlan p = flightplans[i];
+
+                w.WriteLine("{0} {1} {2} {3} {4} {5} {6}",
+                p.GetId(),
+                p.GetCompany(),
+                p.GetCurrentPosition().GetX(),
+                p.GetCurrentPosition().GetY(),
+                p.GetFinalPosition().GetX(),
+                p.GetFinalPosition().GetY(),
+                p.GetVelocidad());
+            }
+            w.Close();
+        }
+
         public bool ResolverConflictos(double safetyDistance)
         {
             int intentos = 0;

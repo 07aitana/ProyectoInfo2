@@ -320,7 +320,7 @@ namespace AirTrafficSimForms
 
             for (int i = 0; i < flightplans.GetNumber(); i++)
             {
-                flightplans.GetFlightPlan(i).Restart();
+                flightplans.Restart();
             }
 
             conflictoComprobado = false;
@@ -353,6 +353,48 @@ namespace AirTrafficSimForms
                 MessageBox.Show(
                     "WARNING: the flights are closer than the safety distance!"
                 );
+            }
+        }
+
+        private void btnRestart_Click(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            flightplans.Restart();
+            alarmaMostrada = false;
+            panelAirspace.Invalidate();
+        }
+
+        private void btnUndo_Click(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            if (flightplans.Deshacer())
+            {
+                panelAirspace.Invalidate();
+            }
+            else
+            {
+                MessageBox.Show("There is no step to undo");
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            timer1.Stop();
+
+            saveFileDialog1.Filter = "Text files (*.txt)|*.txt";
+            saveFileDialog1.Title = "Save the flight plans";
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    flightplans.SaveFlightPlans(saveFileDialog1.FileName);
+                    MessageBox.Show("Flights saved successfully");
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Error saving the file");
+                }
             }
         }
     }

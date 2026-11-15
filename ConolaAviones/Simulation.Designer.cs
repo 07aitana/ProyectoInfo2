@@ -36,9 +36,13 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btnData = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnUndo = new System.Windows.Forms.Button();
+            this.btnRestart = new System.Windows.Forms.Button();
+            this.ChangeVelocityBtn = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnCheck = new System.Windows.Forms.Button();
-            this.ChangeVelocityBtn = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -100,24 +104,57 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnUndo);
+            this.groupBox1.Controls.Add(this.btnRestart);
             this.groupBox1.Controls.Add(this.ChangeVelocityBtn);
             this.groupBox1.Controls.Add(this.btnStart);
             this.groupBox1.Controls.Add(this.btnStop);
             this.groupBox1.Controls.Add(this.btnmove);
             this.groupBox1.Location = new System.Drawing.Point(560, 20);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(180, 196);
+            this.groupBox1.Size = new System.Drawing.Size(180, 262);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Simulation";
             // 
+            // btnUndo
+            // 
+            this.btnUndo.Location = new System.Drawing.Point(15, 186);
+            this.btnUndo.Name = "btnUndo";
+            this.btnUndo.Size = new System.Drawing.Size(150, 30);
+            this.btnUndo.TabIndex = 0;
+            this.btnUndo.Text = "Undo";
+            this.btnUndo.UseVisualStyleBackColor = true;
+            this.btnUndo.Click += new System.EventHandler(this.btnUndo_Click);
+            // 
+            // btnRestart
+            // 
+            this.btnRestart.Location = new System.Drawing.Point(15, 149);
+            this.btnRestart.Name = "btnRestart";
+            this.btnRestart.Size = new System.Drawing.Size(150, 30);
+            this.btnRestart.TabIndex = 6;
+            this.btnRestart.Text = "Restart";
+            this.btnRestart.UseVisualStyleBackColor = true;
+            this.btnRestart.Click += new System.EventHandler(this.btnRestart_Click);
+            // 
+            // ChangeVelocityBtn
+            // 
+            this.ChangeVelocityBtn.Location = new System.Drawing.Point(15, 222);
+            this.ChangeVelocityBtn.Name = "ChangeVelocityBtn";
+            this.ChangeVelocityBtn.Size = new System.Drawing.Size(150, 30);
+            this.ChangeVelocityBtn.TabIndex = 3;
+            this.ChangeVelocityBtn.Text = "Change Velocity";
+            this.ChangeVelocityBtn.UseVisualStyleBackColor = true;
+            this.ChangeVelocityBtn.Click += new System.EventHandler(this.ChangeVelocityBtn_Click);
+            // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnSave);
             this.groupBox2.Controls.Add(this.btnCheck);
             this.groupBox2.Controls.Add(this.btnData);
-            this.groupBox2.Location = new System.Drawing.Point(560, 236);
+            this.groupBox2.Location = new System.Drawing.Point(560, 288);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(180, 115);
+            this.groupBox2.Size = new System.Drawing.Size(180, 147);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Information";
@@ -133,15 +170,15 @@
             this.btnCheck.UseVisualStyleBackColor = true;
             this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
             // 
-            // ChangeVelocityBtn
+            // btnSave
             // 
-            this.ChangeVelocityBtn.Location = new System.Drawing.Point(15, 157);
-            this.ChangeVelocityBtn.Name = "ChangeVelocityBtn";
-            this.ChangeVelocityBtn.Size = new System.Drawing.Size(150, 26);
-            this.ChangeVelocityBtn.TabIndex = 3;
-            this.ChangeVelocityBtn.Text = "Change Velocity";
-            this.ChangeVelocityBtn.UseVisualStyleBackColor = true;
-            this.ChangeVelocityBtn.Click += new System.EventHandler(this.ChangeVelocityBtn_Click);
+            this.btnSave.Location = new System.Drawing.Point(15, 102);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(150, 30);
+            this.btnSave.TabIndex = 6;
+            this.btnSave.Text = "Save flights";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // SimulationForm
             // 
@@ -174,5 +211,9 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnCheck;
         private System.Windows.Forms.Button ChangeVelocityBtn;
+        private System.Windows.Forms.Button btnRestart;
+        private System.Windows.Forms.Button btnUndo;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
