@@ -334,14 +334,85 @@ namespace AirTrafficSimForms
         // Lo intentamos como mucho 20 veces, por si no se puede resolver.
         private void ResolverConflicto()
         {
-            if(flightplans.ResolverConflictos(SafetyDistance))
+
+            FlightPlanList proposta = new FlightPlanList();
+
+            // Copiem tots els avions originals
+            for (int i = 0; i < flightplans.GetNumber(); i++)
             {
-                MessageBox.Show("Conflicts solved successfully.");
+                FlightPlan newflight = flightplans.GetFlightPlan(i);
+
+                FlightPlan copia = new FlightPlan(
+                    newflight.GetId(),
+                    newflight.GetCompany(),
+                    newflight.GetCurrentPosition().GetX(),
+                    newflight.GetCurrentPosition().GetY(),
+                    newflight.GetFinalPosition().GetX(),
+                    newflight.GetFinalPosition().GetY(),
+                    newflight.GetVelocidad()
+                );
+
+                proposta.AddFlightPlan(copia);
+            }
+
+
+            if (proposta.ResolverConflictos(SafetyDistance)) //resolem el conflicte pero editant les velocitats de la copia creada
+            {
+                string mensaje = "Recommended speeds:\n\n";
+
+                for (int a = 0; a < flightplans.GetNumber(); a++)
+                {
+                    FlightPlan original = flightplans.GetFlightPlan(a);
+                    FlightPlan nova = proposta.GetFlightPlan(a);
+
+                    if (original.GetVelocidad() != nova.GetVelocidad())
+                    {
+                        mensaje += "Flight: " + original.GetId() + "\n";
+                        mensaje += "Old speed: " + original.GetVelocidad() + "\n";
+                        mensaje += "New speed: " + nova.GetVelocidad() + "\n\n";
+                    }
+                }
+
+                mensaje += "Do you want to apply these changes?";
+
+                DialogResult respuesta = MessageBox.Show(
+                    mensaje,
+                    "Speed recommendations",
+                    MessageBoxButtons.YesNo
+                );
+
+                if (respuesta == DialogResult.Yes)
+                {
+                    for (int b = 0; b < flightplans.GetNumber(); b++)
+                    {
+                        FlightPlan valororiginal = flightplans.GetFlightPlan(b);
+                        FlightPlan valorpropuesto = proposta.GetFlightPlan(b);
+
+                        valororiginal.SetVelocidad(valorpropuesto.GetVelocidad());
+                    }
+
+                    // Check if the conflicts are solved
+                    if (!flightplans.HabraConflictos(SafetyDistance))
+                    {
+                        MessageBox.Show("Speed changes applied. Conflicts solved.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("The conflicts still exist.");
+                    }
+
+                    panelAirspace.Invalidate();
+                }
+                else
+                {
+                    MessageBox.Show("Speed changes cancelled.");
+                }
             }
             else
             {
                 MessageBox.Show("The conflicts could not be solved.");
             }
+            
         }
         // Avisa al usuario (una sola vez) cuando los vuelos están demasiado cerca
         private void ComprobarAlarma()
