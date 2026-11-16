@@ -34,10 +34,11 @@ namespace AirTrafficSimForms
 
         private void Form5_Load(object sender, EventArgs e)
         {
-            dataGridView1.ColumnCount = 2;
-            dataGridView1.RowCount = 7;
+            dataGridView1.AllowUserToAddRows = false;
 
-           
+            dataGridView1.ColumnCount = 2;
+            dataGridView1.RowCount = 7; 
+
 
             // Nombres de las columnas
             dataGridView1.Columns[0].HeaderText = "Dato";
@@ -71,10 +72,37 @@ namespace AirTrafficSimForms
 
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ReadOnly = true;
-            dataGridView1.AllowUserToAddRows = false;
+            
             dataGridView1.RowHeadersVisible = false;
 
-            
+            ActualizarDatos();
+            timer1.Start();
+        }
+        private void ActualizarDatos()
+        {
+            // Identificador
+            dataGridView1.Rows[0].Cells[1].Value = vuelo.GetId();
+
+            // Companyia
+            dataGridView1.Rows[1].Cells[1].Value = vuelo.GetCompany();
+
+            // Posició actual
+            dataGridView1.Rows[2].Cells[1].Value =
+                vuelo.GetCurrentPosition().GetX();
+
+            dataGridView1.Rows[3].Cells[1].Value =
+                vuelo.GetCurrentPosition().GetY();
+
+            // Velocitat
+            dataGridView1.Rows[6].Cells[1].Value =
+                vuelo.GetVelocidad();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            ActualizarDatos();
         }
     }
+
 }
+

@@ -120,9 +120,18 @@ namespace AirTrafficSimForms
             {
                 FlightPlan vuelo = flightplans.GetFlightPlan(i);
 
+                // Obtener posición inicial
+                double xInicial = vuelo.GetInitialPosition().GetX();
+                double yInicial = vuelo.GetInitialPosition().GetY();
+
+
                 // Obtener posición actual
                 double x = vuelo.GetCurrentPosition().GetX();
                 double y = vuelo.GetCurrentPosition().GetY();
+
+                // Convertir posición inicial a píxeles
+                int pxInicial = Convert.ToInt32(margen + (xInicial - minX) * escala);
+                int pyInicial = Convert.ToInt32(margen + (maxY - yInicial) * escala);
 
                 // Convertir posición actual a píxeles
                 int px = Convert.ToInt32(margen + (x - minX) * escala);
@@ -137,9 +146,13 @@ namespace AirTrafficSimForms
                 int pyFinal = Convert.ToInt32(margen + (maxY - yFinal) * escala);
 
                 // Dibujar trayectoria
-                using (Pen penTrayectoria = new Pen(Color.Blue, 2))
+                using (Pen penRecorrida = new Pen(Color.Black, 2))
                 {
-                    g.DrawLine(penTrayectoria, px, py, pxFinal, pyFinal);
+                    g.DrawLine(penRecorrida, pxInicial, pyInicial, px, py);
+                }
+                using (Pen penPendiente = new Pen(Color.Blue, 2))
+                {
+                    g.DrawLine(penPendiente, px, py, pxFinal, pyFinal);
                 }
 
                 // Comprobar si el avión está en conflicto
@@ -170,23 +183,45 @@ namespace AirTrafficSimForms
                     );
                 }
 
-                // Dibujar avión
-                g.FillEllipse(
-                    Brushes.Blue,
-                    px - 7,
-                    py - 7,
-                    14,
-                    14
-                );
+                // Comprobar si el avión ha llegado
+                if (vuelo.HaLlegado())
+                {
+                    // Dibujar avión en verde
+                    g.FillEllipse(
+                        Brushes.Green,
+                        px - 7,
+                        py - 7,
+                        14,
+                        14
+                    );
 
-                // Dibujar identificador del avión
-                g.DrawString(
-                    vuelo.GetId(),
-                    this.Font,
-                    Brushes.Blue,
-                    px + 10,
-                    py - 10
-                );
+                    g.DrawString(" "+
+                        vuelo.GetId() + " (ARRIVED)",
+                        this.Font,
+                        Brushes.Green,
+                        px + 10,
+                        py - 10
+                    );
+                }
+                else
+                {
+                    // Dibujar avión en azul
+                    g.FillEllipse(
+                        Brushes.Blue,
+                        px - 7,
+                        py - 7,
+                        14,
+                        14
+                    );
+
+                    g.DrawString(" "+
+                        vuelo.GetId(),
+                        this.Font,
+                        Brushes.Blue,
+                        px + 10,
+                        py - 10
+                    );
+                }
             }
         }
         private void btnmove_Click(object sender, EventArgs e)
@@ -303,9 +338,6 @@ namespace AirTrafficSimForms
             }
         }
 
-        
-        
-
         private void groupBox2_Enter(object sender, EventArgs e)
         {
 
@@ -318,10 +350,7 @@ namespace AirTrafficSimForms
             velocityForm.SetFlightPlans(flightplans);
             velocityForm.ShowDialog();
 
-            for (int i = 0; i < flightplans.GetNumber(); i++)
-            {
-                flightplans.Restart();
-            }
+            
 
             conflictoComprobado = false;
             alarmaMostrada = false;
@@ -417,13 +446,20 @@ namespace AirTrafficSimForms
         // Avisa al usuario (una sola vez) cuando los vuelos están demasiado cerca
         private void ComprobarAlarma()
         {
-            if (flightplans.HayConflictoActual(SafetyDistance) && !alarmaMostrada)
+            if (flightplans.HayConflictoActual(SafetyDistance)) //si hi ha conflicte alarma es mostra sino es torna a false
             {
-                alarmaMostrada = true;
+                if (!alarmaMostrada)
+                {
+                    alarmaMostrada = true;
 
-                MessageBox.Show(
-                    "WARNING: the flights are closer than the safety distance!"
-                );
+                    MessageBox.Show(
+                        "WARNING: the flights are closer than the safety distance!"
+                    );
+                }
+            }
+            else
+            {
+                alarmaMostrada = false;
             }
         }
 

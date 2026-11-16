@@ -60,31 +60,24 @@ namespace AirTrafficSimForms
                 return;
             }
 
-            if (primeraFila == -1)
-            {
-                primeraFila = e.RowIndex;
-            }
-            else
-            {
-                int segundaFila = e.RowIndex;
+            FlightPlan vuelo1 = flightplans.GetFlightPlan(e.RowIndex); //vol ue s'ha seleccionat
 
-                if (primeraFila == segundaFila)
+            string mensaje = "Distances from flight " + vuelo1.GetId() + ":\n\n"; //missatge amb el vol seleccionat
+
+            for (int i = 0; i < flightplans.GetNumber(); i++)
+            {
+                if (i != e.RowIndex) 
                 {
-                    MessageBox.Show("Please select two different flights.");
-                    return;
+                    FlightPlan vuelo2 = flightplans.GetFlightPlan(i);
+
+                    double distancia = vuelo1.Distance(vuelo2);
+
+                    mensaje += vuelo2.GetId() + ": " + distancia.ToString("F2") + "\n"; //agegim al missatge la distancia entre ells per cada vol, un a un
                 }
-
-                FlightPlan vuelo1 = flightplans.GetFlightPlan(primeraFila);
-                FlightPlan vuelo2 = flightplans.GetFlightPlan(segundaFila);
-
-                double distancia = vuelo1.Distance(vuelo2);
-
-                DistanceForm f7 = new DistanceForm(distancia);
-                f7.Show();
-
-                primeraFila = -1;
-                vuelosGrid.ClearSelection();
             }
+
+            MessageBox.Show(mensaje, "Flight distances");
+
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -56,7 +56,11 @@ namespace FlightLib
         {
             return this.velocity;
         }
-        
+        public Position GetInitialPosition()
+        {
+            return this.initialPosition;
+        }
+
         public void SetVelocidad(double velocidad)
         // setter del atributo velocidad
         { this.velocity = velocidad; }
