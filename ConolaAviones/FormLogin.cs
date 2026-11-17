@@ -13,6 +13,7 @@ namespace AirTrafficSimForms
 {
     public partial class FormLogin : Form
     {
+        // constructor del formulario
         public FormLogin()
         {
             InitializeComponent();
@@ -76,12 +77,14 @@ namespace AirTrafficSimForms
             }
         }
         
+        // abre el formulario para registrar un usuario nuevo
         private void btnRegister_Click(object sender, EventArgs e)
         {
             FormRegister register = new FormRegister();
             register.ShowDialog();
         }
 
+        // no hace nada al cargar
         private void FormLogin_Load(object sender, EventArgs e)
         {
 

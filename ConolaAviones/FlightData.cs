@@ -16,16 +16,19 @@ namespace AirTrafficSimForms
         FlightPlanList flightplans;
         
 
+        // constructor del formulario
         public FlightDataForm()
         {
             InitializeComponent();
         }
 
+        // no hace nada al cargar
         private void Form2_Load(object sender, EventArgs e)
         {
 
         }
 
+        // carga los vuelos del fichero escrito en el textbox
         private void button1_Click(object sender, EventArgs e)
         {
             try
@@ -43,6 +46,7 @@ namespace AirTrafficSimForms
             Close();
 
         }
+        // recibe la lista de vuelos donde se cargaran los datos
         public FlightPlanList SetFlightPlans(FlightPlanList flightplans)
         {
             this.flightplans = flightplans;

@@ -18,11 +18,13 @@ namespace AirTrafficSimForms
         double cycleTime;
         double safetyDistance;
         bool settingsLoaded;
+        // constructor del menu principal
         public MainForm()
         {
             InitializeComponent();
         }
 
+        // no hace nada al cargar
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -71,6 +73,7 @@ namespace AirTrafficSimForms
             }
         }
 
+        // abre el formulario de settings y guarda la distancia de seguridad y el tiempo de ciclo
         private void SettingsBtn_Click(object sender, EventArgs e)
         {
             using (SettingsForm settings = new SettingsForm())
@@ -84,6 +87,7 @@ namespace AirTrafficSimForms
             }
         }
 
+        // comprueba que hay vuelos y settings y abre la simulacion
         private void SimulationBtn_Click(object sender, EventArgs e)
         {
 
@@ -108,6 +112,7 @@ namespace AirTrafficSimForms
             F4.ShowDialog();
         }
 
+        // abre el formulario para añadir un vuelo a mano
         private void AddFlightBtn_Click(object sender, EventArgs e)
         {
             AddFlightForm F5 = new AddFlightForm();

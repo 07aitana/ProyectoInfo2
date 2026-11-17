@@ -23,11 +23,13 @@ namespace AirTrafficSimForms
         bool conflictoComprobado = false; // para preguntar solo la primera vez que se pulsa Start
         bool alarmaMostrada = false; // para que el aviso salga solo una vez
 
+        // constructor del formulario
         public SimulationForm()
         {
             InitializeComponent();
         }
 
+        // recibe la lista de vuelos, el tiempo de ciclo y la distancia de seguridad
         public void SetInformation(FlightPlanList flightplans, double cycleTime, double safetyDistance)
         {
             this.flightplans = flightplans;
@@ -37,6 +39,7 @@ namespace AirTrafficSimForms
             CalcularLimites();
             
         }
+        // calcula las coordenadas minimas y maximas de todos los vuelos para escalar el dibujo
         private void CalcularLimites()
         {
             minX = double.MaxValue;
@@ -80,6 +83,7 @@ namespace AirTrafficSimForms
             }
         }
 
+        // dibuja el espacio aereo: trayectorias, circulos de seguridad y aviones
         private void panelAirspace_Paint(object sender, PaintEventArgs e)
         {
             if (flightplans == null || flightplans.GetNumber() == 0)
@@ -224,6 +228,7 @@ namespace AirTrafficSimForms
                 }
             }
         }
+        // mueve los aviones un ciclo y redibuja
         private void btnmove_Click(object sender, EventArgs e)
         {
             flightplans.Mover(CycleTime);
@@ -232,6 +237,7 @@ namespace AirTrafficSimForms
 
             ComprobarAlarma();
         }
+        // empieza la simulacion automatica. la primera vez avisa si va a haber conflictos
         private void btnStart_Click(object sender, EventArgs e)
         {
             if (!conflictoComprobado)
@@ -256,11 +262,13 @@ namespace AirTrafficSimForms
             timer1.Start();
         }
 
+        // para la simulacion automatica
         private void btnStop_Click(object sender, EventArgs e)
         {
             timer1.Stop();
         }
 
+        // cada tick mueve los aviones un ciclo; si todos han llegado para el timer
         private void timer1_Tick(object sender, EventArgs e)
         {
             flightplans.Mover(CycleTime);
@@ -276,6 +284,7 @@ namespace AirTrafficSimForms
             }
         }
 
+        // abre la tabla con los datos de todos los vuelos
         private void btnData_Click(object sender, EventArgs e)
         {
             FlightDataGridForm f6 = new FlightDataGridForm();
@@ -285,11 +294,13 @@ namespace AirTrafficSimForms
             f6.Show();
         }
 
+        // no hace nada al cargar
         private void Form4_Load(object sender, EventArgs e)
         {
 
         }
 
+        // si se clica encima de un avion abre el formulario con su informacion
         private void panelAirspace_MouseClick(object sender, MouseEventArgs e)
         {
             double margen = 40;
@@ -326,6 +337,7 @@ namespace AirTrafficSimForms
             }
         }
 
+        // dice si los vuelos van a entrar en conflicto o no
         private void btnCheck_Click(object sender, EventArgs e)
         {
             if (flightplans.HabraConflictos(SafetyDistance))
@@ -338,11 +350,13 @@ namespace AirTrafficSimForms
             }
         }
 
+        // no hace nada
         private void groupBox2_Enter(object sender, EventArgs e)
         {
 
         }
 
+        // abre el formulario para cambiar la velocidad de un vuelo y redibuja
         private void ChangeVelocityBtn_Click(object sender, EventArgs e)
         {
             Velocity velocityForm = new Velocity();
@@ -463,6 +477,7 @@ namespace AirTrafficSimForms
             }
         }
 
+        // para la simulacion y devuelve todos los aviones a su posicion inicial
         private void btnRestart_Click(object sender, EventArgs e)
         {
             timer1.Stop();
@@ -471,6 +486,7 @@ namespace AirTrafficSimForms
             panelAirspace.Invalidate();
         }
 
+        // deshace el ultimo paso de la simulacion
         private void btnUndo_Click(object sender, EventArgs e)
         {
             timer1.Stop();
@@ -484,6 +500,7 @@ namespace AirTrafficSimForms
             }
         }
 
+        // guarda la lista de vuelos con sus posiciones actuales en un fichero de texto
         private void btnSave_Click(object sender, EventArgs e)
         {
             timer1.Stop();

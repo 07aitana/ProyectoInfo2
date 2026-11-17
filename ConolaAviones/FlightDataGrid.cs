@@ -15,17 +15,20 @@ namespace AirTrafficSimForms
     {
         FlightPlanList flightplans;
         int primeraFila = -1;
+        // constructor del formulario
         public FlightDataGridForm()
         {
             InitializeComponent();
             
         }
 
+        // recibe la lista de vuelos que se mostrara
         public void SetFlightPlans(FlightPlanList flightplans)
         {
             this.flightplans = flightplans;
         }
 
+        // rellena la tabla con los datos de todos los vuelos
         private void Form6_Load(object sender, EventArgs e)
         {
             vuelosGrid.AllowUserToAddRows = false;
@@ -53,6 +56,7 @@ namespace AirTrafficSimForms
             vuelosGrid.ClearSelection();
         }
 
+        // al clicar un vuelo muestra su distancia a todos los demas
         private void vuelosGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
@@ -80,6 +84,7 @@ namespace AirTrafficSimForms
 
         }
 
+        // cierra el formulario
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();

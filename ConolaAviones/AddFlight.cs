@@ -14,17 +14,20 @@ namespace AirTrafficSimForms
     public partial class AddFlightForm : Form
     {
         FlightPlanList flightplans;
+        // constructor del formulario
         public AddFlightForm()
         {
             InitializeComponent();
         }
 
+        // recibe la lista de vuelos donde se añadira el vuelo nuevo
         public void SetFlightPlans(FlightPlanList flightplans)
         {
             this.flightplans = flightplans;
         }
 
 
+        // lee los datos de los textbox, los comprueba y añade el vuelo a la lista
         private void AddFlightBtn_Click(object sender, EventArgs e)
         {
             try
@@ -77,6 +80,7 @@ namespace AirTrafficSimForms
             }
         }
 
+        // rellena los campos con un vuelo de ejemplo
         private void AutoFilBtn_Click(object sender, EventArgs e)
         {
             IDBox.Text = "IB123";
@@ -91,6 +95,7 @@ namespace AirTrafficSimForms
             SpeedBox.Text = "600";
         }
 
+        // cierra el formulario
         private void CloseBtn_Click(object sender, EventArgs e)
         {
             this.Close();

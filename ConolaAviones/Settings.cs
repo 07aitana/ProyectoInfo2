@@ -16,16 +16,19 @@ namespace AirTrafficSimForms
 
         double SafetyDistance;
         double CycleTime;
+        // constructor del formulario
         public SettingsForm()
         {
             InitializeComponent();
         }
 
+        // no hace nada al cargar
         private void Form3_Load(object sender, EventArgs e)
         {
 
         }
 
+        // lee la distancia de seguridad y el tiempo de ciclo y comprueba que sean numeros mayores que 0
         private void btnLoad_Click(object sender, EventArgs e)
         {
             if (txtSafetyDistance.Text == "" ||
@@ -64,16 +67,19 @@ namespace AirTrafficSimForms
             }
         }
 
+        // devuelve la distancia de seguridad introducida
         public double GetSafetyDistance()
         {
             return SafetyDistance;
         }
 
+        // devuelve el tiempo de ciclo introducido
         public double GetCycleTime()
         {
             return CycleTime;
         }
 
+        // no hace nada
         private void txtCycleTime_TextChanged(object sender, EventArgs e)
         {
 

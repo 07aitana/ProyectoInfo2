@@ -23,6 +23,7 @@ namespace FlightLib
         }
 
 
+        // devuelve el vuelo de la posicion i, o null si i no es valida
         public FlightPlan GetFlightPlan(int i)
         {
             if (i < 0 || i >= flightplans.Count)
@@ -36,16 +37,20 @@ namespace FlightLib
 
         }
 
+        // devuelve cuantos vuelos hay en la lista
         public int GetNumber()
         {
             return flightplans.Count;
         }
 
+        // borra todos los vuelos de la lista
         public void Clear()
         {
             flightplans.Clear();
         }
 
+        // mueve todos los vuelos el tiempo indicado (en minutos)
+        // antes guarda las posiciones en el historial para poder hacer undo
         public void Mover(double tiempo)
         {
             if (TodosHanLlegado())
@@ -73,6 +78,7 @@ namespace FlightLib
 
         }
 
+        // escribe en consola los datos de todos los vuelos
         public void EscribeConsola()
         {
             int i = 0;
@@ -176,6 +182,7 @@ namespace FlightLib
             return resultado;
         }
 
+        // devuelve true si alguna pareja de vuelos va a entrar en conflicto
         public bool HabraConflictos(double safetyDistance)
         {
             for (int i = 0; i < flightplans.Count; i++)
@@ -193,6 +200,7 @@ namespace FlightLib
         }
 
 
+        // devuelve true si todos los vuelos han llegado a su destino
         public bool TodosHanLlegado()
         {
             for (int i = 0; i < flightplans.Count; i++)
@@ -253,6 +261,8 @@ namespace FlightLib
             w.Close();
         }
 
+        // baja un 10% la velocidad de los vuelos en conflicto hasta que no quede ninguno
+        // (maximo 20 intentos). devuelve true si se han resuelto todos
         public bool ResolverConflictos(double safetyDistance)
         {
             int intentos = 0;
@@ -288,6 +298,7 @@ namespace FlightLib
 
         }
 
+        // devuelve true si ahora mismo hay dos vuelos mas cerca que la distancia de seguridad
         public bool HayConflictoActual(double safetyDistance)
         {
             for (int i = 0; i < flightplans.Count; i++)

@@ -21,20 +21,24 @@ namespace AirTrafficSimForms
         int filaseleccionada = -1;
 
         
+        // constructor del formulario
         public Velocity()
         {
             InitializeComponent();
         }
+        // devuelve la ultima velocidad introducida
         public double GetVelocidad()
         {
             return this.velocidad;
         }
 
+        // recibe la lista de vuelos
         public void SetFlightPlans(FlightPlanList flightplans)
         {
             this.flightplans = flightplans;
         }
 
+        // cambia la velocidad del vuelo seleccionado si el valor es correcto
         private void UpDateBtn_Click(object sender, EventArgs e)
         {
             if (filaseleccionada == -1)
@@ -69,6 +73,7 @@ namespace AirTrafficSimForms
         }
 
 
+        // rellena la tabla con los vuelos y sus velocidades
         private void Velocity_Load(object sender, EventArgs e)
         {
             vuelosGrid.AllowUserToAddRows = false;
@@ -97,11 +102,13 @@ namespace AirTrafficSimForms
             vuelosGrid.ClearSelection();
         }
 
+        // no hace nada
         private void vuelosGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
 
+        // guarda que fila (vuelo) ha seleccionado el usuario
         private void vuelosGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)

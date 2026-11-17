@@ -28,34 +28,42 @@ namespace FlightLib
             this.velocity = velocidad;
 
         }
+        // devuelve el identificador del vuelo
         public string GetId()
         {
             return this.id;
         }
+        // cambia el identificador del vuelo
         public void SetId(string id)
         {
             this.id = id;
         }
+        // devuelve la posicion actual del vuelo
         public Position GetCurrentPosition()
         {
             return this.currentPosition;
         }
+        // cambia la posicion actual (se usa en el undo)
         public void SetCurrentPosition(Position currentPosition)
         {
             this.currentPosition = currentPosition;
         }
+        // devuelve la posicion de destino
         public Position GetFinalPosition()
         {
             return this.finalPosition;
         }
+        // cambia la posicion de destino
         public void SetFinalPosition(Position finalPosition)
         {
             this.finalPosition = finalPosition;
         }
+        // devuelve la velocidad del vuelo (km/h)
         public double GetVelocidad()
         {
             return this.velocity;
         }
+        // devuelve la posicion inicial (la de cuando se cargo el vuelo)
         public Position GetInitialPosition()
         {
             return this.initialPosition;
@@ -64,6 +72,7 @@ namespace FlightLib
         public void SetVelocidad(double velocidad)
         // setter del atributo velocidad
         { this.velocity = velocidad; }
+        // devuelve la compañia aerea
         public string GetCompany()
         {
             return this.company;
@@ -122,6 +131,8 @@ namespace FlightLib
             return conflicto;
         }
 
+        // calcula si este vuelo y el vuelo b se van a acercar mas que la distancia de seguridad
+        // en algun momento de la simulacion (true si habra conflicto)
         public bool HabraConflicto(FlightPlan b, double distanciaSeguridad)
         {
             // Posiciones actuales
@@ -276,11 +287,13 @@ namespace FlightLib
                 Console.WriteLine("El vuelo ha llegado a su destino");
             Console.WriteLine("******************************");
         }
+        // devuelve el vuelo a su posicion inicial
         public void Restart()
         {
             this.currentPosition = new Position(this.initialPosition.GetX(), this.initialPosition.GetY());
 
         }
+        // devuelve la distancia entre la posicion actual de este vuelo y la del vuelo plan
         public double Distance(FlightPlan plan)
         {
             return this.currentPosition.Distancia(plan.currentPosition);

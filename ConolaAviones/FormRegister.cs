@@ -13,6 +13,7 @@ namespace AirTrafficSimForms
 {
     public partial class FormRegister : Form
     {
+        // constructor del formulario
         public FormRegister()
         {
             InitializeComponent();

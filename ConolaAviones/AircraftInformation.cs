@@ -14,12 +14,14 @@ namespace AirTrafficSimForms
     public partial class AircraftInformationForm : Form
     {
         FlightPlan vuelo;
+        // constructor del formulario
         public AircraftInformationForm()
         {
             InitializeComponent();
             
         }
 
+        // recibe el vuelo del que se mostraran los datos
         public void SetFlightPlan(FlightPlan vuelo)
         {
             this.vuelo = vuelo;
@@ -27,11 +29,13 @@ namespace AirTrafficSimForms
         }
         
 
+        // cierra el formulario
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+        // prepara la tabla con los datos del vuelo y arranca el timer para actualizarlos
         private void Form5_Load(object sender, EventArgs e)
         {
             dataGridView1.AllowUserToAddRows = false;
@@ -78,6 +82,7 @@ namespace AirTrafficSimForms
             ActualizarDatos();
             timer1.Start();
         }
+        // actualiza en la tabla los datos que cambian (posicion y velocidad)
         private void ActualizarDatos()
         {
             // Identificador
@@ -98,6 +103,7 @@ namespace AirTrafficSimForms
                 vuelo.GetVelocidad();
         }
 
+        // cada tick vuelve a mostrar los datos actualizados
         private void timer1_Tick(object sender, EventArgs e)
         {
             ActualizarDatos();

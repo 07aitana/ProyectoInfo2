@@ -13,6 +13,7 @@ namespace UserDatabase
     public class GestionUsuarios
     {
         SQLiteConnection cnx;
+        // abre la conexion con users.db. devuelve false si el fichero no existe
         public bool Initialize()
         {
             string ruta = "users.db";
@@ -31,10 +32,12 @@ namespace UserDatabase
 
 
         }
+        // cierra la conexion con la base de datos
         public void Close()
         {
             cnx.Close();
         }
+        // devuelve true si ya hay un usuario con ese nombre
         public bool UserExists(string username)
         {
 
@@ -66,6 +69,7 @@ namespace UserDatabase
                 return false;
         }
 
+        // devuelve true si el usuario y la contraseña son correctos
         public bool LoginUser(string username, string password)
         {
             DataTable dt = new DataTable();
