@@ -102,12 +102,6 @@ namespace AirTrafficSimForms
             vuelosGrid.ClearSelection();
         }
 
-        // no hace nada
-        private void vuelosGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         // guarda que fila (vuelo) ha seleccionado el usuario
         private void vuelosGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {

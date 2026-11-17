@@ -76,7 +76,6 @@
             this.txtCycleTime.Name = "txtCycleTime";
             this.txtCycleTime.Size = new System.Drawing.Size(100, 22);
             this.txtCycleTime.TabIndex = 4;
-            this.txtCycleTime.TextChanged += new System.EventHandler(this.txtCycleTime_TextChanged);
             // 
             // Form3
             // 
@@ -96,7 +95,6 @@
             this.Name = "Form3";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Settings";
-            this.Load += new System.EventHandler(this.Form3_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

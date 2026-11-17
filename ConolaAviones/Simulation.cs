@@ -294,12 +294,6 @@ namespace AirTrafficSimForms
             f6.Show();
         }
 
-        // no hace nada al cargar
-        private void Form4_Load(object sender, EventArgs e)
-        {
-
-        }
-
         // si se clica encima de un avion abre el formulario con su informacion
         private void panelAirspace_MouseClick(object sender, MouseEventArgs e)
         {
@@ -348,12 +342,6 @@ namespace AirTrafficSimForms
             {
                 MessageBox.Show("The flights will NOT be in conflict.");
             }
-        }
-
-        // no hace nada
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
-
         }
 
         // abre el formulario para cambiar la velocidad de un vuelo y redibuja

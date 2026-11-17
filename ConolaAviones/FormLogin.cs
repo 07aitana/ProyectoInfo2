@@ -84,10 +84,5 @@ namespace AirTrafficSimForms
             register.ShowDialog();
         }
 
-        // no hace nada al cargar
-        private void FormLogin_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

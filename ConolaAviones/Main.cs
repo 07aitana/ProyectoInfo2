@@ -24,12 +24,6 @@ namespace AirTrafficSimForms
             InitializeComponent();
         }
 
-        // no hace nada al cargar
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         // Deja elegir un fichero de vuelos con un selector y lo carga.
         // Muestra un mensaje diferente según el resultado de la carga.
         private void LoadFlightsBtn_Click(object sender, EventArgs e)

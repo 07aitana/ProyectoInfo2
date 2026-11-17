@@ -25,10 +25,5 @@ namespace AirTrafficSimForms
             this.Close();
         }
 
-        // no hace nada al cargar
-        private void Form7_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }
