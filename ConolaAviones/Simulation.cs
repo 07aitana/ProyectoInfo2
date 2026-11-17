@@ -94,16 +94,14 @@ namespace AirTrafficSimForms
             Graphics g = e.Graphics;
 
             // Dibujar borde del espacio aéreo
-            using (Pen pen = new Pen(Color.Black, 2))
-            {
-                g.DrawRectangle(
-                    pen,
-                    10,
-                    10,
-                    panelAirspace.Width - 20,
-                    panelAirspace.Height - 20
-                );
-            }
+            Pen pen = new Pen(Color.Black, 2);
+            g.DrawRectangle(
+                pen,
+                10,
+                10,
+                panelAirspace.Width - 20,
+                panelAirspace.Height - 20
+            );
 
             // Márgenes
             double margen = 40;
@@ -150,14 +148,10 @@ namespace AirTrafficSimForms
                 int pyFinal = Convert.ToInt32(margen + (maxY - yFinal) * escala);
 
                 // Dibujar trayectoria
-                using (Pen penRecorrida = new Pen(Color.Black, 2))
-                {
-                    g.DrawLine(penRecorrida, pxInicial, pyInicial, px, py);
-                }
-                using (Pen penPendiente = new Pen(Color.Blue, 2))
-                {
-                    g.DrawLine(penPendiente, px, py, pxFinal, pyFinal);
-                }
+                Pen penRecorrida = new Pen(Color.Black, 2);
+                g.DrawLine(penRecorrida, pxInicial, pyInicial, px, py);
+                Pen penPendiente = new Pen(Color.Blue, 2);
+                g.DrawLine(penPendiente, px, py, pxFinal, pyFinal);
 
                 // Comprobar si el avión está en conflicto
                 Color colorSeguridad = Color.Green;
@@ -176,16 +170,14 @@ namespace AirTrafficSimForms
                 }
 
                 // Dibujar círculo de seguridad
-                using (Pen penSafety = new Pen(colorSeguridad, 2))
-                {
-                    g.DrawEllipse(
-                        penSafety,
-                        px - radio,
-                        py - radio,
-                        radio * 2,
-                        radio * 2
-                    );
-                }
+                Pen penSafety = new Pen(colorSeguridad, 2);
+                g.DrawEllipse(
+                    penSafety,
+                    px - radio,
+                    py - radio,
+                    radio * 2,
+                    radio * 2
+                );
 
                 // Comprobar si el avión ha llegado
                 if (vuelo.HaLlegado())

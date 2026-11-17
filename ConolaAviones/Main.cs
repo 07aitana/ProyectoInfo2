@@ -70,14 +70,13 @@ namespace AirTrafficSimForms
         // abre el formulario de settings y guarda la distancia de seguridad y el tiempo de ciclo
         private void SettingsBtn_Click(object sender, EventArgs e)
         {
-            using (SettingsForm settings = new SettingsForm())
+            SettingsForm settings = new SettingsForm();
+
+            if (settings.ShowDialog() == DialogResult.OK)
             {
-                if (settings.ShowDialog(this) == DialogResult.OK)
-                {
-                    cycleTime = settings.GetCycleTime();
-                    safetyDistance = settings.GetSafetyDistance();
-                    settingsLoaded = true;
-                }
+                cycleTime = settings.GetCycleTime();
+                safetyDistance = settings.GetSafetyDistance();
+                settingsLoaded = true;
             }
         }
 
