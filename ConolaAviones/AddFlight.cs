@@ -36,6 +36,20 @@ namespace AirTrafficSimForms
                 double x2 = Convert.ToDouble(X2Box.Text);
                 double y2 = Convert.ToDouble(Y2Box.Text);
                 double speed = Convert.ToDouble(SpeedBox.Text);
+
+                // El ID y la compañía no pueden estar vacíos ni tener espacios
+                // (si tuvieran espacios, el fichero guardado no se podría volver a cargar)
+                if (id == "" || company == "" || id.Contains(" ") || company.Contains(" "))
+                {
+                    MessageBox.Show("The ID and the airline cannot be empty or contain spaces.");
+                    return;
+                }
+
+                if (speed <= 0)
+                {
+                    MessageBox.Show("The speed must be greater than 0.");
+                    return;
+                }
                 // Comprobar que el vuelo no existe
                 for (int i = 0; i < flightplans.GetNumber(); i++)
                 {

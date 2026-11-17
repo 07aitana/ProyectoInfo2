@@ -123,7 +123,8 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(187, 23);
             this.label3.TabIndex = 8;
-            this.label3.Text = "Import flights form TXT";
+            this.label3.Text = "Import flights from TXT";
+            this.label3.Click += new System.EventHandler(this.LoadFlightsBtn_Click);
             // 
             // label4
             // 
@@ -135,6 +136,7 @@
             this.label4.TabIndex = 9;
             this.label4.Text = "Open deconflicting tool";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label4.Click += new System.EventHandler(this.SimulationBtn_Click);
             // 
             // label5
             // 
@@ -142,10 +144,11 @@
             this.label5.BackColor = System.Drawing.Color.White;
             this.label5.Location = new System.Drawing.Point(535, 261);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(185, 23);
+            this.label5.Size = new System.Drawing.Size(189, 23);
             this.label5.TabIndex = 10;
-            this.label5.Text = "Manual entry or autofil";
+            this.label5.Text = "Manual entry or autofill";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label5.Click += new System.EventHandler(this.AddFlightBtn_Click);
             // 
             // label6
             // 
@@ -157,6 +160,7 @@
             this.label6.TabIndex = 11;
             this.label6.Text = "Simulation parameters";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label6.Click += new System.EventHandler(this.SettingsBtn_Click);
             // 
             // MainForm
             // 

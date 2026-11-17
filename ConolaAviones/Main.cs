@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace AirTrafficSimForms
 {
-    public partial class MainForm: Form
+    public partial class MainForm : Form
     {
         FlightPlanList flightplans = new FlightPlanList();
         FlightDataForm F2;
@@ -21,27 +21,6 @@ namespace AirTrafficSimForms
         public MainForm()
         {
             InitializeComponent();
-            ConfigureSubtitle(LoadFlightsBtn, label3);
-            ConfigureSubtitle(SimulationBtn, label4);
-            ConfigureSubtitle(AddFlightBtn, label5);
-            ConfigureSubtitle(SettingsBtn, label6);
-        }
-
-        // Draw the subtitle on the button so its whole surface shares hover/click effects.
-        private void ConfigureSubtitle(Button button, Label subtitle)
-        {
-            subtitle.Visible = false;
-            button.AccessibleDescription = subtitle.Text;
-            button.Paint += (sender, e) =>
-            {
-                Rectangle bounds = button.ClientRectangle;
-                bounds.Y = bounds.Height / 2;
-                bounds.Height = button.ClientSize.Height - bounds.Y - 4;
-                TextRenderer.DrawText(e.Graphics, subtitle.Text, subtitle.Font, bounds,
-                    button.Enabled ? button.ForeColor : SystemColors.GrayText,
-                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter |
-                    TextFormatFlags.SingleLine | TextFormatFlags.NoPrefix);
-            };
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -49,6 +28,8 @@ namespace AirTrafficSimForms
 
         }
 
+        // Deja elegir un fichero de vuelos con un selector y lo carga.
+        // Muestra un mensaje diferente según el resultado de la carga.
         private void LoadFlightsBtn_Click(object sender, EventArgs e)
         {
             openFileDialog1.Filter = "Text files (*.txt)|*.txt";
@@ -60,9 +41,28 @@ namespace AirTrafficSimForms
                 {
                     string nombreFichero = openFileDialog1.FileName;
 
-                    flightplans.LoadFlightPlans(nombreFichero);
+                    int resultado = flightplans.LoadFlightPlans(nombreFichero);
 
-                    MessageBox.Show("Flights loaded successfully");
+                    if (resultado == 0)
+                    {
+                        MessageBox.Show(flightplans.GetNumber() + " flights loaded successfully.");
+                    }
+                    else if (resultado == -1)
+                    {
+                        MessageBox.Show("The file does not exist.");
+                    }
+                    else if (resultado == -2)
+                    {
+                        MessageBox.Show("The file does not contain any flight.");
+                    }
+                    else if (resultado == -3)
+                    {
+                        MessageBox.Show("The file has a wrong line. Each line must be:\nID Company Xinitial Yinitial Xfinal Yfinal Speed\n(speed must be greater than 0).\nNo flights have been loaded.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("The file has two flights with the same ID. No flights have been loaded.");
+                    }
                 }
                 catch (Exception)
                 {
@@ -105,15 +105,14 @@ namespace AirTrafficSimForms
             // Abrir el formulario de simulación
             SimulationForm F4 = new SimulationForm();
             F4.SetInformation(flightplans, cycleTime, safetyDistance);
-            F4.Show();
+            F4.ShowDialog();
         }
 
         private void AddFlightBtn_Click(object sender, EventArgs e)
         {
             AddFlightForm F5 = new AddFlightForm();
             F5.SetFlightPlans(flightplans);
-            F5.Show();
+            F5.ShowDialog();
         }
     }
 }
-                                

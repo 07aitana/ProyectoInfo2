@@ -16,9 +16,9 @@ namespace FlightLib
         Position finalPosition; // posicion final
         Position initialPosition;
         double velocity;
-        
+
         // Constructures
-        public FlightPlan(string id, string company,double cpx, double cpy, double fpx, double fpy, double velocidad)
+        public FlightPlan(string id, string company, double cpx, double cpy, double fpx, double fpy, double velocidad)
         {
             this.id = id;
             this.company = company;
@@ -26,7 +26,7 @@ namespace FlightLib
             this.finalPosition = new Position(fpx, fpy);
             this.initialPosition = new Position(cpx, cpy);
             this.velocity = velocidad;
-            
+
         }
         public string GetId()
         {
@@ -42,7 +42,7 @@ namespace FlightLib
         }
         public void SetCurrentPosition(Position currentPosition)
         {
-            this.currentPosition= currentPosition;
+            this.currentPosition = currentPosition;
         }
         public Position GetFinalPosition()
         {
@@ -93,16 +93,17 @@ namespace FlightLib
             //Modificacion del método para que el avión no se pase de su destino.
             Position nextPosition = new Position(x, y);
 
-            if(currentPosition.Distancia(nextPosition) < hipotenusa)
+            if (currentPosition.Distancia(nextPosition) < hipotenusa)
                 currentPosition = nextPosition;
             else
                 currentPosition = finalPosition;
         }
-        //Método que nos dice si el vuelo ha llegado a su destino o no, comparando la posición actual con la posición final
+        //Método que nos dice si el vuelo ha llegado a su destino o no, comparando las coordenadas
+        //de la posición actual con las de la posición final
         public bool HaLlegado()
         {
             bool resultado = false;
-            if (currentPosition == finalPosition)
+            if (currentPosition.GetX() == finalPosition.GetX() && currentPosition.GetY() == finalPosition.GetY())
             {
                 resultado = true;
             }
@@ -113,10 +114,10 @@ namespace FlightLib
         public bool Conflicto(FlightPlan b, double distanciaSeguridad)
         {
             bool conflicto = false;
-            
-            if(this.Distance(b) < distanciaSeguridad)
+
+            if (this.Distance(b) < distanciaSeguridad)
             {
-                conflicto = true;           
+                conflicto = true;
             }
             return conflicto;
         }
@@ -277,13 +278,13 @@ namespace FlightLib
         }
         public void Restart()
         {
-            this.currentPosition = new Position(this.initialPosition.GetX(),this.initialPosition.GetY());
-            
+            this.currentPosition = new Position(this.initialPosition.GetX(), this.initialPosition.GetY());
+
         }
         public double Distance(FlightPlan plan)
         {
             return this.currentPosition.Distancia(plan.currentPosition);
         }
     }
-    
+
 }

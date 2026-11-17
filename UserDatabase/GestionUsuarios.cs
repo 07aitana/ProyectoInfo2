@@ -37,7 +37,7 @@ namespace UserDatabase
         }
         public bool UserExists(string username)
         {
-            
+
             DataTable dt = new DataTable(); //on guardarem els resultats
 
             string sql = "SELECT * FROM users WHERE username = '" + username + "'"; //la consulta que volem fer
@@ -51,23 +51,21 @@ namespace UserDatabase
             else
                 return false;
         }
+        // Añade un usuario nuevo a la tabla users.
+        // Devuelve true si se ha insertado y false en caso contrario.
         public bool RegisterUser(string username, string password)
         {
-            string sql = "INSERT INTO users (username, password) VALUES (@username, @password)";
+            string sql = "INSERT INTO users (username, password) VALUES ('" + username + "', '" + password + "')";
 
             SQLiteCommand command = new SQLiteCommand(sql, cnx);
-
-            command.Parameters.AddWithValue("@username", username);
-            command.Parameters.AddWithValue("@password", password);
-
             int result = command.ExecuteNonQuery();
 
             if (result > 0)
                 return true;
             else
                 return false;
-
         }
+
         public bool LoginUser(string username, string password)
         {
             DataTable dt = new DataTable();

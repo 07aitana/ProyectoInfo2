@@ -13,14 +13,17 @@ namespace FlightLib
         List<FlightPlan> flightplans = new List<FlightPlan>();
         Stack<Position> historial = new Stack<Position>();
 
+        // Añade un vuelo a la lista.
+        // Borramos el historial de Undo porque los pasos guardados ya no tienen el mismo número de aviones.
         public int AddFlightPlan(FlightPlan p)
         {
-            flightplans.Add (p);
+            flightplans.Add(p);
+            historial.Clear();
             return 0;
         }
 
 
-        public FlightPlan GetFlightPlan (int i)
+        public FlightPlan GetFlightPlan(int i)
         {
             if (i < 0 || i >= flightplans.Count)
             {
@@ -30,7 +33,7 @@ namespace FlightLib
             {
                 return flightplans[i];
             }
-    
+
         }
 
         public int GetNumber()
@@ -43,8 +46,8 @@ namespace FlightLib
             flightplans.Clear();
         }
 
-        public void Mover (double tiempo)
-        { 
+        public void Mover(double tiempo)
+        {
             if (TodosHanLlegado())
             {
                 return;
@@ -54,12 +57,12 @@ namespace FlightLib
             for (int k = 0; k < flightplans.Count; k++)
             {
                 double x = flightplans[k].GetCurrentPosition().GetX();
-                double y = flightplans[k].GetCurrentPosition ().GetY();
+                double y = flightplans[k].GetCurrentPosition().GetY();
                 historial.Push(new Position(x, y));
             }
-            
+
             int i = 0;
-            while (i< flightplans.Count)
+            while (i < flightplans.Count)
             {
                 if (!flightplans[i].HaLlegado())
                 {
@@ -80,34 +83,97 @@ namespace FlightLib
             }
         }
 
-        public void LoadFlightPlans(string nombreFichero)
+        // Carga los vuelos de un fichero de texto.
+        // Formato de cada línea: ID Compañía Xinicial Yinicial Xfinal Yfinal Velocidad
+        // Devuelve: 0 si todo va bien, -1 si el fichero no existe, -2 si no contiene vuelos,
+        // -3 si alguna línea es incorrecta y -4 si hay dos vuelos con el mismo ID.
+        // Si hay algún error, la lista de vuelos que había antes no se modifica.
+        public int LoadFlightPlans(string nombreFichero)
         {
-            flightplans.Clear();
-            historial.Clear();
+            if (!File.Exists(nombreFichero))
+            {
+                return -1;
+            }
+
+            // Leemos primero en una lista nueva; solo la usamos si todo el fichero es correcto
+            List<FlightPlan> nuevos = new List<FlightPlan>();
+            int resultado = 0;
 
             StreamReader f = new StreamReader(nombreFichero);
             string linea = f.ReadLine();
 
-            while(linea != null)
+            while (linea != null && resultado == 0)
             {
                 if (!string.IsNullOrWhiteSpace(linea)) //Establece que la linea no es nula y no contiene solo espacios en blanco
                 {
                     string[] partes = linea.Split();
 
-                    FlightPlan p = new FlightPlan(
-                        partes[0], partes[1],
-                        Convert.ToDouble(partes[2]),
-                        Convert.ToDouble(partes[3]),
-                        Convert.ToDouble(partes[4]),
-                        Convert.ToDouble(partes[5]),
-                        Convert.ToDouble(partes[6]));
+                    if (partes.Length != 7)
+                    {
+                        resultado = -3; // faltan o sobran datos en la línea
+                    }
+                    else
+                    {
+                        try
+                        {
+                            FlightPlan p = new FlightPlan(
+                                partes[0], partes[1],
+                                Convert.ToDouble(partes[2]),
+                                Convert.ToDouble(partes[3]),
+                                Convert.ToDouble(partes[4]),
+                                Convert.ToDouble(partes[5]),
+                                Convert.ToDouble(partes[6]));
 
-                    flightplans.Add(p);
+                            if (p.GetVelocidad() <= 0)
+                            {
+                                resultado = -3; // velocidad no válida
+                            }
+                            else
+                            {
+                                // Buscamos si ya hay un vuelo con el mismo ID
+                                bool repetido = false;
+                                int i = 0;
+                                while (i < nuevos.Count && !repetido)
+                                {
+                                    if (nuevos[i].GetId() == p.GetId())
+                                    {
+                                        repetido = true;
+                                    }
+                                    i++;
+                                }
+
+                                if (repetido)
+                                {
+                                    resultado = -4;
+                                }
+                                else
+                                {
+                                    nuevos.Add(p);
+                                }
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            resultado = -3; // hay texto donde debería haber un número
+                        }
+                    }
                 }
                 linea = f.ReadLine();
             }
             f.Close();
 
+            if (resultado == 0 && nuevos.Count == 0)
+            {
+                resultado = -2;
+            }
+
+            if (resultado == 0)
+            {
+                flightplans = nuevos;
+                historial.Clear();
+            }
+
+            return resultado;
         }
 
         public bool HabraConflictos(double safetyDistance)
@@ -126,7 +192,7 @@ namespace FlightLib
             return false;
         }
 
-    
+
         public bool TodosHanLlegado()
         {
             for (int i = 0; i < flightplans.Count; i++)
@@ -143,7 +209,7 @@ namespace FlightLib
         // Reinicia todos los aviones
         public void Restart()
         {
-            for(int i = 0; i < flightplans.Count; i++)
+            for (int i = 0; i < flightplans.Count; i++)
             {
                 flightplans[i].Restart();
             }
@@ -153,13 +219,13 @@ namespace FlightLib
         // Devuelve los avions a las posiciones que estaban
         public bool Deshacer()
         {
-            if (historial.Count  == 0)
-            {  
-                return false; 
+            if (historial.Count == 0)
+            {
+                return false;
             }
 
             // Como stack saca al reves, lo recorremos del final al principio
-            for (int i = flightplans.Count -1; i >= 0; i--)
+            for (int i = flightplans.Count - 1; i >= 0; i--)
             {
                 flightplans[i].SetCurrentPosition(historial.Pop());
             }
@@ -219,7 +285,7 @@ namespace FlightLib
             }
 
             return !HabraConflictos(safetyDistance);
-    
+
         }
 
         public bool HayConflictoActual(double safetyDistance)

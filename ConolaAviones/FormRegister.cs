@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UserDatabase;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace AirTrafficSimForms
 {
@@ -19,6 +18,8 @@ namespace AirTrafficSimForms
             InitializeComponent();
         }
 
+        // Registra un usuario nuevo en la base de datos si los datos son correctos
+        // y el nombre de usuario no existe todavía.
         private void btnCreateAccount_Click(object sender, EventArgs e)
         {
             string username = txtUsername.Text;
@@ -29,32 +30,44 @@ namespace AirTrafficSimForms
             {
                 MessageBox.Show("Please fill in all fields.");
             }
+            else if (username.Contains("'") || password.Contains("'"))
+            {
+                MessageBox.Show("The username and the password cannot contain the character '");
+            }
             else if (password != confirmPassword)
             {
                 MessageBox.Show("Passwords do not match.");
             }
             else
             {
-                GestionUsuarios db = new GestionUsuarios(); //creem objecte
-
-                if (db.Initialize())  //connexió amb base de datos
+                try
                 {
-                    if (db.UserExists(username))     // comprobar si usuari existeix
+                    GestionUsuarios db = new GestionUsuarios(); //creem objecte
+
+                    if (db.Initialize())  //connexió amb base de datos
                     {
-                        MessageBox.Show("Username already exists.");
+                        if (db.UserExists(username))     // comprobar si usuari existeix
+                        {
+                            MessageBox.Show("Username already exists.");
+                            db.Close();
+                        }
+                        else
+                        {
+                            db.RegisterUser(username, password);
+                            db.Close();
+                            MessageBox.Show("Account created successfully.");
+                            this.Close();
+                        }
                     }
                     else
                     {
-                        db.RegisterUser(username, password);
-                        MessageBox.Show("Account created successfully.");
-                        this.Close();
+                        MessageBox.Show("Database file not found (users.db).");
                     }
-
-                    db.Close();
                 }
-                else
+                catch (Exception)
                 {
-                    MessageBox.Show("Database file not found.");
+                    // Por ejemplo, si users.db está dañado o no tiene la tabla users
+                    MessageBox.Show("Error reading the user database (users.db).");
                 }
             }
         }
