@@ -22,7 +22,7 @@ namespace AirTrafficSimForms
         }
 
         // recibe el vuelo del que se mostraran los datos
-        public void SetFlightPlan(FlightPlan vuelo)
+        public void SetVuelo(FlightPlan vuelo)
         {
             this.vuelo = vuelo;
             
@@ -45,8 +45,8 @@ namespace AirTrafficSimForms
 
 
             // Nombres de las columnas
-            dataGridView1.Columns[0].HeaderText = "Dato";
-            dataGridView1.Columns[1].HeaderText = "Valor";
+            dataGridView1.Columns[0].HeaderText = "Field";
+            dataGridView1.Columns[1].HeaderText = "Value";
 
             // Identificador
             dataGridView1.Rows[0].Cells[0].Value = "ID";
@@ -54,24 +54,24 @@ namespace AirTrafficSimForms
 
             // Compañía aérea
             dataGridView1.Rows[1].Cells[0].Value = "Airline";
-            dataGridView1.Rows[1].Cells[1].Value = vuelo.GetCompany();
+            dataGridView1.Rows[1].Cells[1].Value = vuelo.GetCompania();
 
             // Posición actual
             dataGridView1.Rows[2].Cells[0].Value = "Current X";
-            dataGridView1.Rows[2].Cells[1].Value = Convert.ToString(vuelo.GetCurrentPosition().GetX());
+            dataGridView1.Rows[2].Cells[1].Value = Convert.ToString(vuelo.GetPosicionActual().GetX());
 
             dataGridView1.Rows[3].Cells[0].Value = "Current Y";
-            dataGridView1.Rows[3].Cells[1].Value = Convert.ToString(vuelo.GetCurrentPosition().GetY());
+            dataGridView1.Rows[3].Cells[1].Value = Convert.ToString(vuelo.GetPosicionActual().GetY());
 
             // Posición final
             dataGridView1.Rows[4].Cells[0].Value = "Final X";
-            dataGridView1.Rows[4].Cells[1].Value = Convert.ToString(vuelo.GetFinalPosition().GetX());
+            dataGridView1.Rows[4].Cells[1].Value = Convert.ToString(vuelo.GetPosicionFinal().GetX());
 
             dataGridView1.Rows[5].Cells[0].Value = "Final Y";
-            dataGridView1.Rows[5].Cells[1].Value = Convert.ToString(vuelo.GetFinalPosition().GetY());
+            dataGridView1.Rows[5].Cells[1].Value = Convert.ToString(vuelo.GetPosicionFinal().GetY());
 
             // Velocidad
-            dataGridView1.Rows[6].Cells[0].Value = "Speed";
+            dataGridView1.Rows[6].Cells[0].Value = "Speed (km/h)";
             dataGridView1.Rows[6].Cells[1].Value = vuelo.GetVelocidad();
 
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -89,14 +89,14 @@ namespace AirTrafficSimForms
             dataGridView1.Rows[0].Cells[1].Value = vuelo.GetId();
 
             // Companyia
-            dataGridView1.Rows[1].Cells[1].Value = vuelo.GetCompany();
+            dataGridView1.Rows[1].Cells[1].Value = vuelo.GetCompania();
 
             // Posició actual
             dataGridView1.Rows[2].Cells[1].Value =
-                vuelo.GetCurrentPosition().GetX();
+                vuelo.GetPosicionActual().GetX().ToString("F2");
 
             dataGridView1.Rows[3].Cells[1].Value =
-                vuelo.GetCurrentPosition().GetY();
+                vuelo.GetPosicionActual().GetY().ToString("F2");
 
             // Velocitat
             dataGridView1.Rows[6].Cells[1].Value =

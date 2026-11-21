@@ -39,22 +39,22 @@ namespace FlightLib
             this.id = id;
         }
         // devuelve la posicion actual del vuelo
-        public Position GetCurrentPosition()
+        public Position GetPosicionActual()
         {
             return this.currentPosition;
         }
         // cambia la posicion actual (se usa en el undo)
-        public void SetCurrentPosition(Position currentPosition)
+        public void SetPosicionActual(Position currentPosition)
         {
             this.currentPosition = currentPosition;
         }
         // devuelve la posicion de destino
-        public Position GetFinalPosition()
+        public Position GetPosicionFinal()
         {
             return this.finalPosition;
         }
         // cambia la posicion de destino
-        public void SetFinalPosition(Position finalPosition)
+        public void SetPosicionFinal(Position finalPosition)
         {
             this.finalPosition = finalPosition;
         }
@@ -64,7 +64,7 @@ namespace FlightLib
             return this.velocity;
         }
         // devuelve la posicion inicial (la de cuando se cargo el vuelo)
-        public Position GetInitialPosition()
+        public Position GetPosicionInicial()
         {
             return this.initialPosition;
         }
@@ -73,7 +73,7 @@ namespace FlightLib
         // setter del atributo velocidad
         { this.velocity = velocidad; }
         // devuelve la compañia aerea
-        public string GetCompany()
+        public string GetCompania()
         {
             return this.company;
         }
@@ -124,7 +124,7 @@ namespace FlightLib
         {
             bool conflicto = false;
 
-            if (this.Distance(b) < distanciaSeguridad)
+            if (this.Distancia(b) < distanciaSeguridad)
             {
                 conflicto = true;
             }
@@ -288,13 +288,13 @@ namespace FlightLib
             Console.WriteLine("******************************");
         }
         // devuelve el vuelo a su posicion inicial
-        public void Restart()
+        public void Reiniciar()
         {
             this.currentPosition = new Position(this.initialPosition.GetX(), this.initialPosition.GetY());
 
         }
         // devuelve la distancia entre la posicion actual de este vuelo y la del vuelo plan
-        public double Distance(FlightPlan plan)
+        public double Distancia(FlightPlan plan)
         {
             return this.currentPosition.Distancia(plan.currentPosition);
         }

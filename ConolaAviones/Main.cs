@@ -14,7 +14,6 @@ namespace AirTrafficSimForms
     public partial class MainForm : Form
     {
         FlightPlanList flightplans = new FlightPlanList();
-        FlightDataForm F2;
         double cycleTime;
         double safetyDistance;
         bool settingsLoaded;
@@ -37,11 +36,11 @@ namespace AirTrafficSimForms
                 {
                     string nombreFichero = openFileDialog1.FileName;
 
-                    int resultado = flightplans.LoadFlightPlans(nombreFichero);
+                    int resultado = flightplans.CargarVuelos(nombreFichero);
 
                     if (resultado == 0)
                     {
-                        MessageBox.Show(flightplans.GetNumber() + " flights loaded successfully.");
+                        MessageBox.Show(flightplans.GetNumero() + " flights loaded successfully.");
                     }
                     else if (resultado == -1)
                     {
@@ -74,8 +73,8 @@ namespace AirTrafficSimForms
 
             if (settings.ShowDialog() == DialogResult.OK)
             {
-                cycleTime = settings.GetCycleTime();
-                safetyDistance = settings.GetSafetyDistance();
+                cycleTime = settings.GetTiempoCiclo();
+                safetyDistance = settings.GetDistanciaSeguridad();
                 settingsLoaded = true;
             }
         }
@@ -93,7 +92,7 @@ namespace AirTrafficSimForms
 
 
             // Comprobar que los dos Flight Plans existen
-            if (flightplans.GetNumber() == 0)
+            if (flightplans.GetNumero() == 0)
             {
                 MessageBox.Show("You must load the flight plans first.");
                 return;
@@ -101,7 +100,7 @@ namespace AirTrafficSimForms
 
             // Abrir el formulario de simulación
             SimulationForm F4 = new SimulationForm();
-            F4.SetInformation(flightplans, cycleTime, safetyDistance);
+            F4.SetInformacion(flightplans, cycleTime, safetyDistance);
             F4.ShowDialog();
         }
 
@@ -109,7 +108,7 @@ namespace AirTrafficSimForms
         private void AddFlightBtn_Click(object sender, EventArgs e)
         {
             AddFlightForm F5 = new AddFlightForm();
-            F5.SetFlightPlans(flightplans);
+            F5.SetVuelos(flightplans);
             F5.ShowDialog();
         }
     }

@@ -45,17 +45,17 @@ namespace AirTrafficSimForms
                 {
                     GestionUsuarios db = new GestionUsuarios(); //creem objecte
 
-                    if (db.Initialize())  //connexió amb base de datos
+                    if (db.Iniciar())  //connexió amb base de datos
                     {
-                        if (db.UserExists(username))     // comprobar si usuari existeix
+                        if (db.ExisteUsuario(username))     // comprobar si usuari existeix
                         {
                             MessageBox.Show("Username already exists.");
-                            db.Close();
+                            db.Cerrar();
                         }
                         else
                         {
-                            db.RegisterUser(username, password);
-                            db.Close();
+                            db.RegistrarUsuario(username, password);
+                            db.Cerrar();
                             MessageBox.Show("Account created successfully.");
                             this.Close();
                         }

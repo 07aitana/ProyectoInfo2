@@ -33,7 +33,7 @@ namespace AirTrafficSimForms
         }
 
         // recibe la lista de vuelos
-        public void SetFlightPlans(FlightPlanList flightplans)
+        public void SetVuelos(FlightPlanList flightplans)
         {
             this.flightplans = flightplans;
         }
@@ -57,7 +57,8 @@ namespace AirTrafficSimForms
                     return;
                 }
 
-                FlightPlan vuelo = flightplans.GetFlightPlan(filaseleccionada);
+                string id = Convert.ToString(vuelosGrid.Rows[filaseleccionada].Cells[0].Value);
+                FlightPlan vuelo = flightplans.BuscarVuelo(id);
 
                 vuelo.SetVelocidad(velocidad);
 
@@ -80,23 +81,23 @@ namespace AirTrafficSimForms
             vuelosGrid.ReadOnly = true;
 
             vuelosGrid.ColumnCount = 4;
-            vuelosGrid.RowCount = flightplans.GetNumber();
+            vuelosGrid.RowCount = flightplans.GetNumero();
 
             vuelosGrid.Columns[0].HeaderText = "Id";
             vuelosGrid.Columns[1].HeaderText = "Speed (km/h)";
             vuelosGrid.Columns[2].HeaderText = "X";
             vuelosGrid.Columns[3].HeaderText = "Y";
 
-            for (int i = 0; i < flightplans.GetNumber(); i++)
+            for (int i = 0; i < flightplans.GetNumero(); i++)
             {
-                FlightPlan vuelo = flightplans.GetFlightPlan(i);
+                FlightPlan vuelo = flightplans.GetVuelo(i);
 
                 vuelosGrid.Rows[i].Cells[0].Value = vuelo.GetId();
                 vuelosGrid.Rows[i].Cells[1].Value = vuelo.GetVelocidad();
                 vuelosGrid.Rows[i].Cells[2].Value =
-                    vuelo.GetCurrentPosition().GetX().ToString("F2");
+                    vuelo.GetPosicionActual().GetX().ToString("F2");
                 vuelosGrid.Rows[i].Cells[3].Value =
-                    vuelo.GetCurrentPosition().GetY().ToString("F2");
+                    vuelo.GetPosicionActual().GetY().ToString("F2");
             }
 
             vuelosGrid.ClearSelection();
@@ -108,6 +109,11 @@ namespace AirTrafficSimForms
             if (e.RowIndex >= 0)
             {
                 filaseleccionada = e.RowIndex;
+            }
+
+            else
+            {
+                MessageBox.Show("Please click on a flight, not on the header.");
             }
 
         }

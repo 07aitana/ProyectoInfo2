@@ -62,13 +62,13 @@ namespace AirTrafficSimForms
         }
 
         // devuelve la distancia de seguridad introducida
-        public double GetSafetyDistance()
+        public double GetDistanciaSeguridad()
         {
             return SafetyDistance;
         }
 
         // devuelve el tiempo de ciclo introducido
-        public double GetCycleTime()
+        public double GetTiempoCiclo()
         {
             return CycleTime;
         }

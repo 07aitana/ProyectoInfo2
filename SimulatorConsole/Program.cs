@@ -59,8 +59,8 @@ namespace AirTrafficSimConsole
 
                 FlightPlan plan_b= new FlightPlan(identificador, "Unknown", ix, iy, fx, fy, velocidad);
 
-                lista.AddFlightPlan(plan_a);
-                lista.AddFlightPlan(plan_b);
+                lista.AnadirVuelo(plan_a);
+                lista.AnadirVuelo(plan_b);
 
 
 
@@ -75,7 +75,7 @@ namespace AirTrafficSimConsole
                     lista.EscribeConsola();
                     lista.Mover(tiempoCiclo);
                     lista.EscribeConsola();
-                    if(lista.GetFlightPlan(0).Conflicto(lista.GetFlightPlan(1), distanciaSeguridad))
+                    if(lista.GetVuelo(0).Conflicto(lista.GetVuelo(1), distanciaSeguridad))
                     {
                         Console.WriteLine("Conflicto entre los aviones");
                     }

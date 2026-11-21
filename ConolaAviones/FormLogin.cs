@@ -42,10 +42,10 @@ namespace AirTrafficSimForms
                 {
                     GestionUsuarios db = new GestionUsuarios(); //nou objecte
 
-                    if (db.Initialize()) //connexio base de dades
+                    if (db.Iniciar()) //connexio base de dades
                     {
-                        loginCorrecto = db.LoginUser(username, password);
-                        db.Close();
+                        loginCorrecto = db.ComprobarLogin(username, password);
+                        db.Cerrar();
 
                         if (!loginCorrecto)
                         {

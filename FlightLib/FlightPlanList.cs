@@ -15,7 +15,7 @@ namespace FlightLib
 
         // Añade un vuelo a la lista.
         // Borramos el historial de Undo porque los pasos guardados ya no tienen el mismo número de aviones.
-        public int AddFlightPlan(FlightPlan p)
+        public int AnadirVuelo(FlightPlan p)
         {
             flightplans.Add(p);
             historial.Clear();
@@ -24,7 +24,7 @@ namespace FlightLib
 
 
         // devuelve el vuelo de la posicion i, o null si i no es valida
-        public FlightPlan GetFlightPlan(int i)
+        public FlightPlan GetVuelo(int i)
         {
             if (i < 0 || i >= flightplans.Count)
             {
@@ -37,14 +37,61 @@ namespace FlightLib
 
         }
 
+        // busca el vuelo por id
+        public FlightPlan BuscarVuelo(string id)
+        {
+            int i = 0;
+            while (i < flightplans.Count)
+            {
+                if (flightplans[i].GetId() == id)
+                {
+                    return flightplans[i];
+                }
+                i++;
+            }
+            return null;
+        }
+
+        // crea una lista nueva con la copia de cada vuelo
+        public FlightPlanList Copiar()
+        {
+            FlightPlanList copia = new FlightPlanList();
+
+            for (int i = 0; i < flightplans.Count; i++)
+            {
+                FlightPlan p = flightplans[i];
+
+                FlightPlan nuevo = new FlightPlan(
+                    p.GetId(),
+                    p.GetCompania(),
+                    p.GetPosicionActual().GetX(),
+                    p.GetPosicionActual().GetY(),
+                    p.GetPosicionFinal().GetX(),
+                    p.GetPosicionFinal().GetY(),
+                    p.GetVelocidad());
+
+                copia.AnadirVuelo(nuevo);
+            }
+
+            return copia;
+        }
+
+        public void CopiarVelocidades(FlightPlanList otra)
+        {
+            for (int i = 0; i < flightplans.Count; i++)
+            {
+                flightplans[i].SetVelocidad(otra.GetVuelo(i).GetVelocidad());
+            }
+        }
+
         // devuelve cuantos vuelos hay en la lista
-        public int GetNumber()
+        public int GetNumero()
         {
             return flightplans.Count;
         }
 
         // borra todos los vuelos de la lista
-        public void Clear()
+        public void Vaciar()
         {
             flightplans.Clear();
         }
@@ -61,8 +108,8 @@ namespace FlightLib
             // Guardamos una copia de la posición de cada avion para utlitzarlo en Stacks
             for (int k = 0; k < flightplans.Count; k++)
             {
-                double x = flightplans[k].GetCurrentPosition().GetX();
-                double y = flightplans[k].GetCurrentPosition().GetY();
+                double x = flightplans[k].GetPosicionActual().GetX();
+                double y = flightplans[k].GetPosicionActual().GetY();
                 historial.Push(new Position(x, y));
             }
 
@@ -94,7 +141,7 @@ namespace FlightLib
         // Devuelve: 0 si todo va bien, -1 si el fichero no existe, -2 si no contiene vuelos,
         // -3 si alguna línea es incorrecta y -4 si hay dos vuelos con el mismo ID.
         // Si hay algún error, la lista de vuelos que había antes no se modifica.
-        public int LoadFlightPlans(string nombreFichero)
+        public int CargarVuelos(string nombreFichero)
         {
             if (!File.Exists(nombreFichero))
             {
@@ -215,11 +262,11 @@ namespace FlightLib
         }
 
         // Reinicia todos los aviones
-        public void Restart()
+        public void Reiniciar()
         {
             for (int i = 0; i < flightplans.Count; i++)
             {
-                flightplans[i].Restart();
+                flightplans[i].Reiniciar();
             }
             historial.Clear();
         }
@@ -235,13 +282,13 @@ namespace FlightLib
             // Como stack saca al reves, lo recorremos del final al principio
             for (int i = flightplans.Count - 1; i >= 0; i--)
             {
-                flightplans[i].SetCurrentPosition(historial.Pop());
+                flightplans[i].SetPosicionActual(historial.Pop());
             }
             return true;
         }
 
         // Guarda la lista de vuelos en un fichero de texto
-        public void SaveFlightPlans(string nombreFichero)
+        public void GuardarVuelos(string nombreFichero)
         {
             StreamWriter w = new StreamWriter(nombreFichero);
 
@@ -251,11 +298,11 @@ namespace FlightLib
 
                 w.WriteLine("{0} {1} {2} {3} {4} {5} {6}",
                 p.GetId(),
-                p.GetCompany(),
-                p.GetCurrentPosition().GetX(),
-                p.GetCurrentPosition().GetY(),
-                p.GetFinalPosition().GetX(),
-                p.GetFinalPosition().GetY(),
+                p.GetCompania(),
+                p.GetPosicionActual().GetX(),
+                p.GetPosicionActual().GetY(),
+                p.GetPosicionFinal().GetX(),
+                p.GetPosicionFinal().GetY(),
                 p.GetVelocidad());
             }
             w.Close();

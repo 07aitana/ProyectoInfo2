@@ -78,12 +78,6 @@
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="FlightData.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FlightData.Designer.cs">
-      <DependentUpon>FlightData.cs</DependentUpon>
-    </Compile>
     <Compile Include="Settings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,9 +128,6 @@
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FlightData.resx">
-      <DependentUpon>FlightData.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
@@ -168,7 +159,6 @@
     </EmbeddedResource>
     <None Include="..\basedatos\users.db">
       <Link>users.db</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

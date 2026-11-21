@@ -14,9 +14,9 @@ namespace UserDatabase
     {
         SQLiteConnection cnx;
         // abre la conexion con users.db. devuelve false si el fichero no existe
-        public bool Initialize()
+        public bool Iniciar()
         {
-            string ruta = "users.db";
+            string ruta = "..\\..\\..\\basedatos\\users.db";
 
             if (File.Exists(ruta))
             {
@@ -33,12 +33,12 @@ namespace UserDatabase
 
         }
         // cierra la conexion con la base de datos
-        public void Close()
+        public void Cerrar()
         {
             cnx.Close();
         }
         // devuelve true si ya hay un usuario con ese nombre
-        public bool UserExists(string username)
+        public bool ExisteUsuario(string username)
         {
 
             DataTable dt = new DataTable(); //on guardarem els resultats
@@ -56,7 +56,7 @@ namespace UserDatabase
         }
         // Añade un usuario nuevo a la tabla users.
         // Devuelve true si se ha insertado y false en caso contrario.
-        public bool RegisterUser(string username, string password)
+        public bool RegistrarUsuario(string username, string password)
         {
             string sql = "INSERT INTO users (username, password) VALUES ('" + username + "', '" + password + "')";
 
@@ -70,7 +70,7 @@ namespace UserDatabase
         }
 
         // devuelve true si el usuario y la contraseña son correctos
-        public bool LoginUser(string username, string password)
+        public bool ComprobarLogin(string username, string password)
         {
             DataTable dt = new DataTable();
 

@@ -21,7 +21,7 @@ namespace AirTrafficSimForms
         }
 
         // recibe la lista de vuelos donde se añadira el vuelo nuevo
-        public void SetFlightPlans(FlightPlanList flightplans)
+        public void SetVuelos(FlightPlanList flightplans)
         {
             this.flightplans = flightplans;
         }
@@ -54,9 +54,9 @@ namespace AirTrafficSimForms
                     return;
                 }
                 // Comprobar que el vuelo no existe
-                for (int i = 0; i < flightplans.GetNumber(); i++)
+                for (int i = 0; i < flightplans.GetNumero(); i++)
                 {
-                    if (flightplans.GetFlightPlan(i).GetId() == id)
+                    if (flightplans.GetVuelo(i).GetId() == id)
                     {
                         MessageBox.Show("A flight with this ID already exists.");
                         return;
@@ -64,7 +64,7 @@ namespace AirTrafficSimForms
                 }
 
                 FlightPlan newFlight = new FlightPlan(id, company, x1, y1, x2, y2, speed);
-                flightplans.AddFlightPlan(newFlight);
+                flightplans.AnadirVuelo(newFlight);
                 MessageBox.Show("Flight added successfully");
                 IDBox.Clear();
                 CompanyBox.Clear();
