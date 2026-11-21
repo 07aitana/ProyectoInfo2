@@ -102,12 +102,6 @@
     <Compile Include="FlightDataGrid.Designer.cs">
       <DependentUpon>FlightDataGrid.cs</DependentUpon>
     </Compile>
-    <Compile Include="Distance.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Distance.Designer.cs">
-      <DependentUpon>Distance.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Velocity.cs">
@@ -139,9 +133,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FlightDataGrid.resx">
       <DependentUpon>FlightDataGrid.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Distance.resx">
-      <DependentUpon>Distance.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
