@@ -38,7 +38,7 @@ namespace AirTrafficSimConsole
                 double fx = Convert.ToDouble(trozos[0]);
                 double fy = Convert.ToDouble(trozos[1]);
 
-                FlightPlan plan_a = new FlightPlan(identificador, ix, iy, fx, fy, velocidad);
+                FlightPlan plan_a = new FlightPlan(identificador, "Unknown", ix, iy, fx, fy, velocidad);
 
                 Console.WriteLine("Escribe el identificador");
                 identificador = Console.ReadLine();
@@ -57,7 +57,7 @@ namespace AirTrafficSimConsole
                 fx = Convert.ToDouble(trozos[0]);
                 fy = Convert.ToDouble(trozos[1]);
 
-                FlightPlan plan_b= new FlightPlan(identificador, ix, iy, fx, fy, velocidad);
+                FlightPlan plan_b= new FlightPlan(identificador, "Unknown", ix, iy, fx, fy, velocidad);
 
                 lista.AddFlightPlan(plan_a);
                 lista.AddFlightPlan(plan_b);
