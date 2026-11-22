@@ -13,19 +13,18 @@ namespace AirTrafficSimForms
 {
     public partial class FormLogin : Form
     {
-        // constructor del formulario
+        // Sets up the login form.
         public FormLogin()
         {
             InitializeComponent();
         }
 
-        // Comprueba el usuario y la contraseña en la base de datos.
-        // Si son correctos, oculta el login y abre el menú principal.
+        // Checks the username and password and opens the main menu if they match (sender and e are unused).
         private void btnLogin_Click(object sender, EventArgs e)
         {
             string username = txtUsername.Text;
             string password = txtPassword.Text;
-            bool loginCorrecto = false;
+            bool loginSucceeded = false;
 
             if (username == "" || password == "")
             {
@@ -33,21 +32,21 @@ namespace AirTrafficSimForms
             }
             else if (username.Contains("'") || password.Contains("'"))
             {
-                // La comilla simple rompería la consulta SQL
+                // A single quote would break the quoted SQL value.
                 MessageBox.Show("The username and the password cannot contain the character '");
             }
             else
             {
                 try
                 {
-                    GestionUsuarios db = new GestionUsuarios(); //nou objecte
+                    GestionUsuarios db = new GestionUsuarios();
 
-                    if (db.Iniciar()) //connexio base de dades
+                    if (db.OpenConnection())
                     {
-                        loginCorrecto = db.ComprobarLogin(username, password);
-                        db.Cerrar();
+                        loginSucceeded = db.ValidateLogin(username, password);
+                        db.CloseConnection();
 
-                        if (!loginCorrecto)
+                        if (!loginSucceeded)
                         {
                             MessageBox.Show("Incorrect username or password.");
                         }
@@ -59,30 +58,26 @@ namespace AirTrafficSimForms
                 }
                 catch (Exception)
                 {
-                    // Por ejemplo, si users.db está dañado o no tiene la tabla users
                     MessageBox.Show("Error reading the user database (users.db).");
                 }
             }
 
-            if (loginCorrecto)
+            if (loginSucceeded)
             {
                 MessageBox.Show("Login successful.");
 
-                // Mientras el menú está abierto, el login queda oculto.
-                // Al cerrar el menú se cierra también el login y el programa termina.
                 this.Hide();
                 MainForm main = new MainForm();
                 main.ShowDialog();
                 this.Close();
             }
         }
-        
-        // abre el formulario para registrar un usuario nuevo
+
+        // Opens the sign-up form (sender and e are unused).
         private void btnRegister_Click(object sender, EventArgs e)
         {
             FormRegister register = new FormRegister();
             register.ShowDialog();
         }
-
     }
 }

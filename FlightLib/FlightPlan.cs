@@ -8,144 +8,144 @@ namespace FlightLib
 {
     public class FlightPlan
     {
-        // Atributos
-
-        string id; // identificador
-        string company; // compañia
-        Position currentPosition; // posicion actual
-        Position finalPosition; // posicion final
+        string id;
+        string company;
+        Position currentPosition;
+        Position finalPosition;
         Position initialPosition;
         double velocity;
 
-        // Constructures
-        public FlightPlan(string id, string company, double cpx, double cpy, double fpx, double fpy, double velocidad)
+        // Creates a flight with its id, company and speed in km/h.
+        // startX and startY give the start. destinationX and destinationY give the end.
+        public FlightPlan(string id, string company, double startX, double startY, double destinationX, double destinationY, double speed)
         {
             this.id = id;
             this.company = company;
-            this.currentPosition = new Position(cpx, cpy);
-            this.finalPosition = new Position(fpx, fpy);
-            this.initialPosition = new Position(cpx, cpy);
-            this.velocity = velocidad;
-
+            this.currentPosition = new Position(startX, startY);
+            this.finalPosition = new Position(destinationX, destinationY);
+            this.initialPosition = new Position(startX, startY);
+            this.velocity = speed;
         }
-        // devuelve el identificador del vuelo
+
+        // Returns the flight ID.
         public string GetId()
         {
             return this.id;
         }
-        // cambia el identificador del vuelo
+
+        // Changes the flight ID to id.
         public void SetId(string id)
         {
             this.id = id;
         }
-        // devuelve la posicion actual del vuelo
-        public Position GetPosicionActual()
+
+        // Returns where the flight is now.
+        public Position GetCurrentPosition()
         {
             return this.currentPosition;
         }
-        // cambia la posicion actual (se usa en el undo)
-        public void SetPosicionActual(Position currentPosition)
+
+        // Sets where the flight is now to currentPosition.
+        public void SetCurrentPosition(Position currentPosition)
         {
             this.currentPosition = currentPosition;
         }
-        // devuelve la posicion de destino
-        public Position GetPosicionFinal()
+
+        // Returns where the flight is heading.
+        public Position GetDestination()
         {
             return this.finalPosition;
         }
-        // cambia la posicion de destino
-        public void SetPosicionFinal(Position finalPosition)
+
+        // Sets the flight's destination to finalPosition.
+        public void SetDestination(Position finalPosition)
         {
             this.finalPosition = finalPosition;
         }
-        // devuelve la velocidad del vuelo (km/h)
-        public double GetVelocidad()
+
+        // Returns the flight speed in km/h.
+        public double GetSpeed()
         {
             return this.velocity;
         }
-        // devuelve la posicion inicial (la de cuando se cargo el vuelo)
-        public Position GetPosicionInicial()
+
+        // Returns where the flight started.
+        public Position GetInitialPosition()
         {
             return this.initialPosition;
         }
 
-        public void SetVelocidad(double velocidad)
-        // setter del atributo velocidad
-        { this.velocity = velocidad; }
-        // devuelve la compañia aerea
-        public string GetCompania()
+        // Changes the flight speed to speed in km/h.
+        public void SetSpeed(double speed)
+        {
+            this.velocity = speed;
+        }
+
+        // Returns the name of the airline.
+        public string GetAirline()
         {
             return this.company;
         }
 
-        // Metodos
-
-        public void Mover(double tiempo)
-        // Mueve el vuelo a la posición correspondiente a viajar durante el tiempo que se recibe como parámetro
+        // Moves the flight for elapsedMinutes, stopping at its destination.
+        public void Advance(double elapsedMinutes)
         {
-            //Calculamos la distancia recorrida en el tiempo dado
-            double distancia = tiempo * this.velocity / 60;
-            if (HaLlegado())
+            double distancia = elapsedMinutes * this.velocity / 60;
+            if (HasArrived())
             {
                 return;
             }
-            //Calculamos las razones trigonométricas
             double hipotenusa = Math.Sqrt((finalPosition.GetX() - currentPosition.GetX()) * (finalPosition.GetX() - currentPosition.GetX())
                 + (finalPosition.GetY() - currentPosition.GetY()) * (finalPosition.GetY() - currentPosition.GetY()));
             double coseno = (finalPosition.GetX() - currentPosition.GetX()) / hipotenusa;
             double seno = (finalPosition.GetY() - currentPosition.GetY()) / hipotenusa;
 
-            //Caculamos la nueva posición del vuelo
             double x = currentPosition.GetX() + distancia * coseno;
             double y = currentPosition.GetY() + distancia * seno;
 
-            //Modificacion del método para que el avión no se pase de su destino.
             Position nextPosition = new Position(x, y);
 
-            if (currentPosition.Distancia(nextPosition) < hipotenusa)
+            if (currentPosition.DistanceTo(nextPosition) < hipotenusa)
                 currentPosition = nextPosition;
             else
                 currentPosition = finalPosition;
         }
-        //Método que nos dice si el vuelo ha llegado a su destino o no, comparando las coordenadas
-        //de la posición actual con las de la posición final
-        public bool HaLlegado()
+
+        // Returns true if the flight is at its destination.
+        public bool HasArrived()
         {
-            bool resultado = false;
+            bool result = false;
             if (currentPosition.GetX() == finalPosition.GetX() && currentPosition.GetY() == finalPosition.GetY())
             {
-                resultado = true;
+                result = true;
             }
-            return resultado;
+            return result;
         }
 
-        // retorna true si el vuelo actual y el vuelo b están en conflicto, es decir, si la distancia entre ellos es menor que la distancia de seguridad
-        public bool Conflicto(FlightPlan b, double distanciaSeguridad)
+        // Returns true if flight b is closer than safetyDistance (km) right now.
+        public bool IsInConflictWith(FlightPlan b, double safetyDistance)
         {
             bool conflicto = false;
 
-            if (this.Distancia(b) < distanciaSeguridad)
+            if (this.DistanceTo(b) < safetyDistance)
             {
                 conflicto = true;
             }
             return conflicto;
         }
 
-        // calcula si este vuelo y el vuelo b se van a acercar mas que la distancia de seguridad
-        // en algun momento de la simulacion (true si habra conflicto)
-        public bool HabraConflicto(FlightPlan b, double distanciaSeguridad)
+        // Returns true if flight b will come closer than safetyDistance (km) at current speeds.
+        public bool WillConflictWith(FlightPlan b, double safetyDistance)
         {
-            // Posiciones actuales
             double x1 = currentPosition.GetX();
             double y1 = currentPosition.GetY();
             double x2 = b.currentPosition.GetX();
             double y2 = b.currentPosition.GetY();
 
-            // Distancias hasta los destinos
-            double d1 = currentPosition.Distancia(finalPosition);
-            double d2 = b.currentPosition.Distancia(b.finalPosition);
+            double d1 = currentPosition.DistanceTo(finalPosition);
+            double d2 = b.currentPosition.DistanceTo(b.finalPosition);
 
-            // Componentes de velocidad (km/min)
+            // Velocity components in kilometers per minute.
             double vx1 = 0;
             double vy1 = 0;
             double vx2 = 0;
@@ -163,7 +163,6 @@ namespace FlightLib
                 vy2 = b.velocity / 60 * (b.finalPosition.GetY() - y2) / d2;
             }
 
-            // Tiempo que tarda cada avión en llegar (minutos)
             double t1 = 0;
             double t2 = 0;
 
@@ -173,36 +172,35 @@ namespace FlightLib
             if (d2 > 0 && b.velocity > 0)
                 t2 = d2 / (b.velocity / 60);
 
-            // Diferencias de posición y velocidad
             double dx = x1 - x2;
             double dy = y1 - y2;
             double dvx = vx1 - vx2;
             double dvy = vy1 - vy2;
 
-            // Instante de mínima distancia por derivación
-            double denominador = dvx * dvx + dvy * dvy;
+            // Find when the two planes are closest.
+            double relativeSpeedSquared = dvx * dvx + dvy * dvy;
             double tMin = 0;
 
-            if (denominador > 0)
-                tMin = -(dx * dvx + dy * dvy) / denominador;
+            if (relativeSpeedSquared > 0)
+                tMin = -(dx * dvx + dy * dvy) / relativeSpeedSquared;
 
-            // Limitar al intervalo en el que ambos se mueven
-            double tFin = Math.Min(t1, t2);
+            // Only look at the time before the first plane lands.
+            double firstArrivalTime = Math.Min(t1, t2);
 
             if (tMin < 0)
                 tMin = 0;
 
-            if (tMin > tFin)
-                tMin = tFin;
+            if (tMin > firstArrivalTime)
+                tMin = firstArrivalTime;
 
-            double distanciaMin = Math.Sqrt(
+            double minimumDistance = Math.Sqrt(
                 (dx + dvx * tMin) * (dx + dvx * tMin) +
                 (dy + dvy * tMin) * (dy + dvy * tMin));
 
-            if (distanciaMin < distanciaSeguridad)
+            if (minimumDistance < safetyDistance)
                 return true;
 
-            // Si el primer avión llega antes, queda parado
+            // After one plane lands, check how close the other comes to it.
             if (t1 < t2)
             {
                 double xParado = finalPosition.GetX();
@@ -230,12 +228,11 @@ namespace FlightLib
                     (rx - vx2 * t) * (rx - vx2 * t) +
                     (ry - vy2 * t) * (ry - vy2 * t));
 
-                if (distancia < distanciaSeguridad)
+                if (distancia < safetyDistance)
                     return true;
             }
             else if (t2 < t1)
             {
-                // Si el segundo avión llega antes
                 double xParado = b.finalPosition.GetX();
                 double yParado = b.finalPosition.GetY();
 
@@ -261,43 +258,41 @@ namespace FlightLib
                     (rx + vx1 * t) * (rx + vx1 * t) +
                     (ry + vy1 * t) * (ry + vy1 * t));
 
-                if (distancia < distanciaSeguridad)
+                if (distancia < safetyDistance)
                     return true;
             }
 
-            // Comprobar las posiciones finales
-            if (finalPosition.Distancia(b.finalPosition) < distanciaSeguridad)
+            if (finalPosition.DistanceTo(b.finalPosition) < safetyDistance)
                 return true;
 
             return false;
         }
 
-        public void EscribeConsola()
-        // escribe en consola los datos del plan de vuelo
+        // Prints the flight details.
+        public void PrintToConsole()
         {
             Console.WriteLine("******************************");
             Console.WriteLine("Datos del vuelo: ");
             Console.WriteLine("Identificador: {0}", id);
             Console.WriteLine("Compañía aérea: {0}", company);
 
-            // Escribe lso datos reales tanto de la posición como de la velocidad con dos decimales
             Console.WriteLine("Velocidad: {0:F2}", velocity);
             Console.WriteLine("Posición actual: ({0:F2},{1:F2})", currentPosition.GetX(), currentPosition.GetY());
-            if (this.HaLlegado())
+            if (this.HasArrived())
                 Console.WriteLine("El vuelo ha llegado a su destino");
             Console.WriteLine("******************************");
         }
-        // devuelve el vuelo a su posicion inicial
-        public void Reiniciar()
+
+        // Moves the flight back to its starting point.
+        public void Reset()
         {
             this.currentPosition = new Position(this.initialPosition.GetX(), this.initialPosition.GetY());
-
         }
-        // devuelve la distancia entre la posicion actual de este vuelo y la del vuelo plan
-        public double Distancia(FlightPlan plan)
+
+        // Returns the distance in km from this flight to plan using their current positions.
+        public double DistanceTo(FlightPlan plan)
         {
-            return this.currentPosition.Distancia(plan.currentPosition);
+            return this.currentPosition.DistanceTo(plan.currentPosition);
         }
     }
-
 }

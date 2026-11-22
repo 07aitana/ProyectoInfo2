@@ -13,28 +13,27 @@ namespace AirTrafficSimForms
 {
     public partial class FlightDataGridForm : Form
     {
-        FlightPlanList flightplans;
+        FlightPlanList flightPlans;
 
-        // constructor del formulario
+        // Sets up the flight table form.
         public FlightDataGridForm()
         {
             InitializeComponent();
-            
         }
 
-        // recibe la lista de vuelos que se mostrara
-        public void SetVuelos(FlightPlanList flightplans)
+        // Sets the flightPlans to show in the table.
+        public void SetFlightPlans(FlightPlanList flightPlans)
         {
-            this.flightplans = flightplans;
+            this.flightPlans = flightPlans;
         }
 
-        // rellena la tabla con los datos de todos los vuelos
-        private void Form6_Load(object sender, EventArgs e)
+        // Fills the table with the flights and their current positions (sender and e are unused).
+        private void FlightData_Load(object sender, EventArgs e)
         {
             vuelosGrid.AllowUserToAddRows = false;
 
             vuelosGrid.ColumnCount = 5;
-            vuelosGrid.RowCount = flightplans.GetNumero();
+            vuelosGrid.RowCount = flightPlans.GetFlightCount();
 
             vuelosGrid.Columns[0].HeaderText = "Id";
             vuelosGrid.Columns[1].HeaderText = "Airline";
@@ -42,21 +41,21 @@ namespace AirTrafficSimForms
             vuelosGrid.Columns[3].HeaderText = "X";
             vuelosGrid.Columns[4].HeaderText = "Y";
 
-            for (int i = 0; i < flightplans.GetNumero(); i++)
+            for (int i = 0; i < flightPlans.GetFlightCount(); i++)
             {
-                FlightPlan vuelo = flightplans.GetVuelo(i);
+                FlightPlan flight = flightPlans.GetFlightPlan(i);
 
-                vuelosGrid.Rows[i].Cells[0].Value = vuelo.GetId();
-                vuelosGrid.Rows[i].Cells[1].Value = vuelo.GetCompania();
-                vuelosGrid.Rows[i].Cells[2].Value = vuelo.GetVelocidad();
-                vuelosGrid.Rows[i].Cells[3].Value = vuelo.GetPosicionActual().GetX().ToString("F2");
-                vuelosGrid.Rows[i].Cells[4].Value = vuelo.GetPosicionActual().GetY().ToString("F2");
+                vuelosGrid.Rows[i].Cells[0].Value = flight.GetId();
+                vuelosGrid.Rows[i].Cells[1].Value = flight.GetAirline();
+                vuelosGrid.Rows[i].Cells[2].Value = flight.GetSpeed();
+                vuelosGrid.Rows[i].Cells[3].Value = flight.GetCurrentPosition().GetX().ToString("F2");
+                vuelosGrid.Rows[i].Cells[4].Value = flight.GetCurrentPosition().GetY().ToString("F2");
             }
 
             vuelosGrid.ClearSelection();
         }
 
-        // al clicar un vuelo muestra su distancia a todos los demas
+        // Uses the row in e to show distances from that flight to the others (sender is unused).
         private void vuelosGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
@@ -66,28 +65,28 @@ namespace AirTrafficSimForms
             }
 
             string id = Convert.ToString(vuelosGrid.Rows[e.RowIndex].Cells[0].Value);
-            FlightPlan vuelo1 = flightplans.BuscarVuelo(id);
+            FlightPlan vuelo1 = flightPlans.FindFlightById(id);
 
-            string mensaje = "Distances from flight " + vuelo1.GetId() + ":\n\n"; //missatge amb el vol seleccionat
+            string message = "Distances from flight " + vuelo1.GetId() + ":\n\n";
 
-            for (int i = 0; i < flightplans.GetNumero(); i++)
+            for (int i = 0; i < flightPlans.GetFlightCount(); i++)
             {
-                FlightPlan vuelo2 = flightplans.GetVuelo(i);
+                FlightPlan vuelo2 = flightPlans.GetFlightPlan(i);
 
                 if (vuelo2.GetId() != vuelo1.GetId())
                 {
-                    double distancia = vuelo1.Distancia(vuelo2);
+                    double distancia = vuelo1.DistanceTo(vuelo2);
 
-                    mensaje += vuelo2.GetId() + ": " + distancia.ToString("F2") + "\n"; //agegim al missatge la distancia entre ells per cada vol, un a un
+                    message += vuelo2.GetId() + ": " + distancia.ToString("F2") + "\n";
                 }
             }
 
-            MessageBox.Show(mensaje, "Flight distances");
-
+            MessageBox.Show(message, "Flight distances");
         }
 
-        // cierra el formulario
-        private void button1_Click(object sender, EventArgs e)
+        // Closes the flight table (sender and e are unused).
+        
+        private void CloseBtn_Click(object sender, EventArgs e)
         {
             this.Close();
         }

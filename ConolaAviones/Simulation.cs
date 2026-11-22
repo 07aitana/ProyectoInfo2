@@ -6,56 +6,51 @@ using FlightLib;
 namespace AirTrafficSimForms
 {
     public partial class SimulationForm : Form
-
     {
-        FlightPlanList flightplans;
-
+        FlightPlanList flightPlans;
         double CycleTime;
         double SafetyDistance;
-
         double minX;
         double maxX;
         double minY;
         double maxY;
+        bool predictedConflictsChecked = false;
+        bool separationAlertShown = false;
 
-        
-
-        bool conflictoComprobado = false; // para comprobar los conflictos solo antes de empezar a simular
-        bool alarmaMostrada = false; // para que el aviso salga solo una vez
-
-        // constructor del formulario
+        // Sets up the simulation form.
         public SimulationForm()
         {
             InitializeComponent();
         }
 
-        // recibe la lista de vuelos, el tiempo de ciclo y la distancia de seguridad
-        public void SetInformacion(FlightPlanList flightplans, double cycleTime, double safetyDistance)
+        // Sets the flightPlans to run, the cycleTime in minutes and the safetyDistance in km.
+        // Works out how much space the drawing needs.
+        public void ConfigureSimulation(FlightPlanList flightPlans, double cycleTime, double safetyDistance)
         {
-            this.flightplans = flightplans;
+            this.flightPlans = flightPlans;
             this.CycleTime = cycleTime;
             this.SafetyDistance = safetyDistance;
 
-            CalcularLimites();
-            
+            CalculateDrawingBounds();
         }
-        // calcula las coordenadas minimas y maximas de todos los vuelos para escalar el dibujo
-        private void CalcularLimites()
+
+        // Finds how much space is needed to draw all the routes and safety circles.
+        private void CalculateDrawingBounds()
         {
             minX = double.MaxValue;
             maxX = double.MinValue;
             minY = double.MaxValue;
             maxY = double.MinValue;
 
-            for (int i = 0; i < flightplans.GetNumero(); i++)
+            for (int i = 0; i < flightPlans.GetFlightCount(); i++)
             {
-                FlightPlan vuelo = flightplans.GetVuelo(i);
+                FlightPlan flight = flightPlans.GetFlightPlan(i);
 
-                double xInicial = vuelo.GetPosicionInicial().GetX();
-                double yInicial = vuelo.GetPosicionInicial().GetY();
+                double xInicial = flight.GetInitialPosition().GetX();
+                double yInicial = flight.GetInitialPosition().GetY();
 
-                double xFinal = vuelo.GetPosicionFinal().GetX();
-                double yFinal = vuelo.GetPosicionFinal().GetY();
+                double xFinal = flight.GetDestination().GetX();
+                double yFinal = flight.GetDestination().GetY();
 
                 minX = Math.Min(minX, Math.Min(xInicial, xFinal));
                 maxX = Math.Max(maxX, Math.Max(xInicial, xFinal));
@@ -64,13 +59,13 @@ namespace AirTrafficSimForms
                 maxY = Math.Max(maxY, Math.Max(yInicial, yFinal));
             }
 
-            double radioSeguridad = SafetyDistance / 2;
+            double SecurutyRadio = SafetyDistance / 2;
 
-            minX = minX - radioSeguridad;
-            maxX = maxX + radioSeguridad;
+            minX = minX - SecurutyRadio;
+            maxX = maxX + SecurutyRadio;
 
-            minY = minY - radioSeguridad;
-            maxY = maxY + radioSeguridad;
+            minY = minY - SecurutyRadio;
+            maxY = maxY + SecurutyRadio;
 
             if (maxX == minX)
             {
@@ -83,17 +78,16 @@ namespace AirTrafficSimForms
             }
         }
 
-        // dibuja el espacio aereo: trayectorias, circulos de seguridad y aviones
+        // Uses e.Graphics to draw the routes, planes and safety circles (sender is unused).
         private void panelAirspace_Paint(object sender, PaintEventArgs e)
         {
-            if (flightplans == null || flightplans.GetNumero() == 0)
+            if (flightPlans == null || flightPlans.GetFlightCount() == 0)
             {
                 return;
             }
 
             Graphics g = e.Graphics;
 
-            // Dibujar borde del espacio aéreo
             Pen pen = new Pen(Color.Black, 2);
             g.DrawRectangle(
                 pen,
@@ -103,86 +97,72 @@ namespace AirTrafficSimForms
                 panelAirspace.Height - 20
             );
 
-            // Márgenes
-            double margen = 40;
+            double margin = 40;
 
-            double ancho = panelAirspace.Width - 2 * margen;
-            double alto = panelAirspace.Height - 2 * margen;
+            double width = panelAirspace.Width - 2 * margin;
+            double height = panelAirspace.Height - 2 * margin;
 
-            // De coordenadas reales a píxeles
-            double escalaX = ancho / (maxX - minX);
-            double escalaY = alto / (maxY - minY);
-            double escala = Math.Min(escalaX, escalaY);
+            double scaleX = width / (maxX - minX);
+            double scaleY = height / (maxY - minY);
+            double scale = Math.Min(scaleX, scaleY);
 
-            // Radio de los círculos de seguridad
-            int radio = Convert.ToInt32(SafetyDistance / 2 * escala);
+            // Each circle has half the safety distance as its radius.
+            int radius = Convert.ToInt32(SafetyDistance / 2 * scale);
 
-            // Recorrer todos los aviones
-            for (int i = 0; i < flightplans.GetNumero(); i++)
+            for (int i = 0; i < flightPlans.GetFlightCount(); i++)
             {
-                FlightPlan vuelo = flightplans.GetVuelo(i);
+                FlightPlan flight = flightPlans.GetFlightPlan(i);
 
-                // Obtener posición inicial
-                double xInicial = vuelo.GetPosicionInicial().GetX();
-                double yInicial = vuelo.GetPosicionInicial().GetY();
+                double xInicial = flight.GetInitialPosition().GetX();
+                double yInicial = flight.GetInitialPosition().GetY();
 
+                double x = flight.GetCurrentPosition().GetX();
+                double y = flight.GetCurrentPosition().GetY();
 
-                // Obtener posición actual
-                double x = vuelo.GetPosicionActual().GetX();
-                double y = vuelo.GetPosicionActual().GetY();
+                // Flip Y because screen coordinates increase from top to bottom.
+                int pxInicial = Convert.ToInt32(margin + (xInicial - minX) * scale);
+                int pyInicial = Convert.ToInt32(margin + (maxY - yInicial) * scale);
 
-                // Convertir posición inicial a píxeles
-                int pxInicial = Convert.ToInt32(margen + (xInicial - minX) * escala);
-                int pyInicial = Convert.ToInt32(margen + (maxY - yInicial) * escala);
+                int px = Convert.ToInt32(margin + (x - minX) * scale);
+                int py = Convert.ToInt32(margin + (maxY - y) * scale);
 
-                // Convertir posición actual a píxeles
-                int px = Convert.ToInt32(margen + (x - minX) * escala);
-                int py = Convert.ToInt32(margen + (maxY - y) * escala);
+                double xFinal = flight.GetDestination().GetX();
+                double yFinal = flight.GetDestination().GetY();
 
-                // Obtener posición final
-                double xFinal = vuelo.GetPosicionFinal().GetX();
-                double yFinal = vuelo.GetPosicionFinal().GetY();
+                int pxFinal = Convert.ToInt32(margin + (xFinal - minX) * scale);
+                int pyFinal = Convert.ToInt32(margin + (maxY - yFinal) * scale);
 
-                // Convertir posición final a píxeles
-                int pxFinal = Convert.ToInt32(margen + (xFinal - minX) * escala);
-                int pyFinal = Convert.ToInt32(margen + (maxY - yFinal) * escala);
+                Pen traveledPathPen = new Pen(Color.Black, 2);
+                g.DrawLine(traveledPathPen, pxInicial, pyInicial, px, py);
+                Pen remainingPathPen = new Pen(Color.Blue, 2);
+                g.DrawLine(remainingPathPen, px, py, pxFinal, pyFinal);
 
-                // Dibujar trayectoria
-                Pen penRecorrida = new Pen(Color.Black, 2);
-                g.DrawLine(penRecorrida, pxInicial, pyInicial, px, py);
-                Pen penPendiente = new Pen(Color.Blue, 2);
-                g.DrawLine(penPendiente, px, py, pxFinal, pyFinal);
+                Color separationColor = Color.Green;
 
-                // Comprobar si el avión está en conflicto
-                Color colorSeguridad = Color.Green;
-
-                for (int j = 0; j < flightplans.GetNumero(); j++)
+                for (int j = 0; j < flightPlans.GetFlightCount(); j++)
                 {
                     if (i != j)
                     {
-                        FlightPlan otroVuelo = flightplans.GetVuelo(j);
+                        FlightPlan otherFlight = flightPlans.GetFlightPlan(j);
 
-                        if (vuelo.Conflicto(otroVuelo, SafetyDistance))
+                        if (flight.IsInConflictWith(otherFlight, SafetyDistance))
                         {
-                            colorSeguridad = Color.Red;
+                            separationColor = Color.Red;
                         }
                     }
                 }
 
-                // Dibujar círculo de seguridad
-                Pen penSafety = new Pen(colorSeguridad, 2);
+                Pen penSafety = new Pen(separationColor, 2);
                 g.DrawEllipse(
                     penSafety,
-                    px - radio,
-                    py - radio,
-                    radio * 2,
-                    radio * 2
+                    px - radius,
+                    py - radius,
+                    radius * 2,
+                    radius * 2
                 );
 
-                // Comprobar si el avión ha llegado
-                if (vuelo.HaLlegado())
+                if (flight.HasArrived())
                 {
-                    // Dibujar avión en verde
                     g.FillEllipse(
                         Brushes.Green,
                         px - 7,
@@ -192,7 +172,7 @@ namespace AirTrafficSimForms
                     );
 
                     g.DrawString(" "+
-                        vuelo.GetId() + " (ARRIVED)",
+                        flight.GetId() + " (ARRIVED)",
                         this.Font,
                         Brushes.Green,
                         px + 10,
@@ -201,7 +181,6 @@ namespace AirTrafficSimForms
                 }
                 else
                 {
-                    // Dibujar avión en azul
                     g.FillEllipse(
                         Brushes.Blue,
                         px - 7,
@@ -211,7 +190,7 @@ namespace AirTrafficSimForms
                     );
 
                     g.DrawString(" "+
-                        vuelo.GetId(),
+                        flight.GetId(),
                         this.Font,
                         Brushes.Blue,
                         px + 10,
@@ -220,101 +199,103 @@ namespace AirTrafficSimForms
                 }
             }
         }
-        // mueve los aviones un ciclo y redibuja
+
+        // Moves the flights one step and warns if they get too close (sender and e are unused).
         private void btnmove_Click(object sender, EventArgs e)
         {
-            ComprobarConflictosAntes();
+            CheckForPredictedConflicts();
 
-            flightplans.Mover(CycleTime);
+            flightPlans.Advance(CycleTime);
 
             panelAirspace.Invalidate();
 
-            ComprobarAlarma();
+            CheckSeparationAlert();
         }
-        // empieza la simulacion automatica. la primera vez avisa si va a haber conflictos
+
+        // Checks for future conflicts and starts the timer (sender and e are unused).
         private void btnStart_Click(object sender, EventArgs e)
         {
-            ComprobarConflictosAntes();
+            CheckForPredictedConflicts();
 
             timer1.Interval = 1000;
             timer1.Start();
         }
 
-        // antes de empezar a simular (solo la primera vez) comprueba si habra conflicto
-        private void ComprobarConflictosAntes()
+        // Checks once for future conflicts and offers to change speeds if needed.
+        private void CheckForPredictedConflicts()
         {
-            if (!conflictoComprobado)
+            if (!predictedConflictsChecked)
             {
-                conflictoComprobado = true;
+                predictedConflictsChecked = true;
 
-                if (flightplans.HabraConflictos(SafetyDistance))
+                if (flightPlans.HasPredictedConflicts(SafetyDistance))
                 {
-                    DialogResult respuesta = MessageBox.Show(
+                    DialogResult answer = MessageBox.Show(
                         "The flights will be in conflict. Do you want to solve it?",
                         "Conflict detected",
                         MessageBoxButtons.YesNo);
 
-                    if (respuesta == DialogResult.Yes)
+                    if (answer == DialogResult.Yes)
                     {
-                        ResolverConflicto();
+                        OfferConflictResolution();
                     }
                 }
             }
         }
 
-        // para la simulacion automatica
+        // Stops the timer to pause the simulation (sender and e are unused).
         private void btnStop_Click(object sender, EventArgs e)
         {
             timer1.Stop();
         }
 
-        // cada tick mueve los aviones un ciclo; si todos han llegado para el timer
+        // Moves the flights one step and stops the timer when all have arrived (sender and e are unused).
         private void timer1_Tick(object sender, EventArgs e)
         {
-            flightplans.Mover(CycleTime);
+            flightPlans.Advance(CycleTime);
 
             panelAirspace.Invalidate();
 
-            ComprobarAlarma();
+            CheckSeparationAlert();
 
-            if (flightplans.TodosHanLlegado())
+            if (flightPlans.AllFlightsHaveArrived())
             {
                 timer1.Stop();
                 MessageBox.Show("The simulation has finished");
             }
         }
 
-        // abre la tabla con los datos de todos los vuelos
+        // Opens the flight table (sender and e are unused).
         private void btnData_Click(object sender, EventArgs e)
         {
-            FlightDataGridForm f6 = new FlightDataGridForm();
+            FlightDataGridForm flightDataForm = new FlightDataGridForm();
 
-            f6.SetVuelos(flightplans);
+            flightDataForm.SetFlightPlans(flightPlans);
 
-            f6.Show();
+            flightDataForm.Show();
         }
 
-        // si se clica encima de un avion abre el formulario con su informacion
+        // Uses the click position in e to open details for a nearby plane (sender is unused).
         private void panelAirspace_MouseClick(object sender, MouseEventArgs e)
         {
-            double margen = 40;
+            double margin = 40;
 
-            double ancho = panelAirspace.Width - 2 * margen;
-            double alto = panelAirspace.Height - 2 * margen;
+            double width = panelAirspace.Width - 2 * margin;
+            double height = panelAirspace.Height - 2 * margin;
 
-            double escalaX = ancho / (maxX - minX);
-            double escalaY = alto / (maxY - minY);
-            double escala = Math.Min(escalaX, escalaY);
+            double scaleX = width / (maxX - minX);
+            double scaleY = height / (maxY - minY);
+            double scale = Math.Min(scaleX, scaleY);
 
-            for (int i = 0; i < flightplans.GetNumero(); i++)
+            for (int i = 0; i < flightPlans.GetFlightCount(); i++)
             {
-                FlightPlan vuelo = flightplans.GetVuelo(i);
+                FlightPlan flight = flightPlans.GetFlightPlan(i);
 
-                double x = vuelo.GetPosicionActual().GetX();
-                double y = vuelo.GetPosicionActual().GetY();
+                double x = flight.GetCurrentPosition().GetX();
+                double y = flight.GetCurrentPosition().GetY();
 
-                int px = Convert.ToInt32(margen + (x - minX) * escala);
-                int py = Convert.ToInt32(margen + (maxY - y) * escala);
+                int px = Convert.ToInt32(margin + (x - minX) * scale);
+                int py = Convert.ToInt32(margin + (maxY - y) * scale);
 
                 double distancia = Math.Sqrt(
                     Math.Pow(e.X - px, 2) +
@@ -323,18 +304,18 @@ namespace AirTrafficSimForms
 
                 if (distancia < 15)
                 {
-                    AircraftInformationForm F5 = new AircraftInformationForm();
-                    F5.SetVuelo(vuelo);
-                    F5.Show();
+                    AircraftInformationForm aircraftInformationForm = new AircraftInformationForm();
+                    aircraftInformationForm.SetFlightPlan(flight);
+                    aircraftInformationForm.Show();
                     return;
                 }
             }
         }
 
-        // dice si los vuelos van a entrar en conflicto o no
+        // Shows whether any flights will get too close (sender and e are unused).
         private void btnCheck_Click(object sender, EventArgs e)
         {
-            if (flightplans.HabraConflictos(SafetyDistance))
+            if (flightPlans.HasPredictedConflicts(SafetyDistance))
             {
                 MessageBox.Show("The flights WILL be in conflict.");
             }
@@ -344,60 +325,55 @@ namespace AirTrafficSimForms
             }
         }
 
-        // abre el formulario para cambiar la velocidad de un vuelo y redibuja
+        // Opens the speed editor and resets the conflict checks when it closes (sender and e are unused).
         private void ChangeVelocityBtn_Click(object sender, EventArgs e)
         {
             Velocity velocityForm = new Velocity();
 
-            velocityForm.SetVuelos(flightplans);
+            velocityForm.SetFlightPlans(flightPlans);
             velocityForm.ShowDialog();
 
-            
-
-            conflictoComprobado = false;
-            alarmaMostrada = false;
+            predictedConflictsChecked = false;
+            separationAlertShown = false;
 
             panelAirspace.Invalidate();
         }
 
-
-        // Baja la velocidad del vuelo 2 un 10% cada vez hasta que no haya conflicto.
-        private void ResolverConflicto()
+        // Tries new speeds on a copy and applies them if the user agrees.
+        private void OfferConflictResolution()
         {
-            FlightPlanList proposta = flightplans.Copiar();
+            FlightPlanList proposedFlights = flightPlans.Copy();
 
-            if (proposta.ResolverConflictos(SafetyDistance))
+            if (proposedFlights.TryResolveConflicts(SafetyDistance))
             {
-                // Mensaje con los vuelos a los que les cambia la velocidad
-                string mensaje = "Recommended speeds:\n\n";
+                string message = "Recommended speeds:\n\n";
 
-                for (int a = 0; a < flightplans.GetNumero(); a++)
+                for (int a = 0; a < flightPlans.GetFlightCount(); a++)
                 {
-                    FlightPlan original = flightplans.GetVuelo(a);
-                    FlightPlan nova = proposta.GetVuelo(a);
+                    FlightPlan original = flightPlans.GetFlightPlan(a);
+                    FlightPlan updatedFlight = proposedFlights.GetFlightPlan(a);
 
-                    if (original.GetVelocidad() != nova.GetVelocidad())
+                    if (original.GetSpeed() != updatedFlight.GetSpeed())
                     {
-                        mensaje += "Flight: " + original.GetId() + "\n";
-                        mensaje += "Old speed: " + original.GetVelocidad() + "\n";
-                        mensaje += "New speed: " + nova.GetVelocidad() + "\n\n";
+                        message += "Flight: " + original.GetId() + "\n";
+                        message += "Old speed: " + original.GetSpeed() + "\n";
+                        message += "New speed: " + updatedFlight.GetSpeed() + "\n\n";
                     }
                 }
 
-                mensaje += "Do you want to apply these changes?";
+                message += "Do you want to apply these changes?";
 
-                DialogResult respuesta = MessageBox.Show(
-                    mensaje,
+                DialogResult answer = MessageBox.Show(
+                    message,
                     "Speed recommendations",
                     MessageBoxButtons.YesNo
                 );
 
-                if (respuesta == DialogResult.Yes)
+                if (answer == DialogResult.Yes)
                 {
-                    // Aplicamos las velocidades propuestas a los vuelos reales
-                    flightplans.CopiarVelocidades(proposta);
+                    flightPlans.CopySpeedsFrom(proposedFlights);
 
-                    if (!flightplans.HabraConflictos(SafetyDistance))
+                    if (!flightPlans.HasPredictedConflicts(SafetyDistance))
                     {
                         MessageBox.Show("Speed changes applied. Conflicts solved.");
                     }
@@ -419,14 +395,14 @@ namespace AirTrafficSimForms
             }
         }
 
-        // Avisa al usuario (una sola vez) cuando los vuelos están demasiado cerca
-        private void ComprobarAlarma()
+        // Pauses and warns once each time flights get too close.
+        private void CheckSeparationAlert()
         {
-            if (flightplans.HayConflictoActual(SafetyDistance)) //si hi ha conflicte alarma es mostra sino es torna a false
+            if (flightPlans.HasCurrentConflicts(SafetyDistance))
             {
-                if (!alarmaMostrada)
+                if (!separationAlertShown)
                 {
-                    alarmaMostrada = true;
+                    separationAlertShown = true;
 
                     timer1.Stop();
 
@@ -437,25 +413,25 @@ namespace AirTrafficSimForms
             }
             else
             {
-                alarmaMostrada = false;
+                separationAlertShown = false;
             }
         }
 
-        // para la simulacion y devuelve todos los aviones a su posicion inicial
+        // Stops the timer and moves all flights back to their starting points (sender and e are unused).
         private void btnRestart_Click(object sender, EventArgs e)
         {
             timer1.Stop();
-            flightplans.Reiniciar();
-            alarmaMostrada = false;
-            conflictoComprobado = false;
+            flightPlans.Reset();
+            separationAlertShown = false;
+            predictedConflictsChecked = false;
             panelAirspace.Invalidate();
         }
 
-        // deshace el ultimo paso de la simulacion
+        // Stops the timer and puts the flights back one step if possible (sender and e are unused).
         private void btnUndo_Click(object sender, EventArgs e)
         {
             timer1.Stop();
-            if (flightplans.Deshacer())
+            if (flightPlans.UndoLastStep())
             {
                 panelAirspace.Invalidate();
             }
@@ -465,7 +441,7 @@ namespace AirTrafficSimForms
             }
         }
 
-        // guarda la lista de vuelos con sus posiciones actuales en un fichero de texto
+        // Stops the timer and lets the user save the flights to a text file (sender and e are unused).
         private void btnSave_Click(object sender, EventArgs e)
         {
             timer1.Stop();
@@ -477,7 +453,7 @@ namespace AirTrafficSimForms
             {
                 try
                 {
-                    flightplans.GuardarVuelos(saveFileDialog1.FileName);
+                    flightPlans.SaveFlights(saveFileDialog1.FileName);
                     MessageBox.Show("Flights saved successfully");
                 }
                 catch (Exception)

@@ -5,26 +5,24 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FlightLib; 
+using FlightLib;
 
-namespace AirTrafficSimConsole 
+namespace AirTrafficSimConsole
 {
     public class Program
     {
-        
-        static void Main(string[] args) 
+        // Reads two flight plans, moves them and prints their positions and any conflicts.
+        // The command-line arguments in args are unused.
+        static void Main(string[] args)
         {
-            
-            // Trata las excepciones de formato de entrada incorrecto
             try
             {
                 FlightPlanList lista = new FlightPlanList();
 
                 Console.WriteLine("Escribe el identificador");
-                //   string nombre = Console.ReadLine();
                 string identificador = Console.ReadLine();
                 Console.WriteLine("Escribe la velocidad");
-                double velocidad = Convert.ToDouble(Console.ReadLine());
+                double speed = Convert.ToDouble(Console.ReadLine());
 
                 Console.WriteLine("Escribe las coordenadas de la posición inicial, separadas por un blanco");
                 string linea = Console.ReadLine();
@@ -38,12 +36,12 @@ namespace AirTrafficSimConsole
                 double fx = Convert.ToDouble(trozos[0]);
                 double fy = Convert.ToDouble(trozos[1]);
 
-                FlightPlan plan_a = new FlightPlan(identificador, "Unknown", ix, iy, fx, fy, velocidad);
+                FlightPlan plan_a = new FlightPlan(identificador, "Unknown", ix, iy, fx, fy, speed);
 
                 Console.WriteLine("Escribe el identificador");
                 identificador = Console.ReadLine();
                 Console.WriteLine("Escribe la velocidad");
-                velocidad = Convert.ToDouble(Console.ReadLine());
+                speed = Convert.ToDouble(Console.ReadLine());
 
                 Console.WriteLine("Escribe las coordenadas de la posición inicial, separadas por un blanco");
                 linea = Console.ReadLine();
@@ -57,32 +55,29 @@ namespace AirTrafficSimConsole
                 fx = Convert.ToDouble(trozos[0]);
                 fy = Convert.ToDouble(trozos[1]);
 
-                FlightPlan plan_b= new FlightPlan(identificador, "Unknown", ix, iy, fx, fy, velocidad);
+                FlightPlan plan_b= new FlightPlan(identificador, "Unknown", ix, iy, fx, fy, speed);
 
-                lista.AnadirVuelo(plan_a);
-                lista.AnadirVuelo(plan_b);
+                lista.AddFlight(plan_a);
+                lista.AddFlight(plan_b);
 
-
-
-                // bucle que mueve el avión 10 veces y escribe la posición en consola
                 int i = 0;
                 int ciclos = 10;
                 int tiempoCiclo = 10;
-                double distanciaSeguridad = 10;
+                double safetyDistance = 10;
                 while (i < ciclos)
                 {
-                    lista.Mover(tiempoCiclo);
-                    lista.EscribeConsola();
-                    lista.Mover(tiempoCiclo);
-                    lista.EscribeConsola();
-                    if(lista.GetVuelo(0).Conflicto(lista.GetVuelo(1), distanciaSeguridad))
+                    lista.Advance(tiempoCiclo);
+                    lista.PrintToConsole();
+                    lista.Advance(tiempoCiclo);
+                    lista.PrintToConsole();
+                    if(lista.GetFlightPlan(0).IsInConflictWith(lista.GetFlightPlan(1), safetyDistance))
                     {
                         Console.WriteLine("Conflicto entre los aviones");
                     }
                     i++;
                 }
 
-                Console.ReadLine(); //espera a que el usuario pulse una tecla antes de cerrar la consola
+                Console.ReadLine();
             }
             catch (FormatException)
             {

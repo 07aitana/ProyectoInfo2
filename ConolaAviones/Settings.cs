@@ -9,20 +9,19 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AirTrafficSimForms
-
 {
     public partial class SettingsForm : Form
     {
-
         double SafetyDistance;
         double CycleTime;
-        // constructor del formulario
+
+        // Sets up the simulation settings form.
         public SettingsForm()
         {
             InitializeComponent();
         }
 
-        // lee la distancia de seguridad y el tiempo de ciclo y comprueba que sean numeros mayores que 0
+        // Saves the safety distance and cycle time if both are finite and above zero (sender and e are unused).
         private void btnLoad_Click(object sender, EventArgs e)
         {
             if (txtSafetyDistance.Text == "" ||
@@ -61,17 +60,16 @@ namespace AirTrafficSimForms
             }
         }
 
-        // devuelve la distancia de seguridad introducida
-        public double GetDistanciaSeguridad()
+        // Returns the safety distance in kilometers.
+        public double GetSafetyDistance()
         {
             return SafetyDistance;
         }
 
-        // devuelve el tiempo de ciclo introducido
-        public double GetTiempoCiclo()
+        // Returns the length of one simulation step in minutes.
+        public double GetCycleTime()
         {
             return CycleTime;
         }
-
     }
 }

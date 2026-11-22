@@ -13,14 +13,13 @@ namespace AirTrafficSimForms
 {
     public partial class FormRegister : Form
     {
-        // constructor del formulario
+        // Sets up the sign-up form.
         public FormRegister()
         {
             InitializeComponent();
         }
 
-        // Registra un usuario nuevo en la base de datos si los datos son correctos
-        // y el nombre de usuario no existe todavía.
+        // Checks the form and creates an account if the username is free (sender and e are unused).
         private void btnCreateAccount_Click(object sender, EventArgs e)
         {
             string username = txtUsername.Text;
@@ -43,19 +42,19 @@ namespace AirTrafficSimForms
             {
                 try
                 {
-                    GestionUsuarios db = new GestionUsuarios(); //creem objecte
+                    GestionUsuarios db = new GestionUsuarios();
 
-                    if (db.Iniciar())  //connexió amb base de datos
+                    if (db.OpenConnection())
                     {
-                        if (db.ExisteUsuario(username))     // comprobar si usuari existeix
+                        if (db.UserExists(username))
                         {
                             MessageBox.Show("Username already exists.");
-                            db.Cerrar();
+                            db.CloseConnection();
                         }
                         else
                         {
-                            db.RegistrarUsuario(username, password);
-                            db.Cerrar();
+                            db.RegisterUser(username, password);
+                            db.CloseConnection();
                             MessageBox.Show("Account created successfully.");
                             this.Close();
                         }
@@ -67,7 +66,6 @@ namespace AirTrafficSimForms
                 }
                 catch (Exception)
                 {
-                    // Por ejemplo, si users.db está dañado o no tiene la tabla users
                     MessageBox.Show("Error reading the user database (users.db).");
                 }
             }

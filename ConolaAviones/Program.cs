@@ -8,9 +8,7 @@ namespace AirTrafficSimForms
 {
     internal static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
+        // Starts the app and opens the login form.
         [STAThread]
         static void Main()
         {

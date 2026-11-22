@@ -11,37 +11,35 @@ using FlightLib;
 
 namespace AirTrafficSimForms
 {
-
-
     public partial class Velocity : Form
     {
-        double velocidad;
-        FlightPlanList flightplans;
+        double speed;
+        FlightPlanList flightPlans;
 
-        int filaseleccionada = -1;
+        int selectedRowIndex = -1;
 
-        
-        // constructor del formulario
+        // Sets up the form for changing flight speeds.
         public Velocity()
         {
             InitializeComponent();
         }
-        // devuelve la ultima velocidad introducida
-        public double GetVelocidad()
+
+        // Returns the last speed read from the form in km/h.
+        public double GetSpeed()
         {
-            return this.velocidad;
+            return this.speed;
         }
 
-        // recibe la lista de vuelos
-        public void SetVuelos(FlightPlanList flightplans)
+        // Sets the flightPlans whose speeds can be changed.
+        public void SetFlightPlans(FlightPlanList flightPlans)
         {
-            this.flightplans = flightplans;
+            this.flightPlans = flightPlans;
         }
 
-        // cambia la velocidad del vuelo seleccionado si el valor es correcto
+        // Checks the new speed and updates the selected flight and its table row (sender and e are unused).
         private void UpDateBtn_Click(object sender, EventArgs e)
         {
-            if (filaseleccionada == -1)
+            if (selectedRowIndex == -1)
             {
                 MessageBox.Show("Please select a flight.");
                 return;
@@ -49,20 +47,20 @@ namespace AirTrafficSimForms
 
             try
             {
-                velocidad = Convert.ToDouble(VelocityChangeBox.Text);
+                speed = Convert.ToDouble(VelocityChangeBox.Text);
 
-                if (velocidad <= 0)
+                if (speed <= 0)
                 {
                     MessageBox.Show("Please enter a positive velocity.");
                     return;
                 }
 
-                string id = Convert.ToString(vuelosGrid.Rows[filaseleccionada].Cells[0].Value);
-                FlightPlan vuelo = flightplans.BuscarVuelo(id);
+                string id = Convert.ToString(vuelosGrid.Rows[selectedRowIndex].Cells[0].Value);
+                FlightPlan flight = flightPlans.FindFlightById(id);
 
-                vuelo.SetVelocidad(velocidad);
+                flight.SetSpeed(speed);
 
-                vuelosGrid.Rows[filaseleccionada].Cells[1].Value = velocidad;
+                vuelosGrid.Rows[selectedRowIndex].Cells[1].Value = speed;
 
                 MessageBox.Show("Velocity updated successfully");
             }
@@ -70,53 +68,48 @@ namespace AirTrafficSimForms
             {
                 MessageBox.Show("Please enter a valid velocity.");
             }
-
         }
 
-
-        // rellena la tabla con los vuelos y sus velocidades
+        // Fills the table with the flights, their speeds and positions (sender and e are unused).
         private void Velocity_Load(object sender, EventArgs e)
         {
             vuelosGrid.AllowUserToAddRows = false;
             vuelosGrid.ReadOnly = true;
 
             vuelosGrid.ColumnCount = 4;
-            vuelosGrid.RowCount = flightplans.GetNumero();
+            vuelosGrid.RowCount = flightPlans.GetFlightCount();
 
             vuelosGrid.Columns[0].HeaderText = "Id";
             vuelosGrid.Columns[1].HeaderText = "Speed (km/h)";
             vuelosGrid.Columns[2].HeaderText = "X";
             vuelosGrid.Columns[3].HeaderText = "Y";
 
-            for (int i = 0; i < flightplans.GetNumero(); i++)
+            for (int i = 0; i < flightPlans.GetFlightCount(); i++)
             {
-                FlightPlan vuelo = flightplans.GetVuelo(i);
+                FlightPlan flight = flightPlans.GetFlightPlan(i);
 
-                vuelosGrid.Rows[i].Cells[0].Value = vuelo.GetId();
-                vuelosGrid.Rows[i].Cells[1].Value = vuelo.GetVelocidad();
+                vuelosGrid.Rows[i].Cells[0].Value = flight.GetId();
+                vuelosGrid.Rows[i].Cells[1].Value = flight.GetSpeed();
                 vuelosGrid.Rows[i].Cells[2].Value =
-                    vuelo.GetPosicionActual().GetX().ToString("F2");
+                    flight.GetCurrentPosition().GetX().ToString("F2");
                 vuelosGrid.Rows[i].Cells[3].Value =
-                    vuelo.GetPosicionActual().GetY().ToString("F2");
+                    flight.GetCurrentPosition().GetY().ToString("F2");
             }
 
             vuelosGrid.ClearSelection();
         }
 
-        // guarda que fila (vuelo) ha seleccionado el usuario
+        // Saves the row number from e so the right flight is updated (sender is unused).
         private void vuelosGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                filaseleccionada = e.RowIndex;
+                selectedRowIndex = e.RowIndex;
             }
-
             else
             {
                 MessageBox.Show("Please click on a flight, not on the header.");
             }
-
         }
     }
-
 }

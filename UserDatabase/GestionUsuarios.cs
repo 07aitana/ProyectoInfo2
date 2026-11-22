@@ -13,8 +13,9 @@ namespace UserDatabase
     public class GestionUsuarios
     {
         SQLiteConnection cnx;
-        // abre la conexion con users.db. devuelve false si el fichero no existe
-        public bool Iniciar()
+
+        // Opens the user database and returns true, or returns false if the file is missing.
+        public bool OpenConnection()
         {
             string ruta = "..\\..\\..\\basedatos\\users.db";
 
@@ -29,21 +30,20 @@ namespace UserDatabase
             {
                 return false;
             }
-
-
         }
-        // cierra la conexion con la base de datos
-        public void Cerrar()
+
+        // Closes the database connection.
+        public void CloseConnection()
         {
             cnx.Close();
         }
-        // devuelve true si ya hay un usuario con ese nombre
-        public bool ExisteUsuario(string username)
+
+        // Returns true if username is already in the database.
+        public bool UserExists(string username)
         {
+            DataTable dt = new DataTable();
 
-            DataTable dt = new DataTable(); //on guardarem els resultats
-
-            string sql = "SELECT * FROM users WHERE username = '" + username + "'"; //la consulta que volem fer
+            string sql = "SELECT * FROM users WHERE username = '" + username + "'";
 
             SQLiteDataAdapter adp = new SQLiteDataAdapter(sql, cnx);
 
@@ -54,9 +54,9 @@ namespace UserDatabase
             else
                 return false;
         }
-        // Añade un usuario nuevo a la tabla users.
-        // Devuelve true si se ha insertado y false en caso contrario.
-        public bool RegistrarUsuario(string username, string password)
+
+        // Saves username and password and returns true if the account was added.
+        public bool RegisterUser(string username, string password)
         {
             string sql = "INSERT INTO users (username, password) VALUES ('" + username + "', '" + password + "')";
 
@@ -69,12 +69,12 @@ namespace UserDatabase
                 return false;
         }
 
-        // devuelve true si el usuario y la contraseña son correctos
-        public bool ComprobarLogin(string username, string password)
+        // Returns true if username and password match an account.
+        public bool ValidateLogin(string username, string password)
         {
             DataTable dt = new DataTable();
 
-            string sql = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'"; //comprova nom usuari i contrasenya
+            string sql = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'";
 
             SQLiteDataAdapter adp = new SQLiteDataAdapter(sql, cnx);
 
@@ -85,6 +85,5 @@ namespace UserDatabase
             else
                 return false;
         }
-
     }
 }

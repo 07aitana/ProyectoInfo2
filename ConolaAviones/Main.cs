@@ -13,18 +13,18 @@ namespace AirTrafficSimForms
 {
     public partial class MainForm : Form
     {
-        FlightPlanList flightplans = new FlightPlanList();
+        FlightPlanList flightPlans = new FlightPlanList();
         double cycleTime;
         double safetyDistance;
         bool settingsLoaded;
-        // constructor del menu principal
+
+        // Sets up the main menu.
         public MainForm()
         {
             InitializeComponent();
         }
 
-        // Deja elegir un fichero de vuelos con un selector y lo carga.
-        // Muestra un mensaje diferente según el resultado de la carga.
+        // Lets the user choose a flight file and shows whether it loaded (sender and e are unused).
         private void LoadFlightsBtn_Click(object sender, EventArgs e)
         {
             openFileDialog1.Filter = "Text files (*.txt)|*.txt";
@@ -34,23 +34,23 @@ namespace AirTrafficSimForms
             {
                 try
                 {
-                    string nombreFichero = openFileDialog1.FileName;
+                    string filePath = openFileDialog1.FileName;
 
-                    int resultado = flightplans.CargarVuelos(nombreFichero);
+                    int result = flightPlans.LoadFlights(filePath);
 
-                    if (resultado == 0)
+                    if (result == 0)
                     {
-                        MessageBox.Show(flightplans.GetNumero() + " flights loaded successfully.");
+                        MessageBox.Show(flightPlans.GetFlightCount() + " flights loaded successfully.");
                     }
-                    else if (resultado == -1)
+                    else if (result == -1)
                     {
                         MessageBox.Show("The file does not exist.");
                     }
-                    else if (resultado == -2)
+                    else if (result == -2)
                     {
                         MessageBox.Show("The file does not contain any flight.");
                     }
-                    else if (resultado == -3)
+                    else if (result == -3)
                     {
                         MessageBox.Show("The file has a wrong line. Each line must be:\nID Company Xinitial Yinitial Xfinal Yfinal Speed\n(speed must be greater than 0).\nNo flights have been loaded.");
                     }
@@ -66,50 +66,45 @@ namespace AirTrafficSimForms
             }
         }
 
-        // abre el formulario de settings y guarda la distancia de seguridad y el tiempo de ciclo
+        // Opens settings and saves the values if the user confirms (sender and e are unused).
         private void SettingsBtn_Click(object sender, EventArgs e)
         {
             SettingsForm settings = new SettingsForm();
 
             if (settings.ShowDialog() == DialogResult.OK)
             {
-                cycleTime = settings.GetTiempoCiclo();
-                safetyDistance = settings.GetDistanciaSeguridad();
+                cycleTime = settings.GetCycleTime();
+                safetyDistance = settings.GetSafetyDistance();
                 settingsLoaded = true;
             }
         }
 
-        // comprueba que hay vuelos y settings y abre la simulacion
+        // Starts the simulation if flights and settings are ready (sender and e are unused).
         private void SimulationBtn_Click(object sender, EventArgs e)
         {
-
-            // Comprobar que se han introducido Safety Distance y Cycle Time
             if (!settingsLoaded)
             {
                 MessageBox.Show("First enter the safety distance and cycle time.");
                 return;
             }
 
-
-            // Comprobar que los dos Flight Plans existen
-            if (flightplans.GetNumero() == 0)
+            if (flightPlans.GetFlightCount() == 0)
             {
                 MessageBox.Show("You must load the flight plans first.");
                 return;
             }
 
-            // Abrir el formulario de simulación
-            SimulationForm F4 = new SimulationForm();
-            F4.SetInformacion(flightplans, cycleTime, safetyDistance);
-            F4.ShowDialog();
+            SimulationForm simulationForm = new SimulationForm();
+            simulationForm.ConfigureSimulation(flightPlans, cycleTime, safetyDistance);
+            simulationForm.ShowDialog();
         }
 
-        // abre el formulario para añadir un vuelo a mano
+        // Opens the form for adding a flight by hand (sender and e are unused).
         private void AddFlightBtn_Click(object sender, EventArgs e)
         {
-            AddFlightForm F5 = new AddFlightForm();
-            F5.SetVuelos(flightplans);
-            F5.ShowDialog();
+            AddFlightForm addFlightForm = new AddFlightForm();
+            addFlightForm.SetFlightPlans(flightPlans);
+            addFlightForm.ShowDialog();
         }
     }
 }

@@ -13,102 +13,91 @@ namespace AirTrafficSimForms
 {
     public partial class AircraftInformationForm : Form
     {
-        FlightPlan vuelo;
-        // constructor del formulario
+        FlightPlan flight;
+
+        // Sets up the aircraft details form.
         public AircraftInformationForm()
         {
             InitializeComponent();
-            
         }
 
-        // recibe el vuelo del que se mostraran los datos
-        public void SetVuelo(FlightPlan vuelo)
+        // Sets which flight the form shows.
+        public void SetFlightPlan(FlightPlan flight)
         {
-            this.vuelo = vuelo;
-            
+            this.flight = flight;
         }
-        
 
-        // cierra el formulario
-        private void button1_Click(object sender, EventArgs e)
+        // Closes the form (sender and e are unused).
+
+        private void CloseBtn_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        // prepara la tabla con los datos del vuelo y arranca el timer para actualizarlos
-        private void Form5_Load(object sender, EventArgs e)
+        // Fills the details table and starts the update timer (sender and e are unused).
+        private void AircraftInformation_Load(object sender, EventArgs e)
         {
             dataGridView1.AllowUserToAddRows = false;
 
             dataGridView1.ColumnCount = 2;
-            dataGridView1.RowCount = 7; 
+            dataGridView1.RowCount = 7;
 
-
-            // Nombres de las columnas
             dataGridView1.Columns[0].HeaderText = "Field";
             dataGridView1.Columns[1].HeaderText = "Value";
 
-            // Identificador
             dataGridView1.Rows[0].Cells[0].Value = "ID";
-            dataGridView1.Rows[0].Cells[1].Value = vuelo.GetId();
+            dataGridView1.Rows[0].Cells[1].Value = flight.GetId();
 
-            // Compañía aérea
             dataGridView1.Rows[1].Cells[0].Value = "Airline";
-            dataGridView1.Rows[1].Cells[1].Value = vuelo.GetCompania();
+            dataGridView1.Rows[1].Cells[1].Value = flight.GetAirline();
 
-            // Posición actual
             dataGridView1.Rows[2].Cells[0].Value = "Current X";
-            dataGridView1.Rows[2].Cells[1].Value = Convert.ToString(vuelo.GetPosicionActual().GetX());
+            dataGridView1.Rows[2].Cells[1].Value = Convert.ToString(flight.GetCurrentPosition().GetX());
 
             dataGridView1.Rows[3].Cells[0].Value = "Current Y";
-            dataGridView1.Rows[3].Cells[1].Value = Convert.ToString(vuelo.GetPosicionActual().GetY());
+            dataGridView1.Rows[3].Cells[1].Value = Convert.ToString(flight.GetCurrentPosition().GetY());
 
-            // Posición final
             dataGridView1.Rows[4].Cells[0].Value = "Final X";
-            dataGridView1.Rows[4].Cells[1].Value = Convert.ToString(vuelo.GetPosicionFinal().GetX());
+            dataGridView1.Rows[4].Cells[1].Value = Convert.ToString(flight.GetDestination().GetX());
 
             dataGridView1.Rows[5].Cells[0].Value = "Final Y";
-            dataGridView1.Rows[5].Cells[1].Value = Convert.ToString(vuelo.GetPosicionFinal().GetY());
+            dataGridView1.Rows[5].Cells[1].Value = Convert.ToString(flight.GetDestination().GetY());
 
-            // Velocidad
             dataGridView1.Rows[6].Cells[0].Value = "Speed (km/h)";
-            dataGridView1.Rows[6].Cells[1].Value = vuelo.GetVelocidad();
+            dataGridView1.Rows[6].Cells[1].Value = flight.GetSpeed();
 
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ReadOnly = true;
-            
+
             dataGridView1.RowHeadersVisible = false;
 
-            ActualizarDatos();
+            RefreshFlightDetails();
             timer1.Start();
         }
-        // actualiza en la tabla los datos que cambian (posicion y velocidad)
-        private void ActualizarDatos()
+
+        // Updates the flight ID, airline, position and speed shown in the table.
+        private void RefreshFlightDetails()
         {
-            // Identificador
-            dataGridView1.Rows[0].Cells[1].Value = vuelo.GetId();
+            dataGridView1.Rows[0].Cells[1].Value = flight.GetId();
 
-            // Companyia
-            dataGridView1.Rows[1].Cells[1].Value = vuelo.GetCompania();
+            dataGridView1.Rows[1].Cells[1].Value = flight.GetAirline();
 
-            // Posició actual
             dataGridView1.Rows[2].Cells[1].Value =
-                vuelo.GetPosicionActual().GetX().ToString("F2");
+                flight.GetCurrentPosition().GetX().ToString("F2");
 
             dataGridView1.Rows[3].Cells[1].Value =
-                vuelo.GetPosicionActual().GetY().ToString("F2");
+                flight.GetCurrentPosition().GetY().ToString("F2");
 
-            // Velocitat
             dataGridView1.Rows[6].Cells[1].Value =
-                vuelo.GetVelocidad();
+                flight.GetSpeed();
         }
 
-        // cada tick vuelve a mostrar los datos actualizados
+        // Updates the table each time the timer fires (sender and e are unused).
         private void timer1_Tick(object sender, EventArgs e)
         {
-            ActualizarDatos();
+            RefreshFlightDetails();
         }
+
+        
     }
-
 }
-

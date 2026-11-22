@@ -13,21 +13,21 @@ namespace AirTrafficSimForms
 {
     public partial class AddFlightForm : Form
     {
-        FlightPlanList flightplans;
-        // constructor del formulario
+        FlightPlanList flightPlans;
+
+        // Sets up the form for adding a flight.
         public AddFlightForm()
         {
             InitializeComponent();
         }
 
-        // recibe la lista de vuelos donde se añadira el vuelo nuevo
-        public void SetVuelos(FlightPlanList flightplans)
+        // Uses flightPlans as the list where new flights are added.
+        public void SetFlightPlans(FlightPlanList flightPlans)
         {
-            this.flightplans = flightplans;
+            this.flightPlans = flightPlans;
         }
 
-
-        // lee los datos de los textbox, los comprueba y añade el vuelo a la lista
+        // Checks the form and adds the flight if its ID is new (sender and e are unused).
         private void AddFlightBtn_Click(object sender, EventArgs e)
         {
             try
@@ -40,8 +40,7 @@ namespace AirTrafficSimForms
                 double y2 = Convert.ToDouble(Y2Box.Text);
                 double speed = Convert.ToDouble(SpeedBox.Text);
 
-                // El ID y la compañía no pueden estar vacíos ni tener espacios
-                // (si tuvieran espacios, el fichero guardado no se podría volver a cargar)
+                // The flight file uses spaces to separate fields.
                 if (id == "" || company == "" || id.Contains(" ") || company.Contains(" "))
                 {
                     MessageBox.Show("The ID and the airline cannot be empty or contain spaces.");
@@ -53,10 +52,9 @@ namespace AirTrafficSimForms
                     MessageBox.Show("The speed must be greater than 0.");
                     return;
                 }
-                // Comprobar que el vuelo no existe
-                for (int i = 0; i < flightplans.GetNumero(); i++)
+                for (int i = 0; i < flightPlans.GetFlightCount(); i++)
                 {
-                    if (flightplans.GetVuelo(i).GetId() == id)
+                    if (flightPlans.GetFlightPlan(i).GetId() == id)
                     {
                         MessageBox.Show("A flight with this ID already exists.");
                         return;
@@ -64,7 +62,7 @@ namespace AirTrafficSimForms
                 }
 
                 FlightPlan newFlight = new FlightPlan(id, company, x1, y1, x2, y2, speed);
-                flightplans.AnadirVuelo(newFlight);
+                flightPlans.AddFlight(newFlight);
                 MessageBox.Show("Flight added successfully");
                 IDBox.Clear();
                 CompanyBox.Clear();
@@ -80,7 +78,7 @@ namespace AirTrafficSimForms
             }
         }
 
-        // rellena los campos con un vuelo de ejemplo
+        // Fills the boxes with an example flight (sender and e are unused).
         private void AutoFilBtn_Click(object sender, EventArgs e)
         {
             IDBox.Text = "IB123";
@@ -95,7 +93,7 @@ namespace AirTrafficSimForms
             SpeedBox.Text = "600";
         }
 
-        // cierra el formulario
+        // Closes the form (sender and e are unused).
         private void CloseBtn_Click(object sender, EventArgs e)
         {
             this.Close();
